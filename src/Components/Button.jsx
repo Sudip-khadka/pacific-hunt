@@ -22,7 +22,7 @@ const sharedStyles = css`
 
 // Primary button styles
 const primaryStyles = css`
-  width: 120px;
+  width: 155px;
   background: var(--Primary-500, #01A3E0);
 `;
 

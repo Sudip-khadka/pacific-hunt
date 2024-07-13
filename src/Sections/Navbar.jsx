@@ -9,10 +9,11 @@ const Navigation = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px;
-  background: #FFF; /* Ensure this is a color that contrasts with the shadow */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
+  padding: 0 112px;
+  background: #FFF;
+  box-shadow: 0px 1px 0px 0px #E5E9F2;
+  position: fixed; /* Fix the navbar at the top */
+  top: 0;
   z-index: 10;
 `;
 
@@ -48,7 +49,7 @@ const NavItem = styled.li`
     content: '';
     position: absolute;
     left: 0%;
-    bottom: -5px;
+    bottom: -2px;
     width: ${(props) => (props.isActive ? '25px' : '0')};
     height: 3px;
     background-color: #01A3E0;
