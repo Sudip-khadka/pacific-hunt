@@ -5,7 +5,7 @@ import WhyJoinUs from '../assets/whyjoinus.png'
 
 const JoinContainer = styled.div`
 width: 100%;
-padding:167px 70px 112px;
+padding:167px 70px 112px 70px;
 height: 647px;`
 
 const JoinUsWrapper = styled.div`
