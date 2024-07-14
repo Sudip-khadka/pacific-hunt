@@ -98,7 +98,7 @@ const Navbar = () => {
         </NavItems>
         <div className="buttons flex gap-16">
           <Button text="Sign Up" />
-          <Button text="Post a Job" primary />
+          <Button text="Post a Job" primary="primary" />
         </div>
       </div>
     </Navigation>

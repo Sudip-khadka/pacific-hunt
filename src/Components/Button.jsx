@@ -16,19 +16,17 @@ const sharedStyles = css`
   color: #FFF;
 
   &:hover {
-    background-color: ${(props) => (props.primary ? '#0056b3' : '#5a6268')};
+    background-color: ${(props) => (props.primary== "primary" ? '#0056b3' : '#DEF3FF')};
   }
 `;
 
 // Primary button styles
 const primaryStyles = css`
-  width: 155px;
   background: var(--Primary-500, #01A3E0);
 `;
 
 // Secondary button styles
 const secondaryStyles = css`
-  width: 110px;
   border: 1px solid var(--Primary-500, #01A3E0);
   color:var(--Primary-500, #01A3E0);
   background:transparent;
@@ -36,11 +34,12 @@ const secondaryStyles = css`
 
 const StyledButton = styled.button`
   ${sharedStyles}
-  ${(props) => (props.primary ? primaryStyles : secondaryStyles)}
+  ${(props) => (props.primary== "primary" ? primaryStyles : secondaryStyles)}
+  width: ${(props) => props.width || (props.primary ? '155px' : '130px')};
 `;
 
-const Button = ({ text, primary }) => {
-  return <StyledButton primary={primary}>{text}</StyledButton>;
+const Button = ({ text, primary,width }) => {
+  return <StyledButton primary={primary} width={width}>{text}</StyledButton>;
 };
 
 export default Button;
