@@ -8,6 +8,7 @@ import Button from '../Components/Button';
 
 const HomePage = styled.div`
   background: var(--Neutral-Grey-50, #F5F6F6);
+  width:100%;
   padding: 80px 112px 0;
   height: 680px;
   display: flex;

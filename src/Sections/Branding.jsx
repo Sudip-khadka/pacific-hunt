@@ -31,7 +31,7 @@ function Branding() {
   return (
     <Brand>
     <h1 className='m-0'>Join in globally <span className='text-[#01A3E0]'>renowned</span> companies</h1>
-    <div className="image-container flex gap-[67px] h-[52px]">
+    <div className="image-container flex overflow-x-auto gap-[67px] h-[52px]">
         <img src={google} alt="google image" />
         <img src={zoho} alt="zoho image" />
         <img src={airbnb} alt="airbng image" />

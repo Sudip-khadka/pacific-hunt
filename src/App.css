@@ -7,4 +7,13 @@
 body, html {
   width: 100%;
   overflow-x: hidden; /* Prevent horizontal scrollbar */
+
+}
+body{
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for Firefox */
+  scrollbar-width: none;
 }

@@ -54,7 +54,7 @@ const TestimonialCards = styled.div`
 width:100%;
   display: flex;
   gap: 32px;
-  overflow-x: auto; /* Allow horizontal scrolling */
+  overflow: auto; /* Allow horizontal scrolling */
   padding-bottom: 16px; /* Add some padding to make the scrolling smooth */
   box-sizing: border-box;
   overflow-wrap: break-word;
