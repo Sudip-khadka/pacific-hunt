@@ -11,10 +11,9 @@ function Dashboard() {
       <SideBar />
       <div className="dashboard-content">
         <Routes>
-          <Route path="/dashboard/configurations" element={<Configurations />} />
-          <Route path="/dashboard/configurations" element={<Configurations />} />
-          <Route path="/dashboard/configurations" element={<Configurations />} />
-          <Route path="/dashboard/configurations" element={<Configurations />} />
+          <Route path="/configurations" element={<Configurations />} />
+          <Route path="/jobseeker" element={<Configurations />} />
+          <Route path="/registermanagers" element={<Configurations />} />
           {/* Add more nested routes here */}
         </Routes>
       </div>

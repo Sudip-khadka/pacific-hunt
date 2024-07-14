@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import styled from "styled-components";
 import logo from "../assets/logofooter.png";
+import { IoPersonCircle } from "react-icons/io5";
 
 const Sidebar = styled.div`
   display: flex;
@@ -174,8 +175,11 @@ function SideBar() {
           </StyledNavLink>
           {openDropdown === 'employer' && (
   <DropdownMenu open={openDropdown === 'employer'}>
-    <StyledNavLink to="/dashboard/employer/subroute1">Subroute 1</StyledNavLink>
-    <StyledNavLink to="/dashboard/employer/subroute2">Subroute 2</StyledNavLink>
+    <StyledNavLink to="/dashboard/employer/employe1"><div className="flex gap-2 items-center">
+      <div className="text">Employer 1</div>
+      <IoPersonCircle className='w-7  h-7' /></div></StyledNavLink>
+      
+    <StyledNavLink to="/dashboard/employer/employe2">Employer 2</StyledNavLink>
   </DropdownMenu>
 )}
           <StyledNavLink to="/dashboard/configurations">
