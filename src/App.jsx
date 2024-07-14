@@ -1,30 +1,18 @@
-import './App.css'
+import './App.css';
+import LandingPage from './LandingPage';
+import Dashboard from './DashBoard';
 import './styles/tailwind.css';
-import Navbar from './Sections/Navbar'
-import Home from './Sections/Home';
-import PopularCategories from './Sections/PopularCategories';
-import Jobs from './Sections/Jobs';
-import Branding from './Sections/Branding';
-import Companies from './Sections/Companies';
-import AboutUs from './Sections/AboutUs';
-import JoinUs from './Sections/JoinUs';
-import Footer from './Sections/Footer';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
-
   return (
     <>
-    <Navbar />
-      <Home/>
-      <PopularCategories/>
-      <Jobs/>
-      <Branding/>
-      <Companies/>
-      <AboutUs/>
-      <JoinUs/>
-      <Footer/>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
