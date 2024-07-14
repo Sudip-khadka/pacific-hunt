@@ -11,7 +11,7 @@ height: 647px;`
 const JoinUsWrapper = styled.div`
 border-radius: 12px;
 background: var(--Primary-950, #04334D);
-width: 1216px;
+width: 100%;
 height: 368px;
 flex-shrink: 0;
 padding:56px 80px;
