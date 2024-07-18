@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Routes, Route, Link } from "react-router-dom";
 import Category from "./Configurations/Category";
 import UnderConstruction from '../UnderConstruction'
+import Profession from "./Configurations/Profession";
+import CompanyType from "./Configurations/CompanyType";
 
 const ConfigurationContainer = styled.div`
   margin-left: 264px;
@@ -174,15 +176,15 @@ function Configurations() {
             }
           />
           <Route path="/category" element={<Category />} />
-          <Route path="/profession" element={<UnderConstruction/>} />
-          <Route path="/company-type" element={<Category />} />
-          <Route path="/skill" element={<Category />} />
-          <Route path="/social-media" element={<Category />} />
-          <Route path="/job-type" element={<Category />} />
-          <Route path="/company-type" element={<Category />} />
-          <Route path="/education-level" element={<Category />} />
-          <Route path="/experience-level" element={<Category />} />
-          <Route path="/work-location" element={<Category />} />
+          <Route path="/profession" element={<Profession/>} />
+          <Route path="/company-type" element={<CompanyType/>} />
+          <Route path="/skill" element={<UnderConstruction />} />
+          <Route path="/social-media" element={<UnderConstruction />} />
+          <Route path="/job-type" element={<UnderConstruction />} />
+          <Route path="/company-type" element={<UnderConstruction />} />
+          <Route path="/education-level" element={<UnderConstruction />} />
+          <Route path="/experience-level" element={<UnderConstruction />} />
+          <Route path="/work-location" element={<UnderConstruction />} />
           {/* Add routes for other configuration pages */}
         </Routes>
       </div>

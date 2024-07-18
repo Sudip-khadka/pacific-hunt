@@ -4,9 +4,9 @@ import BackButton from '../Components/BackButton';
 import Buttons from '../Components/Buttons';
 import NoData from '../Components/NoData';
 import Table from '../Components/Table/Table';
-import CategoryPopup from '../Components/PopUps/CategoryPopup';
+import CompanyPopup from '../Components/PopUps/CompanyTypePopup';
 
-const CategoryContainer = styled.div`
+const CompanyContainer = styled.div`
   width: 100%;
   height: auto;
   display: flex;
@@ -14,7 +14,7 @@ const CategoryContainer = styled.div`
   gap: 24px;
 `;
 
-const CategoryHeader = styled.div`
+const CompanyHeader = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -34,7 +34,7 @@ const OtherButtons = styled.div`
   gap: 16px;
 `;
 
-const CategoryBody = styled.div`
+const CompanyBody = styled.div`
   display: flex;
   width: 100%;
   padding: 235px 0px 379px 0px;
@@ -47,7 +47,7 @@ const CategoryBody = styled.div`
 `;
 
 const data =[];
-function Category() {
+function Company() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleCreateClick = () => {
@@ -59,39 +59,40 @@ function Category() {
   };
 
   const handleSubmit = (formData) => {
-    console.log('Creating new category:', formData);
+    console.log('Creating new Company:', formData);
     // Here you would typically send the data to your backend
     setIsPopupOpen(false);
   };
 
   const getFields = () => [
-    { name: 'categoryName', label: 'Category Name' },
+    { name: 'CompanyName', label: 'Company Name' },
     { name: 'description', label: 'Description' },
   ];
 
   return (
-    <CategoryContainer>
-      <CategoryHeader>
-        <BackButton title="Categories" />
+    <CompanyContainer>
+      <CompanyHeader>
+        <BackButton title="Company Type" />
         <OtherButtons>
           <Buttons width="257px" title="Download .xlsx Sample" type="download" iconType="download" />
           <Buttons title="Import .xlsx File" type="upload" iconType="upload" />
-          <Buttons width="221px" title="Create Categories" type="create" onClick={handleCreateClick} iconType="create" />
+          <Buttons width="221px" title="Create Company" type="create" onClick={handleCreateClick} iconType="create" />
         </OtherButtons>
-      </CategoryHeader>
-      <CategoryBody>
-      <CategoryPopup
+      </CompanyHeader>
+      <CompanyBody>
+      <CompanyPopup
           open={isPopupOpen}
           onClose={handleClosePopup}
           onSubmit={handleSubmit}
-          title="Create New Category"
+          title="Create New Company"
+          label="Company Name"
           fields={getFields()}
         />
         {data.length <= 0 && <NoData />}
         {data.length > 0 && <Table />}
-      </CategoryBody>
-    </CategoryContainer>
+      </CompanyBody>
+    </CompanyContainer>
   );
 }
 
-export default Category;
+export default Company;

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MdDelete,} from 'react-icons/md';
+import { MdDelete } from 'react-icons/md';
 import { RiDownloadCloud2Line } from "react-icons/ri";
 import { FiUploadCloud } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa6";
 
-const Button = styled.button`
+const StyledButton = styled.button`
   width: ${(props) => (props.width ? props.width : '215px')};
   display: flex;
   height: 48px;
@@ -17,11 +17,10 @@ const Button = styled.button`
   background: var(--Primary-500, #01a3e0);
 `;
 
-function Buttons({ width, type, title }) {
+function Button({ width, title, onClick, iconType }) {
   let icon;
   
-  // Determine which icon to render based on the type prop
-  switch (type) {
+  switch (iconType) {
     case 'download':
       icon = <RiDownloadCloud2Line />;
       break;
@@ -37,13 +36,13 @@ function Buttons({ width, type, title }) {
     default:
       icon = null;
   }
-
+  
   return (
-    <Button width={width}>
-      {icon && icon} {/* Render the icon if it exists */}
+    <StyledButton width={width} onClick={onClick}>
+      {icon && icon}
       {title}
-    </Button>
+    </StyledButton>
   );
 }
 
-export default Buttons;
+export default Button;
