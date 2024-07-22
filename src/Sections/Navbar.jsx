@@ -36,8 +36,8 @@ const NavItem = styled.li`
   font-family: "Be Vietnam Pro";
   font-size: 16px;
   font-style: normal;
-  font-weight: ${(props) => (props.isActive ? '600' : '400')};
-  color: ${(props) => (props.isActive ? "#01A3E0" : '#3c3d3d')};
+  font-weight: ${(props) => (props.isactive ? '600' : '400')};
+  color: ${(props) => (props.isactive ? "#01A3E0" : '#3c3d3d')};
   line-height: 24px;
   cursor: pointer;
 
@@ -50,7 +50,7 @@ const NavItem = styled.li`
     position: absolute;
     left: 0%;
     bottom: -2px;
-    width: ${(props) => (props.isActive ? '25px' : '0')};
+    width: ${(props) => (props.isactive ? '25px' : '0')};
     height: 3px;
     background-color: #01A3E0;
     transition: width 0.3s, height 0.3s;
@@ -72,25 +72,25 @@ const Navbar = () => {
       <div className="navigations flex gap-32 items-center">
         <NavItems>
           <NavItem
-            isActive={activePage === "Home"}
+            isactive={activePage === "Home"}
             onClick={() => handleNavItemClick("Home")}
           >
             <a href="#">Home</a>
           </NavItem>
           <NavItem
-            isActive={activePage === "Jobs"}
+            isactive={activePage === "Jobs"}
             onClick={() => handleNavItemClick("Jobs")}
           >
             <a href="#jobs">Jobs</a>
           </NavItem>
           <NavItem
-            isActive={activePage === "Companies"}
+            isactive={activePage === "Companies"}
             onClick={() => handleNavItemClick("Companies")}
           >
             <a href="#companies">Companies</a>
           </NavItem>
           <NavItem
-            isActive={activePage === "AboutUs"}
+            isactive={activePage === "AboutUs"}
             onClick={() => handleNavItemClick("AboutUs")}
           >
             <a href="#aboutUs">About Us</a>

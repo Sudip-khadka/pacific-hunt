@@ -1,34 +1,40 @@
-// api.ts
-
-import axios from 'axios';
-
-const BASE_URL = 'https://retoolapi.dev/szKpMq';
-const categoryApi = 'https://retoolapi.dev/MyI6oO/category';
-
-// Define your endpoints
-const endpoints = {
-  categories: `${BASE_URL}/categories`,
-  companies: `${BASE_URL}/companies`,
-  skills: `${BASE_URL}/skills`,
-  professions: `${BASE_URL}/professions`,
-  // Add more endpoints as needed
+const apiConfig = {
+  category: "https://retoolapi.dev/fLNOtX",
+  profession: "https://retoolapi.dev/ewEY3Q",
 };
 
-// API functions
-export const getCategories = async () => {
-  return axios.get(endpoints.categories);
+const getApiUrl = (resource) => {
+  const baseUrl = apiConfig[resource];
+  if (!baseUrl) {
+      throw new Error(`Resource type ${resource} is not supported`);
+  }
+  return baseUrl;
 };
 
-export const createCategory = async (data) => {
-  return axios.post(endpoints.categories, data);
+const apiClient = {
+  get: async (resource, endpoint) => {
+      const url = `${getApiUrl(resource)}/${endpoint}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+          throw new Error(`Failed to fetch data from ${url}`);
+      }
+      return await response.json();
+  },
+  post: async (resource, endpoint, data) => {
+      const url = `${getApiUrl(resource)}/${endpoint}`;
+      const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+      });
+      if (!response.ok) {
+          throw new Error(`Failed to post data to ${url}`);
+      }
+      return await response.json();
+  },
+  // Add other HTTP methods (PUT, DELETE, etc.) if needed
 };
 
-export const updateCategory = async (id, data) => {
-  return axios.put(`${endpoints.categories}/${id}`, data);
-};
-
-export const deleteCategory = async (id) => {
-  return axios.delete(`${endpoints.categories}/${id}`);
-};
-
-// Similarly, create functions for other endpoints
+export default apiClient;

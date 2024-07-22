@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, FormControlLabel, Checkbox, Button } from '@mui/material';
 import styled from 'styled-components';
+import { useMutation } from '@tanstack/react-query';
 import Buttons from '../Buttons';
 import Alert from '../Alert';
+import apiClient from '../../../Api';
 
 const StyledDialog = styled(Dialog)`
   & .MuiDialog-paper {
@@ -24,6 +26,16 @@ const StyledFormControlLabel = styled(FormControlLabel)`
   padding: 10px 12px;
   box-sizing: border-box;
   margin-left: 0px !important;
+  ${({ checked }) => checked && `
+    background-color: #e3f2fd; // Light blue background when checked
+    border-color: #2196f3; // Blue border when checked
+  `}
+`;
+
+const StyledCheckbox = styled(Checkbox)`
+  &.Mui-checked {
+    color: #2196f3; // Blue color when checked
+  }
 `;
 
 const CategoryPopup = ({ open, onClose, onSubmit, title }) => {
@@ -33,6 +45,24 @@ const CategoryPopup = ({ open, onClose, onSubmit, title }) => {
     isPopular: false,
   });
   const [error, setError] = useState('');
+
+  const mutation = useMutation({
+    mutationFn: (newCategory) => apiClient.post('category','category', newCategory),
+    onSuccess: () => {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        setFormData({ categoryName: '', isPopular: false });
+      onSubmit(); // Callback to refetch data
+      onClose();
+      }, 3000); // Alert will be shown for 3 seconds
+      
+    },
+    onError: (error) => {
+      console.error('Error posting category:', error);
+      setError('Failed to create category. Please try again.');
+    }
+  });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -51,20 +81,20 @@ const CategoryPopup = ({ open, onClose, onSubmit, title }) => {
       setError('Category name cannot be empty');
       return;
     }
-    
-    // Show success alert
-    setShowAlert(true);
 
-    // Delay the submission and closing of the dialog
-    setTimeout(() => {
-      onSubmit(formData);
-      setFormData({
-        categoryName: '',
-        isPopular: false,
-      });
-      setShowAlert(false);
-      onClose();
-    }, 2000); // 2 second delay
+    const currentDate = new Date().toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+
+    const newCategory = {
+      category: formData.categoryName,
+      isPopularCategory: formData.isPopular,
+      createdAt: currentDate,
+    };
+
+    mutation.mutate(newCategory);
   };
 
   return (
@@ -102,17 +132,18 @@ const CategoryPopup = ({ open, onClose, onSubmit, title }) => {
         />
         <StyledFormControlLabel
           control={
-            <Checkbox
+            <StyledCheckbox
               name="isPopular"
               checked={formData.isPopular}
               onChange={handleInputChange}
             />
           }
           label="Mark as Popular Category"
+          checked={formData.isPopular}
         />
       </DialogContent>
       <div className="submitbtn p-6 text-[#fff] font-medium text-base flex flex-col gap-3">
-      {showAlert && <Alert message="Category created successfully!" />}
+        {showAlert && <Alert message="Category created successfully!" />}
         <Buttons width="412px" onClick={handleSubmit} type="create" title="Create" />
       </div>
     </StyledDialog>

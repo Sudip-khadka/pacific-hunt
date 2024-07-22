@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, TextField, FormControlLabel, Checkbox, Button } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, TextField, Button } from '@mui/material';
 import styled from 'styled-components';
 import Buttons from '../Buttons';
+import Alert from '../Alert';
 
 const StyledDialog = styled(Dialog)`
   & .MuiDialog-paper {
@@ -15,26 +16,42 @@ const PopupHeader = styled.div`
   align-items: center;
 `;
 
-
-
 const CompanyTypePopup = ({ open, onClose, onSubmit, title }) => {
+  const [showAlert, setShowAlert] = useState(false);
   const [formData, setFormData] = useState({
-    CompanyName: ''
+    companyName: '',
   });
+  const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+    if (name === 'companyName' && value.trim() !== '') {
+      setError('');
+    }
   };
 
-  const handleSubmit = () => {
-    onSubmit(formData);
-    setFormData({
-      CompanyName: '',
-    });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (formData.companyName.trim() === '') {
+      setError('Company Name is required');
+      return;
+    }
+
+    setShowAlert(true);
+
+    setTimeout(() => {
+      onSubmit(formData);
+      setFormData({
+        companyName: '',
+      });
+      setShowAlert(false);
+      onClose();
+    }, 2000); // 2-second delay
   };
 
   return (
@@ -61,16 +78,18 @@ const CompanyTypePopup = ({ open, onClose, onSubmit, title }) => {
       </PopupHeader>
       <DialogContent>
         <TextField
-          name="CompanyName"
+          name="companyName"
           label="Company Name"
           fullWidth
           margin="normal"
-          value={formData.CompanyName}
+          value={formData.companyName}
           onChange={handleInputChange}
+          error={!!error}
+          helperText={error}
         />
-        
       </DialogContent>
-      <div className="submitbtn p-6 text-[#fff] font-medium text-base">
+      <div className="submitbtn p-6 text-[#fff] font-medium text-base flex flex-col gap-2">
+        {showAlert && <Alert message="Company created successfully!" />}
         <Buttons width="412px" onClick={handleSubmit} type="create" title="Create" />
       </div>
     </StyledDialog>

@@ -1,0 +1,106 @@
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Switch from '../Switch';
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  padding: 20px !important;
+  thead {
+    height: 48px;
+    border-radius: 4px;
+    background: var(--Neutral-Grey-50, #F5F6F6);
+  }
+`;
+
+const StyledTh = styled.th`
+  padding: 8px;
+  color: var(--Neutral-Grey-900, #3C3D3D);
+  font-family: "Be Vietnam Pro";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+`;
+
+const StyledTd = styled.td`
+  border-bottom: 1px solid #ddd;
+  padding: 8px;
+  font-family: "Be Vietnam Pro";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: ${({ $isDisabled }) => ($isDisabled ? 'rgba(60, 61, 61, 1)' : 'rgba(175, 176, 177, 1)')};
+`;
+
+const StyledTr = styled.tr`
+  height: 60px;
+  &:hover {
+    background-color: ${({ $isDisabled }) => ($isDisabled ? '#f0f0f0' : '#ddd')};
+  }
+`;
+
+function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll }) {
+  const [switchStates, setSwitchStates] = useState(
+    data.reduce((acc, item) => {
+      acc[item.id] = false;
+      return acc;
+    }, {})
+  );
+
+  const handleToggle = (id, isOn) => {
+    setSwitchStates((prevStates) => ({
+      ...prevStates,
+      [id]: isOn
+    }));
+  };
+
+  return (
+    <StyledTable>
+      <thead>
+        <tr>
+          <StyledTh>
+            <input
+              type="checkbox"
+              onChange={onSelectAll}
+              checked={selectedRows.length === data.length}
+            />
+          </StyledTh>
+          <StyledTh>S.N</StyledTh>
+          <StyledTh>Category Name</StyledTh>
+          <StyledTh>Created On</StyledTh>
+          <StyledTh>Spotlight</StyledTh>
+          <StyledTh colSpan={2}>Actions</StyledTh>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item, index) => (
+          <StyledTr key={item.id} $isDisabled={switchStates[item.id]}>
+            <StyledTd $isDisabled={switchStates[item.id]}>
+              <input
+                type="checkbox"
+                checked={selectedRows.includes(item.id)}
+                onChange={() => onCheckboxChange(item.id)}
+              />
+            </StyledTd>
+            <StyledTd $isDisabled={switchStates[item.id]}>{index + 1}</StyledTd>
+            <StyledTd $isDisabled={switchStates[item.id]}>{item.category}</StyledTd>
+            <StyledTd $isDisabled={switchStates[item.id]}>{item.createdAt}</StyledTd>
+            <StyledTd $isDisabled={switchStates[item.id]}>{item.isPopularCategory ? "Popular Category" : "N/A"}</StyledTd>
+            <StyledTd $isDisabled={switchStates[item.id]}>Edit</StyledTd>
+            <StyledTd $isDisabled={switchStates[item.id]}>
+              <Switch
+                isOn={switchStates[item.id]}
+                onToggle={(isOn) => handleToggle(item.id, isOn)}
+              />
+            </StyledTd>
+          </StyledTr>
+        ))}
+      </tbody>
+    </StyledTable>
+  );
+}
+
+export default TableBody;
