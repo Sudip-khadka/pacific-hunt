@@ -47,16 +47,15 @@ const CategoryPopup = ({ open, onClose, onSubmit, title }) => {
   const [error, setError] = useState('');
 
   const mutation = useMutation({
-    mutationFn: (newCategory) => apiClient.post('category','category', newCategory),
+    mutationFn: (newCategory) => apiClient.post('category', newCategory),
     onSuccess: () => {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
+        onClose();
         setFormData({ categoryName: '', isPopular: false });
-      onSubmit(); // Callback to refetch data
-      onClose();
+        onSubmit(); // Callback to refetch data
       }, 3000); // Alert will be shown for 3 seconds
-      
     },
     onError: (error) => {
       console.error('Error posting category:', error);

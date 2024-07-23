@@ -1,40 +1,88 @@
 const apiConfig = {
-  category: "https://retoolapi.dev/fLNOtX",
-  profession: "https://retoolapi.dev/ewEY3Q",
-};
-
-const getApiUrl = (resource) => {
-  const baseUrl = apiConfig[resource];
-  if (!baseUrl) {
-      throw new Error(`Resource type ${resource} is not supported`);
-  }
-  return baseUrl;
-};
-
-const apiClient = {
-  get: async (resource, endpoint) => {
-      const url = `${getApiUrl(resource)}/${endpoint}`;
-      const response = await fetch(url);
-      if (!response.ok) {
-          throw new Error(`Failed to fetch data from ${url}`);
+    category: "https://retoolapi.dev/fLNOtX/category",
+    profession: "https://retoolapi.dev/ewEY3Q/profession",
+  };
+  
+  const apiClient = {
+    getAll: async (resource) => {
+      if (!apiConfig[resource]) {
+        throw new Error(`Unknown resource: ${resource}`);
       }
-      return await response.json();
-  },
-  post: async (resource, endpoint, data) => {
-      const url = `${getApiUrl(resource)}/${endpoint}`;
-      const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
+      const response = await fetch(apiConfig[resource]);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${resource}s`);
+      }
+      return response.json();
+    },
+  
+    getOne: async (resource, id) => {
+      if (!apiConfig[resource]) {
+        throw new Error(`Unknown resource: ${resource}`);
+      }
+      const response = await fetch(`${apiConfig[resource]}/${id}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${resource} with id ${id}`);
+      }
+      return response.json();
+    },
+
+    get: async (resource) => {
+        if (!apiConfig[resource]) {
+          throw new Error(`Unknown resource: ${resource}`);
+        }
+        const url = apiConfig[resource];
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch ${resource}`);
+        }
+        return response.json();
+      },
+    post: async (resource, data) => {
+      if (!apiConfig[resource]) {
+        throw new Error(`Unknown resource: ${resource}`);
+      }
+      const response = await fetch(apiConfig[resource], {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
       if (!response.ok) {
-          throw new Error(`Failed to post data to ${url}`);
+        throw new Error(`Failed to create ${resource}`);
       }
-      return await response.json();
-  },
-  // Add other HTTP methods (PUT, DELETE, etc.) if needed
-};
-
-export default apiClient;
+      return response.json();
+    },
+  
+    update: async (resource, id, data) => {
+      if (!apiConfig[resource]) {
+        throw new Error(`Unknown resource: ${resource}`);
+      }
+      const response = await fetch(`${apiConfig[resource]}/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to update ${resource} with id ${id}`);
+      }
+      return response.json();
+    },
+  
+    delete: async (resource, id) => {
+      if (!apiConfig[resource]) {
+        throw new Error(`Unknown resource: ${resource}`);
+      }
+      const response = await fetch(`${apiConfig[resource]}/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to delete ${resource} with id ${id}`);
+      }
+      return response.json();
+    },
+  };
+  
+  export default apiClient;

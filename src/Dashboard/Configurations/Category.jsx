@@ -58,20 +58,18 @@ function Category() {
 
   const { data: categories = [], isLoading, isError } = useQuery({
     queryKey: ['categories'],
-    queryFn: () => apiClient.get('category', 'category'),
-    // Add a refetch interval if you want auto-refreshing
-    // refetchInterval: 60000,
+    queryFn: () => apiClient.get('category'),
   });
-
+  
   const createCategoryMutation = useMutation({
     mutationFn: (newCategory) => apiClient.post('category', newCategory),
     onSuccess: () => {
       queryClient.invalidateQueries(['categories']);
     },
   });
-
+  
   const deleteCategoryMutation = useMutation({
-    mutationFn: (id) => apiClient.delete(`category/${id}`),
+    mutationFn: (id) => apiClient.delete('category',id),
     onSuccess: () => {
       queryClient.invalidateQueries(['categories']);
     },
@@ -85,9 +83,16 @@ function Category() {
     setIsPopupOpen(false);
   };
 
-  const handleSubmit = (formData) => {
-    createCategoryMutation.mutate(formData);
-    setIsPopupOpen(false);
+  const handleSubmit = (formData, e) => {
+    e.preventDefault();
+    createCategoryMutation.mutate(formData, {
+      onSuccess: () => {
+        setIsPopupOpen(false);
+      },
+      onError: (error) => {
+        console.error("Error creating category:", error);
+      }
+    });
   };
 
   const handleDeleteSelected = (e) => {
@@ -95,10 +100,33 @@ function Category() {
     setShowConfirmation(true);
   };
 
-  const confirmDeletion = () => {
-    selectedRows.forEach((id) => deleteCategoryMutation.mutate(id));
-    setSelectedRows([]);
-    setShowConfirmation(false);
+  const confirmDeletion = async () => {
+    console.log("confirmDeletion clicked");
+    console.log("Selected rows for deletion:", selectedRows);
+
+    try {
+      for (let id of selectedRows) {
+        await new Promise((resolve, reject) => {
+          deleteCategoryMutation.mutate(id, {
+            onSuccess: () => {
+              console.log(`Deleted category with id: ${id}`);
+              resolve();
+            },
+            onError: (error) => {
+              console.error(`Error deleting category with id: ${id}`, error);
+              reject(error);
+            },
+          });
+        });
+      }
+      // Clear selected rows after deletion
+      setSelectedRows([]);
+      // Close confirmation dialog
+      setShowConfirmation(false);
+      console.log("All selected categories deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting categories:", error);
+    }
   };
 
   const cancelDeletion = () => {
@@ -154,15 +182,14 @@ function Category() {
           />
         )}
       </CategoryBody>
-      {showConfirmation && (
-        <ConfirmationDialog
-          open={showConfirmation}
-          onConfirm={confirmDeletion}
-          onCancel={cancelDeletion}
-          title="Confirm Deletion"
-          message="Are you sure you want to delete the selected categories?"
-        />
-      )}
+
+      <ConfirmationDialog
+        open={showConfirmation}
+        onConfirm={confirmDeletion}
+        onCancel={cancelDeletion}
+        title="Confirm Deletion"
+        message="Are you sure you want to delete the selected categories?"
+      />
     </CategoryContainer>
   );
 }

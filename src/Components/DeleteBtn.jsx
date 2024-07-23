@@ -23,9 +23,9 @@ const StyledButton = styled.button`
   }
 `;
 
-function DeleteBtn() {
+function DeleteBtn({onClick}) {
   return (
-    <StyledButton>
+    <StyledButton onClick={onClick}>
       <FaTrash />Delete
     </StyledButton>
   );
