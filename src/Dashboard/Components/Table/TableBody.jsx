@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Switch from '../Switch';
+import UpdateCategory from '../PopUps/UpdateCategory';
 
 const StyledTable = styled.table`
   width: 100%;
@@ -42,7 +43,7 @@ const StyledTr = styled.tr`
   }
 `;
 
-function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitchToggle }) {
+function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitchToggle,refetchData  }) {
   // Initialize switch states based on the isActiveCategory property
   const [switchStates, setSwitchStates] = useState({});
   useEffect(() => {
@@ -57,6 +58,9 @@ function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitch
     }
   }, [data]); // Re-run this effect when `data` changes
 
+  const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
   const handleToggle = (id, isOn) => {
     setSwitchStates((prevStates) => ({
       ...prevStates,
@@ -64,8 +68,24 @@ function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitch
     }));
     if (onSwitchToggle) onSwitchToggle(id, isOn); // Notify parent about the switch change
   };
+  const handleEditClick = (category) => {
+    setSelectedCategory(category);
+    setOpenUpdateDialog(true);
+  };
+
+  const handleUpdateDialogClose = () => {
+    setOpenUpdateDialog(false);
+    setSelectedCategory(null);
+  };
+
+  const handleCategoryUpdate = () => {
+    // Refetch data after the category is updated
+    refetchData();
+    handleUpdateDialogClose();
+  };
 
   return (
+    <>
     <StyledTable>
       <thead>
         <tr>
@@ -99,7 +119,7 @@ function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitch
             <StyledTd $isDisabled={!switchStates[item.id]}>
               {item.isPopularCategory ? "Popular Category" : "N/A"}
             </StyledTd>
-            <StyledTd $isDisabled={!switchStates[item.id]}>Edit</StyledTd>
+            <StyledTd $isDisabled={!switchStates[item.id]} onClick={()=>handleEditClick(item)}>Edit</StyledTd>
             <StyledTd $isDisabled={!switchStates[item.id]}>
               <Switch
                 isOn={switchStates[item.id]}
@@ -110,6 +130,15 @@ function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitch
         ))}
       </tbody>
     </StyledTable>
+    {selectedCategory && (
+        <UpdateCategory
+          open={openUpdateDialog}
+          onClose={handleUpdateDialogClose}
+          onSubmit={handleCategoryUpdate}
+          category={selectedCategory}
+        />
+      )}
+    </>
   );
 }
 

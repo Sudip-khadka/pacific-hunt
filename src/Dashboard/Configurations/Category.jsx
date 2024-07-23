@@ -206,6 +206,7 @@ setIsDeleting(true);
             selectedRows={selectedRows}
             onCheckboxChange={handleCheckboxChange}
             onSelectAll={handleSelectAll}
+            refetchData={() => queryClient.invalidateQueries(['categories'])} // Pass refetch function
           />
         )}
       </CategoryBody>
