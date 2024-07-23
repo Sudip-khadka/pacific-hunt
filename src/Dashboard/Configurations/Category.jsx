@@ -50,6 +50,7 @@ const CategoryBody = styled.div`
 `;
 
 function Category() {
+  const [isDeleting,setIsDeleting] = useState(false)
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -103,7 +104,7 @@ function Category() {
   const confirmDeletion = async () => {
     console.log("confirmDeletion clicked");
     console.log("Selected rows for deletion:", selectedRows);
-
+setIsDeleting(true);
     try {
       for (let id of selectedRows) {
         await new Promise((resolve, reject) => {
@@ -188,7 +189,7 @@ function Category() {
         onConfirm={confirmDeletion}
         onCancel={cancelDeletion}
         title="Confirm Deletion"
-        message="Are you sure you want to delete the selected categories?"
+        message={isDeleting ? "Please Wait your Rows Are Being Deleted...":"Are you sure you want to delete the selected categories?"}
       />
     </CategoryContainer>
   );

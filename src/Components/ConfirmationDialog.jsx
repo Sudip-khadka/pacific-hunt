@@ -23,7 +23,10 @@ function ConfirmationDialog({ open, onConfirm, onCancel, title, message }) {
           <Button onClick={() => { console.log("Cancel button clicked"); onCancel(); }} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => { console.log("Confirm button clicked"); onConfirm(); }} color="primary">
+          <Button
+            onClick={() => { console.log("Confirm button clicked"); onConfirm(); }}
+            sx={{ backgroundColor: 'red', color: 'white', '&:hover': { backgroundColor: 'darkred' } }}
+          >
             Confirm
           </Button>
         </DialogActions>
