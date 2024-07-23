@@ -1,5 +1,5 @@
 const apiConfig = {
-    category: "https://retoolapi.dev/fLNOtX/category",
+    category: "https://retoolapi.dev/Pgomdn/category",
     profession: "https://retoolapi.dev/ewEY3Q/profession",
   };
   

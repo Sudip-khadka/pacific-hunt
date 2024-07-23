@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Switch from '../Switch';
 
@@ -32,7 +32,7 @@ const StyledTd = styled.td`
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
-  color: ${({ $isDisabled }) => ($isDisabled ? 'rgba(60, 61, 61, 1)' : 'rgba(175, 176, 177, 1)')};
+  color: ${({ $isDisabled }) => ($isDisabled ? 'rgba(175, 176, 177, 1)' : 'rgba(60, 61, 61, 1)')};
 `;
 
 const StyledTr = styled.tr`
@@ -42,19 +42,27 @@ const StyledTr = styled.tr`
   }
 `;
 
-function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll }) {
-  const [switchStates, setSwitchStates] = useState(
-    data.reduce((acc, item) => {
-      acc[item.id] = false;
-      return acc;
-    }, {})
-  );
+function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitchToggle }) {
+  // Initialize switch states based on the isActiveCategory property
+  const [switchStates, setSwitchStates] = useState({});
+  useEffect(() => {
+    // Initialize switch states based on the data
+    if (data) {
+      setSwitchStates(
+        data.reduce((acc, item) => {
+          acc[item.id] = item.isActiveCategory;
+          return acc;
+        }, {})
+      );
+    }
+  }, [data]); // Re-run this effect when `data` changes
 
   const handleToggle = (id, isOn) => {
     setSwitchStates((prevStates) => ({
       ...prevStates,
       [id]: isOn
     }));
+    if (onSwitchToggle) onSwitchToggle(id, isOn); // Notify parent about the switch change
   };
 
   return (
@@ -77,20 +85,22 @@ function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll }) {
       </thead>
       <tbody>
         {data.map((item, index) => (
-          <StyledTr key={item.id} $isDisabled={switchStates[item.id]}>
-            <StyledTd $isDisabled={switchStates[item.id]}>
+          <StyledTr key={item.id} $isDisabled={!switchStates[item.id]}>
+            <StyledTd $isDisabled={!switchStates[item.id]}>
               <input
                 type="checkbox"
                 checked={selectedRows.includes(item.id)}
                 onChange={() => onCheckboxChange(item.id)}
               />
             </StyledTd>
-            <StyledTd $isDisabled={switchStates[item.id]}>{index + 1}</StyledTd>
-            <StyledTd $isDisabled={switchStates[item.id]}>{item.category}</StyledTd>
-            <StyledTd $isDisabled={switchStates[item.id]}>{item.createdAt}</StyledTd>
-            <StyledTd $isDisabled={switchStates[item.id]}>{item.isPopularCategory ? "Popular Category" : "N/A"}</StyledTd>
-            <StyledTd $isDisabled={switchStates[item.id]}>Edit</StyledTd>
-            <StyledTd $isDisabled={switchStates[item.id]}>
+            <StyledTd $isDisabled={!switchStates[item.id]}>{index + 1}</StyledTd>
+            <StyledTd $isDisabled={!switchStates[item.id]}>{item.category}</StyledTd>
+            <StyledTd $isDisabled={!switchStates[item.id]}>{item.createdAt}</StyledTd>
+            <StyledTd $isDisabled={!switchStates[item.id]}>
+              {item.isPopularCategory ? "Popular Category" : "N/A"}
+            </StyledTd>
+            <StyledTd $isDisabled={!switchStates[item.id]}>Edit</StyledTd>
+            <StyledTd $isDisabled={!switchStates[item.id]}>
               <Switch
                 isOn={switchStates[item.id]}
                 onToggle={(isOn) => handleToggle(item.id, isOn)}

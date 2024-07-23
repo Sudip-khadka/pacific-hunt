@@ -91,6 +91,7 @@ const CategoryPopup = ({ open, onClose, onSubmit, title }) => {
       category: formData.categoryName,
       isPopularCategory: formData.isPopular,
       createdAt: currentDate,
+      isActiveCategory:true,
     };
 
     mutation.mutate(newCategory);

@@ -17,7 +17,7 @@ const StyledButton = styled.button`
   background: var(--Primary-500, #01a3e0);
 `;
 
-function Button({ width, title, onClick, iconType }) {
+function Button({ width, title, onClick, iconType, filePath }) {
   let icon;
   
   switch (iconType) {
@@ -37,7 +37,12 @@ function Button({ width, title, onClick, iconType }) {
       icon = null;
   }
   
-  return (
+  return filePath ? (
+    <StyledButton as="a" href={filePath} download width={width}>
+      {icon && icon}
+      {title}
+    </StyledButton>
+  ) : (
     <StyledButton width={width} onClick={onClick}>
       {icon && icon}
       {title}

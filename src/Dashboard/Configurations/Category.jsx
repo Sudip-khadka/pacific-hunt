@@ -9,6 +9,9 @@ import DeleteBtn from '../../Components/DeleteBtn';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../../Api';
 import ConfirmationDialog from '../../Components/ConfirmationDialog';
+import ImportFile from '../Components/ImportFile';
+
+
 
 const CategoryContainer = styled.div`
   width: 100%;
@@ -54,6 +57,22 @@ function Category() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const CategorySampleFile ='/SampleFiles/CategorySample.csv'
+
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleUpload = (data) => {
+    console.log('Uploaded data:', data);
+    // Handle the uploaded data here
+  };
+
 
   const queryClient = useQueryClient();
 
@@ -158,12 +177,19 @@ setIsDeleting(true);
           {selectedRows.length > 0 && (
             <DeleteBtn onClick={handleDeleteSelected} />
           )}
-          <Buttons width="257px" title="Download .xlsx Sample" type="download" iconType="download" />
-          <Buttons title="Import .xlsx File" type="upload" iconType="upload" />
+          <Buttons width="257px" title="Download .xlsx Sample" type="download" iconType="download" filePath={CategorySampleFile}/>
+          <Buttons title="Import .xlsx File" type="upload" iconType="upload" onClick={handleOpenDialog}/>
           <Buttons width="221px" title="Create Categories" type="create" onClick={handleCreateClick} iconType="create" />
         </OtherButtons>
       </CategoryHeader>
       <CategoryBody>
+      <ImportFile
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        onUpload={handleUpload}
+        fileType="csv"
+        section="category"
+      />
         <CategoryPopup
           open={isPopupOpen}
           onClose={handleClosePopup}
