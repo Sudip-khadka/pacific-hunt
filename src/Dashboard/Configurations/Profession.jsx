@@ -5,6 +5,7 @@ import Buttons from '../Components/Buttons';
 import NoData from '../Components/NoData';
 import Table from '../Components/Table/Table';
 import ProfessionPopup from '../Components/PopUps/ProfessionPopup';
+import ProfessionTable from '../Components/Tables/ProfessionTable';
 
 const ProfessionContainer = styled.div`
   width: 100%;
@@ -89,7 +90,7 @@ function Profession() {
           fields={getFields()}
         />
         {data.length <= 0 && <NoData />}
-        {data.length > 0 && <Table />}
+        {data.length > 0 && <ProfessionTable />}
       </ProfessionBody>
     </ProfessionContainer>
   );

@@ -42,8 +42,14 @@ const StyledTr = styled.tr`
     background-color: ${({ $isDisabled }) => ($isDisabled ? '#f0f0f0' : '#ddd')};
   }
 `;
+const PopularCategoryDiv = styled.div`
+  padding: 12px 16px;
+  border-radius: 30px;
+  background: ${({ $isDisabled }) => ($isDisabled ? 'rgba(230, 231, 231, 1)' : '#CEFDE3')};
+  color: ${({ $isDisabled }) => ($isDisabled ? '#A0A0A0' : '#03BE7A')};
+`;
 
-function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitchToggle,refetchData  }) {
+function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitchToggle,refetchData ,currentPage, rowsPerPage  }) {
   // Initialize switch states based on the isActiveCategory property
   const [switchStates, setSwitchStates] = useState({});
   useEffect(() => {
@@ -113,11 +119,15 @@ function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitch
                 onChange={() => onCheckboxChange(item.id)}
               />
             </StyledTd>
-            <StyledTd $isDisabled={!switchStates[item.id]}>{index + 1}</StyledTd>
+            <StyledTd $isDisabled={!switchStates[item.id]}>{index + 1 + (currentPage - 1) * rowsPerPage}</StyledTd>
             <StyledTd $isDisabled={!switchStates[item.id]}>{item.category}</StyledTd>
             <StyledTd $isDisabled={!switchStates[item.id]}>{item.createdAt}</StyledTd>
             <StyledTd $isDisabled={!switchStates[item.id]}>
-              {item.isPopularCategory ? "Popular Category" : "N/A"}
+            {item.isPopularCategory ? (
+                  <PopularCategoryDiv $isDisabled={!switchStates[item.id]}>
+                    Popular Category
+                  </PopularCategoryDiv>
+                ) : <p className='pl-[16px]'>N/A</p>}
             </StyledTd>
             <StyledTd $isDisabled={!switchStates[item.id]} onClick={()=>handleEditClick(item)}>Edit</StyledTd>
             <StyledTd $isDisabled={!switchStates[item.id]}>

@@ -1,4 +1,3 @@
-// TableHeader.js
 import React from 'react';
 import styled from 'styled-components';
 import { FaSearch, FaCalendarAlt } from 'react-icons/fa';
@@ -110,74 +109,29 @@ font-weight: 400;
 line-height: 20px; /* 142.857% */
 `
 
-function TableHeader({ rowsPerPage, onRowsPerPageChange, onSearch, onDateFilter,onSort,onSpotlight }) {
-  const [startDate, setStartDate] = React.useState(null);
-  const [endDate, setEndDate] = React.useState(null);
-
-  const handleDateChange = (dates) => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-    onDateFilter(start, end);
-  };
-
-  const handleSearchChange = (event) => {
-    onSearch(event.target.value);
-  };
-
-  const handleSortChange = (event) => {
-    onSort(event.target.value);
-  };
-  const handleSpotlightChange = (event)=>{
-    onSpotlight(event.target.value)
-  }
-
+function ProfessionTableHeader({ rowsPerPage, onRowsPerPageChange, onSearch, onDateFilter, onSort, onSpotlight, spotlightOptions, sortOptions }) {
+  
   return (
     <HeaderContainer>
-      <div>
-        <span>Show </span>
-        <RowsPerPageSelect value={rowsPerPage} onChange={onRowsPerPageChange}>
-          <option value={10}>10</option>
-          <option value={25}>25</option>
-          <option value={50}>50</option>
-        </RowsPerPageSelect>
-        <span> rows per page</span>
-      </div>
-      <div className='flex gap-2 '>
-      <SearchContainer>
-        <FaSearch />
-        <SearchInput type="text" placeholder="Search..." onChange={handleSearchChange} />
-      </SearchContainer>
-      <DateFilterContainer>
-        <StyledDatePicker
-          selected={startDate}
-          onChange={handleDateChange}
-          startDate={startDate}
-          endDate={endDate}
-          selectsRange
-          dateFormat="MM/dd/yyyy"
-          placeholderText="12 Jan, 2021 to 18 Feb, 2022 "
-        />
-        <CalendarIcon size={20} />
-      </DateFilterContainer>
-      <SpotLightContainer>
-
-      <SpotLight onChange={handleSpotlightChange}>
-      <option value="">Spotlight</option>
-      <option value="popularCategory">Popular Categories</option>
-      </SpotLight>
-      </SpotLightContainer>
+      {/* Render header elements */}
+      {spotlightOptions && (
+        <SpotLight onChange={handleSpotlightChange}>
+          <option value="">Spotlight</option>
+          {spotlightOptions.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
+        </SpotLight>
+      )}
       <SortContainer>
         <SortLabel>Sort By:</SortLabel>
         <SortSelect onChange={handleSortChange}>
-          <option value="">Select</option>
-          <option value="asc">A-Z</option>
-          <option value="desc">Z-A</option>
+          {sortOptions.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
         </SortSelect>
       </SortContainer>
-      </div>
     </HeaderContainer>
   );
 }
 
-export default TableHeader;
+export default ProfessionTableHeader;

@@ -1,6 +1,6 @@
 const apiConfig = {
     category: "https://retoolapi.dev/Pgomdn/category",
-    profession: "https://retoolapi.dev/ewEY3Q/profession",
+    profession: "https://retoolapi.dev/blNZdv/profession",
   };
   
   const apiClient = {
