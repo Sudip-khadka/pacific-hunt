@@ -3,6 +3,9 @@ import { Dialog, DialogTitle, DialogContent, TextField, Button } from '@mui/mate
 import styled from 'styled-components';
 import Buttons from '../Buttons';
 import Alert from '../Alert';
+import { useMutation } from '@tanstack/react-query';
+import apiClient from '../../../Api';
+
 
 const StyledDialog = styled(Dialog)`
   & .MuiDialog-paper {
@@ -22,7 +25,25 @@ const ProfessionPopup = ({ open, onClose, onSubmit, title }) => {
   const [showAlert,setShowAlert] = useState(false);
   const [error,setError] = useState('')
   const [formData, setFormData] = useState({
-    professionName: ''
+    professionName: '',
+    isPopular: false,
+  });
+
+  const mutation = useMutation({
+    mutationFn: (newProfession) => apiClient.post('profession', newProfession),
+    onSuccess: () => {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        onClose();
+        setFormData({ professionName: '', });
+        onSubmit(); // Callback to refetch data
+      }, 3000); // Alert will be shown for 3 seconds
+    },
+    onError: (error) => {
+      console.error('Error posting category:', error);
+      setError('Failed to create category. Please try again.');
+    }
   });
 
   const handleInputChange = (e) => {
@@ -36,24 +57,25 @@ const ProfessionPopup = ({ open, onClose, onSubmit, title }) => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if(formData.professionName.trim()=== ''){
       setError('Profession cannot be empty');
       return;
     }
 
-    setShowAlert(true);
-    setTimeout(()=>{
+    const currentDate = new Date().toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
 
-      onSubmit(formData);
-      setFormData({
-        professionName: '',
-      });
-      setShowAlert(false);
-      onClose();
-    },2000)
+    const newProfession = {
+      profession: formData.professionName,
+      createdAt: currentDate,
+      isActiveProfession:true,
+    };
 
+    mutation.mutate(newProfession);
   };
 
   return (

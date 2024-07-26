@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress } from '@mui/material';
 import { FaFileCsv } from 'react-icons/fa';
 import { MdCloudUpload } from 'react-icons/md';
 import Papa from 'papaparse';
 import transformations from './dataTransformations'; // Adjust the path as needed
-import { v4 as uuidv4 } from 'uuid';
+import { useQueryClient } from '@tanstack/react-query';
 import apiClient from '../../Api';
+import Alert from './Alert';
 
 // Styled Components
 const DragAndDropArea = styled.div`
@@ -43,10 +44,11 @@ const FileInput = styled.input`
   display: none;
 `;
 
-// ImportFileDialog Component
 function ImportFile({ open, onClose, fileType = 'csv', section }) {
   const [file, setFile] = useState(null);
   const [data, setData] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [showAlert, setShowAlert] = useState({ show: false, message: '', type: '' });
 
   const getFileIconAndMessage = () => {
     switch (fileType) {
@@ -92,28 +94,28 @@ function ImportFile({ open, onClose, fileType = 'csv', section }) {
             setData(transformedData);
             postDataToAPI(transformedData);
           } else {
-            alert('CSV file does not have the required headers.');
+            setShowAlert({ show: true, message: 'CSV file does not have the required headers.', type: 'error' });
           }
         },
       });
     } else {
-      alert('Please upload a valid CSV file.');
+      setShowAlert({ show: true, message: 'Please upload a valid CSV file.', type: 'error' });
     }
   };
-  
 
   const validateHeaders = (headers) => {
     const headerMapping = {
       category: ['Category Name', 'Created On', 'Is Popular', 'Is Active'],
-      profession: ['Profession Name', 'Start Date', 'Is In Demand', 'Is Active'],
-      // Add more sections if needed
+      profession: ['Profession Name', 'Created On', 'Is Active'],
+      companyType: ['Company Type', 'Created On', 'Is Active'],
     };
-
     const requiredHeaders = headerMapping[section];
     return requiredHeaders.every(header => headers.includes(header));
   };
 
+  const queryClient = useQueryClient();
   const postDataToAPI = async (data) => {
+    setUploading(true);
     try {
       for (const item of data) {
         const itemWithId = {
@@ -124,17 +126,30 @@ function ImportFile({ open, onClose, fileType = 'csv', section }) {
           console.log('Data successfully uploaded:', result);
         } catch (innerError) {
           console.error('Error uploading item:', itemWithId, innerError);
-          alert(`Failed to upload item: ${JSON.stringify(itemWithId)}`);
+          setShowAlert({ show: true, message: `Failed to upload item: ${JSON.stringify(itemWithId)}`, type: 'error' });
         }
       }
-      alert('All data successfully uploaded');
-      if (onClose) onClose();
+      queryClient.invalidateQueries([section]);
+      setShowAlert({ show: true, message: 'Successfully uploaded all data.', type: 'success' });
+      setUploading(false);
+      setFile(null);
+      setData([]);
     } catch (error) {
       console.error('Error uploading data:', error);
-      alert('Failed to upload data');
+      setShowAlert({ show: true, message: 'Failed to upload data.', type: 'error' });
+      setUploading(false);
     }
   };
-  
+
+  useEffect(() => {
+    if (showAlert.show && showAlert.type === 'success') {
+      const timer = setTimeout(() => {
+        setShowAlert({ show: false, message: '', type: '' });
+        onClose();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert, onClose]);
 
   const { icon, message } = getFileIconAndMessage();
 
@@ -147,6 +162,7 @@ function ImportFile({ open, onClose, fileType = 'csv', section }) {
         <DragAndDropArea
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
+          style={{ opacity: uploading ? 0.5 : 1 }}
         >
           {icon}
           <Message>{message}</Message>
@@ -155,14 +171,21 @@ function ImportFile({ open, onClose, fileType = 'csv', section }) {
             accept={fileType === 'csv' ? '.csv' : '*/*'}
             onChange={handleChange}
             id="fileInput"
+            disabled={uploading}
           />
           <label htmlFor="fileInput" style={{ cursor: 'pointer', color: '#01A3E0' }}>
             Choose File
           </label>
         </DragAndDropArea>
+        {uploading && (
+          <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
+            <CircularProgress />
+          </div>
+        )}
+        {showAlert.show && <Alert message={showAlert.message} type={showAlert.type} />}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={onClose} color="primary" disabled={uploading}>
           Close
         </Button>
       </DialogActions>

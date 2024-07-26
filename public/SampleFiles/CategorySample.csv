@@ -1,7 +1,7 @@
 Category Name,Created On,Is Popular,Is Active
-Designing,21-Jul-24,TRUE,TRUE
-Networking,18-Jun-24,TRUE,FALSE
-Hotel & Management,23-Jul-24,TRUE,TRUE
-Journalism,24-Jul-24,TRUE,FALSE
-Tourism,25-Jul-24,TRUE,TRUE
-Health & Medicine,26-Jul-24,TRUE,TRUE
+Designing,21-Jul-24,Yes,Yes
+Networking,18-Jun-24,Yes,No
+Hotel & Management,23-Jul-24,Yes,Yes
+Journalism,24-Jul-24,Yes,No
+Tourism,25-Jul-24,Yes,Yes
+Health & Medicine,26-Jul-24,Yes,Yes

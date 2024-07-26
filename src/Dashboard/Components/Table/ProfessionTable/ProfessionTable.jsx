@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import TableBody from "./TableBody";
-import TableHeader from "./TableHeader";
-import Pagination from "./Pagination";
+import ProfessionTableBody from "./ProfessionTableBody";
+import ProfessionTableHeader from "./ProfessionTableHeader";
+import Pagination from "../Pagination";
 
-function Table({
+function ProfessionTable({
   data,
   selectedRows,
   onCheckboxChange,
@@ -20,34 +20,32 @@ function Table({
   const [spotlight, setSpotlight] = useState('');
   
   useEffect(() => {
+    console.log("data received is ",data);
     const lowercasedQuery = searchQuery.toLowerCase();
     const filtered = data.filter(item => {
       const itemDate = new Date(item.createdAt);
       const isWithinDateRange = (!startDate || itemDate >= startDate) &&
                                 (!endDate || itemDate <= endDate);
-      const matchesSpotlight = spotlight === '' || 
-                               (spotlight === 'popularCategory' && item.isPopularCategory);
-
-      return (item.category.toLowerCase().includes(lowercasedQuery) ||
+      
+      return (item.profession.toLowerCase().includes(lowercasedQuery) ||
               item.createdAt.toLowerCase().includes(lowercasedQuery)) &&
-              isWithinDateRange &&
-              matchesSpotlight;
+              isWithinDateRange ;
     });
 
     // Apply sorting if a sort order is set
     if (sortOrder) {
       filtered.sort((a, b) => {
         if (sortOrder === 'asc') {
-          return a.category.localeCompare(b.category);
+          return a.profession.localeCompare(b.profession);
         } else {
-          return b.category.localeCompare(a.category);
+          return b.profession.localeCompare(a.profession);
         }
       });
     }
 
     setFilteredData(filtered);
     setCurrentPage(1); // Reset to the first page on search or filter change
-  }, [searchQuery, startDate, endDate, data, sortOrder, spotlight]);
+  }, [searchQuery, startDate, endDate, data, sortOrder]);
 
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(Number(event.target.value));
@@ -69,20 +67,22 @@ function Table({
   };
   const handleSpotlight =  (value) => setSpotlight(value);
 
+  
+  const handleSelectAll = (currentPageRows) => {
+    onSelectAll(currentPageRows);
+  };
+
+
   // Calculate the data to be displayed for the current page
   const startIndex = (currentPage - 1) * rowsPerPage;
   const paginatedData = filteredData.slice(
     startIndex,
     startIndex + rowsPerPage
   );
-  const handleSelectAll = (currentPageRows) => {
-    onSelectAll(currentPageRows);
-  };
-
 
   return (
     <div className="w-full p-[20px]">
-      <TableHeader
+      <ProfessionTableHeader
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleRowsPerPageChange}
         onSearch={handleSearch}
@@ -90,7 +90,7 @@ function Table({
         onSort={handleSort}
         onSpotlight={handleSpotlight}
       />
-      <TableBody
+      <ProfessionTableBody
         data={paginatedData}
         selectedRows={selectedRows}
         onCheckboxChange={onCheckboxChange}
@@ -108,4 +108,4 @@ function Table({
   );
 }
 
-export default Table;
+export default ProfessionTable;

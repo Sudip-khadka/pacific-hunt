@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, Button } from '@mui/material';
 import styled from 'styled-components';
 import Buttons from '../Buttons';
@@ -18,27 +18,38 @@ const PopupHeader = styled.div`
   align-items: center;
 `;
 
-const CompanyTypePopup = ({ open, onClose, onSubmit, title }) => {
+const UpdateCompanyType = ({ open, onClose, onSubmit, title,companyType }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [formData, setFormData] = useState({
-    companyTypeName: '',
+    companyType: '',
   });
+
+
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    if (companyType) {
+      // Initialize form data with category details
+      setFormData({
+        companyType: companyType.companyType || '',
+      });
+    }
+  }, [companyType]);
+
   const mutation = useMutation({
-    mutationFn: (newCompanyType) => apiClient.post('companyType', newCompanyType),
+    mutationFn: (newCompanyType) => apiClient.update('companyType',newCompanyType.id, newCompanyType),
     onSuccess: () => {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
         onClose();
-        setFormData({ companyTypeName: '', });
+        setFormData({ companyType: '', });
         onSubmit(); // Callback to refetch data
       }, 3000); // Alert will be shown for 3 seconds
     },
     onError: (error) => {
-      console.error('Error posting category:', error);
-      setError('Failed to create category. Please try again.');
+      console.error('Error updating company Type:', error);
+      setError('Failed to Update CompanyTupe. Please try again.');
     }
   });
 
@@ -54,7 +65,7 @@ const CompanyTypePopup = ({ open, onClose, onSubmit, title }) => {
   };
 
   const handleSubmit = () => {
-    if(formData.companyTypeName.trim()=== ''){
+    if(formData.companyType.trim()=== ''){
       setError('Profession cannot be empty');
       return;
     }
@@ -65,13 +76,14 @@ const CompanyTypePopup = ({ open, onClose, onSubmit, title }) => {
       year: 'numeric',
     });
 
-    const newProfession = {
-      companyType: formData.companyTypeName,
+    const newCompanyType = {
+        id:companyType.id,
+      companyType: formData.companyType,
       createdAt: currentDate,
       isActiveCompany:true,
     };
 
-    mutation.mutate(newProfession);
+    mutation.mutate(newCompanyType);
   };
 
 
@@ -99,11 +111,11 @@ const CompanyTypePopup = ({ open, onClose, onSubmit, title }) => {
       </PopupHeader>
       <DialogContent>
         <TextField
-          name="companyTypeName"
+          name="companyType"
           label="Company Name"
           fullWidth
           margin="normal"
-          value={formData.companyTypeName}
+          value={formData.companyType}
           onChange={handleInputChange}
           error={!!error}
           helperText={error}
@@ -117,4 +129,4 @@ const CompanyTypePopup = ({ open, onClose, onSubmit, title }) => {
   );
 };
 
-export default CompanyTypePopup;
+export default UpdateCompanyType;

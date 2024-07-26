@@ -3,8 +3,13 @@ import styled from 'styled-components';
 import BackButton from '../Components/BackButton';
 import Buttons from '../Components/Buttons';
 import NoData from '../Components/NoData';
-import Table from '../Components/Table/Table';
 import CompanyPopup from '../Components/PopUps/CompanyTypePopup';
+import DeleteBtn from '../../Components/DeleteBtn';
+import { useQuery, useMutation, useQueryClient, QueryClient } from '@tanstack/react-query';
+import apiClient from '../../Api';
+import ConfirmationDialog from '../../Components/ConfirmationDialog';
+import ImportFile from '../Components/ImportFile';
+import CompanyTypeTable from '../Components/Table/CompanyTypeTable/CompanyTypeTable';
 
 const CompanyContainer = styled.div`
   width: 100%;
@@ -37,7 +42,7 @@ const OtherButtons = styled.div`
 const CompanyBody = styled.div`
   display: flex;
   width: 100%;
-  padding: 235px 0px 379px 0px;
+  padding: 0px 0px 379px 0px;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
@@ -46,9 +51,24 @@ const CompanyBody = styled.div`
   box-shadow: 0px 2px 4px 0px rgba(172, 188, 245, 0.25), 0px 2px 12px 0px rgba(176, 184, 211, 0.30);
 `;
 
-const data =[];
 function Company() {
+  const [isDeleting,setIsDeleting] = useState(false)
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const CompanyTypeSampleFile ='/SampleFiles/CompanyTypeSample.csv'
+
+  const queryClient = useQueryClient();
+
+  const {
+    data: companyType = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["companyTypes"],
+    queryFn: () => apiClient.get("companyType"),
+  });
 
   const handleCreateClick = () => {
     setIsPopupOpen(true);
@@ -62,6 +82,7 @@ function Company() {
     console.log('Creating new Company:', formData);
     // Here you would typically send the data to your backend
     setIsPopupOpen(false);
+    queryClient.invalidateQueries(['companyTypes']);
   };
 
   const getFields = () => [
@@ -69,17 +90,108 @@ function Company() {
     { name: 'description', label: 'Description' },
   ];
 
+  const handleCheckboxChange = (id) => {
+    setSelectedRows((prevSelectedRows) =>
+      prevSelectedRows.includes(id)
+        ? prevSelectedRows.filter((rowId) => rowId !== id)
+        : [...prevSelectedRows, id]
+    );
+  };
+
+  const handleSelectAll = (currentPageRows) => {
+    if (selectedRows.length === currentPageRows.length) {
+      setSelectedRows([]);
+    } else {
+      setSelectedRows(currentPageRows);
+    }
+  };
+//for deleting data
+
+const deleteCompanyTypeMutation = useMutation({
+  mutationFn: (id) => apiClient.delete('companyType',id),
+  onSuccess: () => {
+    queryClient.invalidateQueries(['companyTypes']);
+  },
+});
+
+  const handleDeleteSelected = (e) => {
+    e.preventDefault();
+    setShowConfirmation(true);
+  };
+
+  const confirmDeletion = async () => {
+    console.log("confirmDeletion clicked");
+    console.log("Selected rows for deletion:", selectedRows);
+setIsDeleting(true);
+    try {
+      for (let id of selectedRows) {
+        await new Promise((resolve, reject) => {
+          deleteCompanyTypeMutation.mutate(id, {
+            onSuccess: () => {
+              console.log(`Deleted category with id: ${id}`);
+              resolve();
+            },
+            onError: (error) => {
+              console.error(`Error deleting category with id: ${id}`, error);
+              reject(error);
+            },
+          });
+        });
+      }
+      // Clear selected rows after deletion
+      setSelectedRows([]);
+      // Close confirmation dialog
+      setShowConfirmation(false);
+      console.log("All selected categories deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting categories:", error);
+    }
+  };
+
+  const cancelDeletion = () => {
+    setShowConfirmation(false);
+  };
+
+    //for dialouges
+    const handleOpenDialog = () => {
+      setDialogOpen(true);
+    };
+  
+    const handleCloseDialog = () => {
+      setDialogOpen(false);
+    };
+  
+    const handleUpload = (data) => {
+      console.log('Uploaded data:', data);
+      // Handle the uploaded data here
+      queryClient.invalidateQueries(['companyTypes']);
+    };
+  
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error fetching companyType</p>;
+
   return (
     <CompanyContainer>
       <CompanyHeader>
         <BackButton title="Company Type" />
         <OtherButtons>
-          <Buttons width="257px" title="Download .xlsx Sample" type="download" iconType="download" />
-          <Buttons title="Import .xlsx File" type="upload" iconType="upload" />
+        {selectedRows.length > 0 && (
+            <DeleteBtn onClick={handleDeleteSelected} number={selectedRows.length}/>
+          )}
+          <Buttons width="257px" title="Download .xlsx Sample" type="download" iconType="download" filePath={CompanyTypeSampleFile}/>
+          <Buttons title="Import .xlsx File" type="upload" iconType="upload" onClick={handleOpenDialog}/>
           <Buttons width="221px" title="Create Company" type="create" onClick={handleCreateClick} iconType="create" />
         </OtherButtons>
       </CompanyHeader>
       <CompanyBody>
+      <ImportFile
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        onUpload={handleUpload}
+        fileType="csv"
+        section="companyType"
+      />
       <CompanyPopup
           open={isPopupOpen}
           onClose={handleClosePopup}
@@ -88,9 +200,20 @@ function Company() {
           label="Company Name"
           fields={getFields()}
         />
-        {data.length <= 0 && <NoData />}
-        {data.length > 0 && <Table />}
+        {companyType.length === 0 ? <NoData />: <CompanyTypeTable
+        data={companyType} selectedRows={selectedRows} 
+        onCheckboxChange={handleCheckboxChange}
+          onSelectAll={handleSelectAll}
+          refetchData={() => queryClient.invalidateQueries(['companyTypes'])} // Pass refetch function
+           />}
       </CompanyBody>
+      <ConfirmationDialog
+        open={showConfirmation}
+        onConfirm={confirmDeletion}
+        onCancel={cancelDeletion}
+        title="Confirm Deletion"
+        message={isDeleting ? "Please Wait your Rows Are Being Deleted...":"Are you sure you want to delete the selected Company Types?"}
+      />
     </CompanyContainer>
   );
 }

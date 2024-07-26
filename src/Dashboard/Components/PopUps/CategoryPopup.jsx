@@ -42,7 +42,7 @@ const CategoryPopup = ({ open, onClose, onSubmit, title }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [formData, setFormData] = useState({
     categoryName: '',
-    isPopular: false,
+    isPopularCategory: false,
   });
   const [error, setError] = useState('');
 
@@ -53,7 +53,7 @@ const CategoryPopup = ({ open, onClose, onSubmit, title }) => {
       setTimeout(() => {
         setShowAlert(false);
         onClose();
-        setFormData({ categoryName: '', isPopular: false });
+        setFormData({ categoryName: '', isPopularCategory: false });
         onSubmit(); // Callback to refetch data
       }, 3000); // Alert will be shown for 3 seconds
     },
@@ -89,7 +89,7 @@ const CategoryPopup = ({ open, onClose, onSubmit, title }) => {
 
     const newCategory = {
       category: formData.categoryName,
-      isPopularCategory: formData.isPopular,
+      isPopularCategory: formData.isPopularCategory,
       createdAt: currentDate,
       isActiveCategory:true,
     };
@@ -133,7 +133,7 @@ const CategoryPopup = ({ open, onClose, onSubmit, title }) => {
         <StyledFormControlLabel
           control={
             <StyledCheckbox
-              name="isPopular"
+              name="isPopularCategory"
               checked={formData.isPopular}
               onChange={handleInputChange}
             />

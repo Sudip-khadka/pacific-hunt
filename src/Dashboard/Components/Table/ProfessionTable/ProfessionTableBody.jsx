@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Switch from '../Switch';
-import UpdateCategory from '../PopUps/UpdateCategory';
+import Switch from '../../Switch'
+import UpdateProfession from '../../PopUps/UpdateProfession';
 
 const StyledTable = styled.table`
   width: 100%;
@@ -42,14 +42,8 @@ const StyledTr = styled.tr`
     background-color: ${({ $isDisabled }) => ($isDisabled ? '#f0f0f0' : '#ddd')};
   }
 `;
-const PopularCategoryDiv = styled.div`
-  padding: 12px 16px;
-  border-radius: 30px;
-  background: ${({ $isDisabled }) => ($isDisabled ? 'rgba(230, 231, 231, 1)' : '#CEFDE3')};
-  color: ${({ $isDisabled }) => ($isDisabled ? '#A0A0A0' : '#03BE7A')};
-`;
 
-function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitchToggle,refetchData ,currentPage, rowsPerPage  }) {
+function ProfessionTableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitchToggle,refetchData ,currentPage, rowsPerPage  }) {
   // Initialize switch states based on the isActiveCategory property
   const [switchStates, setSwitchStates] = useState({});
   useEffect(() => {
@@ -57,7 +51,7 @@ function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitch
     if (data) {
       setSwitchStates(
         data.reduce((acc, item) => {
-          acc[item.id] = item.isActiveCategory;
+          acc[item.id] = item.isActiveProfession;
           return acc;
         }, {})
       );
@@ -65,7 +59,7 @@ function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitch
   }, [data]); // Re-run this effect when `data` changes
 
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedProfession, setSelectedProfession] = useState(null);
 
   const handleToggle = (id, isOn) => {
     setSwitchStates((prevStates) => ({
@@ -74,32 +68,30 @@ function TableBody({ data, selectedRows, onCheckboxChange, onSelectAll, onSwitch
     }));
     if (onSwitchToggle) onSwitchToggle(id, isOn); // Notify parent about the switch change
   };
-  const handleEditClick = (category) => {
-    setSelectedCategory(category);
+  const handleEditClick = (profession) => {
+    setSelectedProfession(profession);
     setOpenUpdateDialog(true);
   };
 
   const handleUpdateDialogClose = () => {
     setOpenUpdateDialog(false);
-    setSelectedCategory(null);
+    setSelectedProfession(null);
   };
 
-  const handleCategoryUpdate = () => {
+  const handleProfessionUpdate = () => {
     // Refetch data after the category is updated
     refetchData();
     handleUpdateDialogClose();
   };
-console.log(selectedRows.length);
-console.log(data.length);
-const handleSelectAll = () => {
-  const currentRows = data.map((item) => item.id);
-  if (selectedRows.length === data.length) {
-    onSelectAll([]); // Deselect all if already selected
-  } else {
-    onSelectAll(currentRows); // Select only the current page's rows
-  }
-};
 
+  const handleSelectAll = () => {
+    const currentRows = data.map((item) => item.id);
+    if (selectedRows.length === data.length) {
+      onSelectAll([]); // Deselect all if already selected
+    } else {
+      onSelectAll(currentRows); // Select only the current page's rows
+    }
+  };
   return (
     <>
     <StyledTable>
@@ -115,7 +107,6 @@ const handleSelectAll = () => {
           <StyledTh>S.N</StyledTh>
           <StyledTh>Category Name</StyledTh>
           <StyledTh>Created On</StyledTh>
-          <StyledTh>Spotlight</StyledTh>
           <StyledTh colSpan={2}>Actions</StyledTh>
         </tr>
       </thead>
@@ -130,15 +121,9 @@ const handleSelectAll = () => {
               />
             </StyledTd>
             <StyledTd $isDisabled={!switchStates[item.id]}>{index + 1 + (currentPage - 1) * rowsPerPage}</StyledTd>
-            <StyledTd $isDisabled={!switchStates[item.id]}>{item.category}</StyledTd>
+            <StyledTd $isDisabled={!switchStates[item.id]}>{item.profession}</StyledTd>
             <StyledTd $isDisabled={!switchStates[item.id]}>{item.createdAt}</StyledTd>
-            <StyledTd $isDisabled={!switchStates[item.id]}>
-            {item.isPopularCategory ? (
-                  <PopularCategoryDiv $isDisabled={!switchStates[item.id]}>
-                    Popular Category
-                  </PopularCategoryDiv>
-                ) : <p className='pl-[16px]'>N/A</p>}
-            </StyledTd>
+            
             <StyledTd $isDisabled={!switchStates[item.id]} onClick={()=>handleEditClick(item)}>Edit</StyledTd>
             <StyledTd $isDisabled={!switchStates[item.id]}>
               <Switch
@@ -150,16 +135,17 @@ const handleSelectAll = () => {
         ))}
       </tbody>
     </StyledTable>
-    {selectedCategory && (
-        <UpdateCategory
+    {selectedProfession && (
+        <UpdateProfession
+        title="Update Profession"
           open={openUpdateDialog}
           onClose={handleUpdateDialogClose}
-          onSubmit={handleCategoryUpdate}
-          category={selectedCategory}
+          onSubmit={handleProfessionUpdate}
+          profession={selectedProfession}
         />
       )}
     </>
   );
 }
 
-export default TableBody;
+export default ProfessionTableBody;

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, Button } from '@mui/material';
 import styled from 'styled-components';
 import Buttons from '../Buttons';
 import Alert from '../Alert';
 import { useMutation } from '@tanstack/react-query';
 import apiClient from '../../../Api';
+
 
 const StyledDialog = styled(Dialog)`
   & .MuiDialog-paper {
@@ -18,21 +19,32 @@ const PopupHeader = styled.div`
   align-items: center;
 `;
 
-const CompanyTypePopup = ({ open, onClose, onSubmit, title }) => {
-  const [showAlert, setShowAlert] = useState(false);
+
+
+const UpdateProfession = ({ open, onClose, onSubmit, title ,profession}) => {
+  const [showAlert,setShowAlert] = useState(false);
+  const [error,setError] = useState('')
   const [formData, setFormData] = useState({
-    companyTypeName: '',
+    professionName: '',
   });
-  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (profession) {
+      // Initialize form data with category details
+      setFormData({
+        professionName: profession.profession || '',
+      });
+    }
+  }, [profession]);
 
   const mutation = useMutation({
-    mutationFn: (newCompanyType) => apiClient.post('companyType', newCompanyType),
+    mutationFn: (updatedProfession) => apiClient.update('profession',updatedProfession.id, updatedProfession),
     onSuccess: () => {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
         onClose();
-        setFormData({ companyTypeName: '', });
+        setFormData({ professionName: '', });
         onSubmit(); // Callback to refetch data
       }, 3000); // Alert will be shown for 3 seconds
     },
@@ -43,18 +55,18 @@ const CompanyTypePopup = ({ open, onClose, onSubmit, title }) => {
   });
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value} = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    if (name === 'companyTypeName' && value.trim() !== '') {
+    if(name=== 'professionName' && value.trim() !== ''){
       setError('');
     }
   };
 
   const handleSubmit = () => {
-    if(formData.companyTypeName.trim()=== ''){
+    if(formData.professionName.trim()=== ''){
       setError('Profession cannot be empty');
       return;
     }
@@ -65,15 +77,15 @@ const CompanyTypePopup = ({ open, onClose, onSubmit, title }) => {
       year: 'numeric',
     });
 
-    const newProfession = {
-      companyType: formData.companyTypeName,
+    const updatedProfession = {
+        id: profession.id,
+      profession: formData.professionName,
       createdAt: currentDate,
-      isActiveCompany:true,
+      isActiveProfession:true,
     };
 
-    mutation.mutate(newProfession);
+    mutation.mutate(updatedProfession);
   };
-
 
   return (
     <StyledDialog open={open} onClose={onClose}>
@@ -99,22 +111,23 @@ const CompanyTypePopup = ({ open, onClose, onSubmit, title }) => {
       </PopupHeader>
       <DialogContent>
         <TextField
-          name="companyTypeName"
-          label="Company Name"
+          name="professionName"
+          label="Profession Name"
           fullWidth
           margin="normal"
-          value={formData.companyTypeName}
+          value={formData.professionName}
           onChange={handleInputChange}
           error={!!error}
           helperText={error}
         />
+        
       </DialogContent>
       <div className="submitbtn p-6 text-[#fff] font-medium text-base flex flex-col gap-2">
-        {showAlert && <Alert message="Company created successfully!" />}
+        {showAlert && <Alert message="Profession created sucessfully!"/> }
         <Buttons width="412px" onClick={handleSubmit} type="create" title="Create" />
       </div>
     </StyledDialog>
   );
 };
 
-export default CompanyTypePopup;
+export default UpdateProfession;

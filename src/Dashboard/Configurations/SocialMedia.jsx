@@ -1,19 +1,17 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import BackButton from '../Components/BackButton';
-import Buttons from '../Components/Buttons';
-import NoData from '../Components/NoData';
-import Table from '../Components/Table/Table';
-import CategoryPopup from '../Components/PopUps/CategoryPopup';
-import DeleteBtn from '../../Components/DeleteBtn';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import apiClient from '../../Api';
-import ConfirmationDialog from '../../Components/ConfirmationDialog';
-import ImportFile from '../Components/ImportFile';
+import React, { useState } from "react";
+import styled from "styled-components";
+import BackButton from "../Components/BackButton";
+import Buttons from "../Components/Buttons";
+import NoData from "../Components/NoData";
+import ProfessionPopup from "../Components/PopUps/ProfessionPopup";
+import ProfessionTable from "../Components/Table/ProfessionTable/ProfessionTable";
+import DeleteBtn from "../../Components/DeleteBtn";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import apiClient from "../../Api";
+import ConfirmationDialog from "../../Components/ConfirmationDialog";
+import ImportFile from "../Components/ImportFile";
 
-
-
-const CategoryContainer = styled.div`
+const SocialMediaContainer = styled.div`
   width: 100%;
   height: auto;
   display: flex;
@@ -21,12 +19,12 @@ const CategoryContainer = styled.div`
   gap: 24px;
 `;
 
-const CategoryHeader = styled.div`
+const SocialMediaHeader = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  color: var(--Neutral-White, #FFF);
+  color: var(--Neutral-White, #fff);
   text-align: center;
   font-family: "Be Vietnam Pro";
   font-size: 16px;
@@ -41,52 +39,44 @@ const OtherButtons = styled.div`
   gap: 16px;
 `;
 
-const CategoryBody = styled.div`
+const SocialMediaBody = styled.div`
   display: flex;
   width: 100%;
+  padding: 0px 0px 379px 0px;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
   border-radius: 6px;
-  background: var(--Neutral-White, #FFF);
-  box-shadow: 0px 2px 4px 0px rgba(172, 188, 245, 0.25), 0px 2px 12px 0px rgba(176, 184, 211, 0.30);
+  background: var(--Neutral-White, #fff);
+  box-shadow: 0px 2px 4px 0px rgba(172, 188, 245, 0.25),
+    0px 2px 12px 0px rgba(176, 184, 211, 0.3);
 `;
 
-function Category() {
-  const [isDeleting,setIsDeleting] = useState(false)
+function SocialMedia() {
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const CategorySampleFile ='/SampleFiles/CategorySample.csv'
-
-  const handleOpenDialog = () => {
-    setDialogOpen(true);
-  };
-
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
-  };
-
-  const handleUpload = (data) => {
-    console.log('Uploaded data:', data);
-    // Handle the uploaded data here
-  };
-
+  const ProfessionSampleFile = "/SampleFiles/ProfessionSample.csv";
 
   const queryClient = useQueryClient();
 
-  const { data: categories = [], isLoading, isError } = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => apiClient.get('category'),
+  const {
+    data: professions = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["professions"],
+    queryFn: () => apiClient.get("profession"),
   });
+
+
   
- 
-  
-  const deleteCategoryMutation = useMutation({
-    mutationFn: (id) => apiClient.delete('category',id),
+  const deleteProfessionMutation = useMutation({
+    mutationFn: (id) => apiClient.delete('profession',id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['categories']);
+      queryClient.invalidateQueries(['professions']);
     },
   });
 
@@ -98,8 +88,8 @@ function Category() {
     setIsPopupOpen(false);
   };
 
-  const handleSubmit = () => {
-    queryClient.invalidateQueries(['categories']);
+  const handleSubmit = (formData) => {
+    queryClient.invalidateQueries(['professions']);
   };
 
   const handleDeleteSelected = (e) => {
@@ -114,7 +104,7 @@ setIsDeleting(true);
     try {
       for (let id of selectedRows) {
         await new Promise((resolve, reject) => {
-          deleteCategoryMutation.mutate(id, {
+          deleteProfessionMutation.mutate(id, {
             onSuccess: () => {
               console.log(`Deleted category with id: ${id}`);
               resolve();
@@ -140,6 +130,10 @@ setIsDeleting(true);
     setShowConfirmation(false);
   };
 
+  const getFields = () => [
+    { name: "ProfessionName", label: "Profession Name" },
+    { name: "description", label: "Description" },
+  ];
   const handleCheckboxChange = (id) => {
     setSelectedRows((prevSelectedRows) =>
       prevSelectedRows.includes(id)
@@ -156,51 +150,76 @@ setIsDeleting(true);
     }
   };
 
+
+
+  //for dialouges
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleUpload = (data) => {
+    console.log('Uploaded data:', data);
+    // Handle the uploaded data here
+  };
+
   if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error fetching categories</p>;
+  if (isError) return <p>Error fetching professions</p>;
 
   return (
-    <CategoryContainer>
-      <CategoryHeader>
-        <BackButton title="Categories" />
+    <SocialMediaContainer>
+      <SocialMediaHeader>
+        <BackButton title="Professions" />
         <OtherButtons>
           {selectedRows.length > 0 && (
             <DeleteBtn onClick={handleDeleteSelected} number={selectedRows.length}/>
           )}
-          <Buttons width="257px" title="Download .xlsx Sample" type="download" iconType="download" filePath={CategorySampleFile}/>
-          <Buttons title="Import .xlsx File" type="upload" iconType="upload" onClick={handleOpenDialog}/>
-          <Buttons width="221px" title="Create Categories" type="create" onClick={handleCreateClick} iconType="create" />
+          <Buttons
+            width="257px"
+            title="Download .xlsx Sample"
+            type="download"
+            iconType="download"
+            filePath={ProfessionSampleFile}
+          />
+          <Buttons title="Import .xlsx File" type="upload" iconType="upload" onClick={handleOpenDialog} />
+          <Buttons
+            width="221px"
+            title="Create Profession"
+            type="create"
+            onClick={handleCreateClick}
+            iconType="create"
+          />
         </OtherButtons>
-      </CategoryHeader>
-      <CategoryBody>
+      </SocialMediaHeader>
+      <SocialMediaBody>
       <ImportFile
         open={dialogOpen}
         onClose={handleCloseDialog}
         onUpload={handleUpload}
         fileType="csv"
-        section="category"
+        section="profession"
       />
-        <CategoryPopup
+        <ProfessionPopup
           open={isPopupOpen}
           onClose={handleClosePopup}
           onSubmit={handleSubmit}
-          title="Create New Category"
-          fields={[
-            { name: 'categoryName', label: 'Category Name' },
-            { name: 'description', label: 'Description' },
-          ]}
+          title="Create New Profession"
+          label="Profession Name"
+          fields={getFields()}
         />
-        {categories.length === 0 ? <NoData /> : (
-          <Table
-            data={categories}
-            selectedRows={selectedRows}
-            onCheckboxChange={handleCheckboxChange}
+        {professions.length === 0 ? (
+          <NoData />
+        ) : (
+          <ProfessionTable data={professions} selectedRows={selectedRows} 
+          onCheckboxChange={handleCheckboxChange}
             onSelectAll={handleSelectAll}
-            refetchData={() => queryClient.invalidateQueries(['categories'])} // Pass refetch function
-          />
+            refetchData={() => queryClient.invalidateQueries(['professions'])} // Pass refetch function
+            />
         )}
-      </CategoryBody>
-
+      </SocialMediaBody>
       <ConfirmationDialog
         open={showConfirmation}
         onConfirm={confirmDeletion}
@@ -208,8 +227,8 @@ setIsDeleting(true);
         title="Confirm Deletion"
         message={isDeleting ? "Please Wait your Rows Are Being Deleted...":"Are you sure you want to delete the selected categories?"}
       />
-    </CategoryContainer>
+    </SocialMediaContainer>
   );
 }
 
-export default Category;
+export default SocialMedia;

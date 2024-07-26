@@ -5,6 +5,7 @@ import Category from "./Configurations/Category";
 import UnderConstruction from '../UnderConstruction'
 import Profession from "./Configurations/Profession";
 import CompanyType from "./Configurations/CompanyType";
+import SocialMedia from "./Configurations/SocialMedia";
 
 const ConfigurationContainer = styled.div`
   margin-left: 264px;
@@ -179,7 +180,7 @@ function Configurations() {
           <Route path="/profession" element={<Profession/>} />
           <Route path="/company-type" element={<CompanyType/>} />
           <Route path="/skill" element={<UnderConstruction />} />
-          <Route path="/social-media" element={<UnderConstruction />} />
+          <Route path="/social-media" element={<SocialMedia />} />
           <Route path="/job-type" element={<UnderConstruction />} />
           <Route path="/company-type" element={<UnderConstruction />} />
           <Route path="/education-level" element={<UnderConstruction />} />

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import TableBody from "./TableBody";
-import TableHeader from "./TableHeader";
-import Pagination from "./Pagination";
+import Pagination from "../Pagination";
+import CompanyTypeTableBody from "./CompanyTypeTableBody";
+import CompanyTypeTableHeader from "./CompanyTypeTableHeader";
 
-function Table({
+function CompanyTypeTable({
   data,
   selectedRows,
   onCheckboxChange,
@@ -28,7 +28,7 @@ function Table({
       const matchesSpotlight = spotlight === '' || 
                                (spotlight === 'popularCategory' && item.isPopularCategory);
 
-      return (item.category.toLowerCase().includes(lowercasedQuery) ||
+      return (item.companyType.toLowerCase().includes(lowercasedQuery) ||
               item.createdAt.toLowerCase().includes(lowercasedQuery)) &&
               isWithinDateRange &&
               matchesSpotlight;
@@ -38,9 +38,9 @@ function Table({
     if (sortOrder) {
       filtered.sort((a, b) => {
         if (sortOrder === 'asc') {
-          return a.category.localeCompare(b.category);
+          return a.companyType.localeCompare(b.companyType);
         } else {
-          return b.category.localeCompare(a.category);
+          return b.companyType.localeCompare(a.companyType);
         }
       });
     }
@@ -68,6 +68,10 @@ function Table({
     setSortOrder(order);
   };
   const handleSpotlight =  (value) => setSpotlight(value);
+  
+  const handleSelectAll = (currentPageRows) => {
+    onSelectAll(currentPageRows);
+  };
 
   // Calculate the data to be displayed for the current page
   const startIndex = (currentPage - 1) * rowsPerPage;
@@ -75,14 +79,10 @@ function Table({
     startIndex,
     startIndex + rowsPerPage
   );
-  const handleSelectAll = (currentPageRows) => {
-    onSelectAll(currentPageRows);
-  };
-
 
   return (
     <div className="w-full p-[20px]">
-      <TableHeader
+      <CompanyTypeTableHeader
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleRowsPerPageChange}
         onSearch={handleSearch}
@@ -90,7 +90,7 @@ function Table({
         onSort={handleSort}
         onSpotlight={handleSpotlight}
       />
-      <TableBody
+      <CompanyTypeTableBody
         data={paginatedData}
         selectedRows={selectedRows}
         onCheckboxChange={onCheckboxChange}
@@ -108,4 +108,4 @@ function Table({
   );
 }
 
-export default Table;
+export default CompanyTypeTable;
