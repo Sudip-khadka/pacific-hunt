@@ -108,6 +108,7 @@ function ImportFile({ open, onClose, fileType = 'csv', section }) {
       category: ['Category Name', 'Created On', 'Is Popular', 'Is Active'],
       profession: ['Profession Name', 'Created On', 'Is Active'],
       companyType: ['Company Type', 'Created On', 'Is Active'],
+      socialMedia: ['Social Media Name','Created On','Is Active','Social Media Url','Icon Url']
     };
     const requiredHeaders = headerMapping[section];
     return requiredHeaders.every(header => headers.includes(header));
@@ -156,7 +157,7 @@ function ImportFile({ open, onClose, fileType = 'csv', section }) {
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle sx={{ textAlign: 'center', color: '#01A3E0' }}>
-        {`Import ${section} Data`}
+        {`Import ${section} datas`}
       </DialogTitle>
       <DialogContent>
         <DragAndDropArea

@@ -26,7 +26,15 @@ const transformations = {
     companyType: row['Company Type'],
     createdAt: new Date(row['Created On']).toISOString(),
     isActiveCompany:stringToBoolean(row['Is Active']),
-  })
+  }),
+socialMedia: (row)=>({
+  id:uuidv4(),
+  socialMediaName:row['Social Media Name'],
+  socialMediaUrls: row['Social Media Url'],
+  socialMediaImage:row['Icon Url'],
+  createdAt: new Date(row['Created On']).toISOString(),
+  isActiveMedia:stringToBoolean(row['Is Active']),
+})
   // Add more categories if needed
 };
 

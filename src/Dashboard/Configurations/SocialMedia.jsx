@@ -10,6 +10,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "../../Api";
 import ConfirmationDialog from "../../Components/ConfirmationDialog";
 import ImportFile from "../Components/ImportFile";
+import SocialMediaTable from "../Components/Table/SocialMediaTable/SocialMediaTable";
+import SOcialMediaPopup from "../Components/PopUps/SocialMediaPopup";
 
 const SocialMediaContainer = styled.div`
   width: 100%;
@@ -58,25 +60,25 @@ function SocialMedia() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const ProfessionSampleFile = "/SampleFiles/ProfessionSample.csv";
+  const SocialMediaSampleFile = "/SampleFiles/SocialMediaSample.csv";
 
   const queryClient = useQueryClient();
 
   const {
-    data: professions = [],
+    data: socialMedia = [],
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["professions"],
-    queryFn: () => apiClient.get("profession"),
+    queryKey: ["socialMedias"],
+    queryFn: () => apiClient.get("socialMedia"),
   });
 
 
   
   const deleteProfessionMutation = useMutation({
-    mutationFn: (id) => apiClient.delete('profession',id),
+    mutationFn: (id) => apiClient.delete('socialMedia',id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['professions']);
+      queryClient.invalidateQueries(['socialMedias']);
     },
   });
 
@@ -88,8 +90,8 @@ function SocialMedia() {
     setIsPopupOpen(false);
   };
 
-  const handleSubmit = (formData) => {
-    queryClient.invalidateQueries(['professions']);
+  const handleSubmit = () => {
+    queryClient.invalidateQueries(['socialMedias']);
   };
 
   const handleDeleteSelected = (e) => {
@@ -98,7 +100,7 @@ function SocialMedia() {
   };
 
   const confirmDeletion = async () => {
-    console.log("confirmDeletion clicked");
+    console.log("confirm Deletion clicked");
     console.log("Selected rows for deletion:", selectedRows);
 setIsDeleting(true);
     try {
@@ -106,11 +108,11 @@ setIsDeleting(true);
         await new Promise((resolve, reject) => {
           deleteProfessionMutation.mutate(id, {
             onSuccess: () => {
-              console.log(`Deleted category with id: ${id}`);
+              console.log(`Deleted social media with id: ${id}`);
               resolve();
             },
             onError: (error) => {
-              console.error(`Error deleting category with id: ${id}`, error);
+              console.error(`Error deleting social media with id: ${id}`, error);
               reject(error);
             },
           });
@@ -120,9 +122,9 @@ setIsDeleting(true);
       setSelectedRows([]);
       // Close confirmation dialog
       setShowConfirmation(false);
-      console.log("All selected categories deleted successfully.");
+      console.log("All selected social media deleted successfully.");
     } catch (error) {
-      console.error("Error deleting categories:", error);
+      console.error("Error deleting social medias:", error);
     }
   };
 
@@ -131,7 +133,7 @@ setIsDeleting(true);
   };
 
   const getFields = () => [
-    { name: "ProfessionName", label: "Profession Name" },
+    { name: "socialMediaName", label: "Social Media Name" },
     { name: "description", label: "Description" },
   ];
   const handleCheckboxChange = (id) => {
@@ -172,7 +174,7 @@ setIsDeleting(true);
   return (
     <SocialMediaContainer>
       <SocialMediaHeader>
-        <BackButton title="Professions" />
+        <BackButton title="Social Media" />
         <OtherButtons>
           {selectedRows.length > 0 && (
             <DeleteBtn onClick={handleDeleteSelected} number={selectedRows.length}/>
@@ -182,12 +184,12 @@ setIsDeleting(true);
             title="Download .xlsx Sample"
             type="download"
             iconType="download"
-            filePath={ProfessionSampleFile}
+            filePath={SocialMediaSampleFile}
           />
           <Buttons title="Import .xlsx File" type="upload" iconType="upload" onClick={handleOpenDialog} />
           <Buttons
-            width="221px"
-            title="Create Profession"
+            width="241px"
+            title="Create Social Media"
             type="create"
             onClick={handleCreateClick}
             iconType="create"
@@ -200,23 +202,23 @@ setIsDeleting(true);
         onClose={handleCloseDialog}
         onUpload={handleUpload}
         fileType="csv"
-        section="profession"
+        section="socialMedia"
       />
-        <ProfessionPopup
+        <SOcialMediaPopup
           open={isPopupOpen}
           onClose={handleClosePopup}
           onSubmit={handleSubmit}
-          title="Create New Profession"
-          label="Profession Name"
+          title="Add New Social Media"
+          label="SocialMedia Name"
           fields={getFields()}
         />
-        {professions.length === 0 ? (
+        {socialMedia.length === 0 ? (
           <NoData />
         ) : (
-          <ProfessionTable data={professions} selectedRows={selectedRows} 
+          <SocialMediaTable data={socialMedia} selectedRows={selectedRows} 
           onCheckboxChange={handleCheckboxChange}
             onSelectAll={handleSelectAll}
-            refetchData={() => queryClient.invalidateQueries(['professions'])} // Pass refetch function
+            refetchData={() => queryClient.invalidateQueries(['socialMedias'])} // Pass refetch function
             />
         )}
       </SocialMediaBody>
