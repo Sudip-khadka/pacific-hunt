@@ -46,7 +46,27 @@ skills: (row)=>({
   skillsName: row['Skill Name'],
   createdAt: new Date(row['Created On']).toISOString(),
   isActive:stringToBoolean(row['Is Active']),
-})
+}),
+workLocation: (row)=>({
+  id:uuidv4(),
+  locationType: row['Work Location'],
+  createdAt: new Date(row['Created On']).toISOString(),
+  isActive:stringToBoolean(row['Is Active']),
+}),
+educationLevel: (row)=>({
+  id:uuidv4(),
+  educationLevel: row['Education Level'],
+  createdAt: new Date(row['Created On']).toISOString(),
+  isActive:stringToBoolean(row['Is Active']),
+}),
+// educationLevel: ['Education Level','Created On', 'Is Active'],
+// experienceLevel: ['Experience Level','Created On', 'Is Active'],
+experienceLevel: (row)=>({
+  id:uuidv4(),
+  experienceLevel: row['Experience Level'],
+  createdAt: new Date(row['Created On']).toISOString(),
+  isActive:stringToBoolean(row['Is Active']),
+}),
   // Add more categories if needed
 };
 

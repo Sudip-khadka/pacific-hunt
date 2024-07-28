@@ -21,21 +21,21 @@ const PopupHeader = styled.div`
 
 
 
-const SkillsPopup = ({ open, onClose, onSubmit, title }) => {
+const ExperienceLevelPopup = ({ open, onClose, onSubmit, title }) => {
   const [showAlert,setShowAlert] = useState(false);
   const [error,setError] = useState('')
   const [formData, setFormData] = useState({
-    skillsName: '',
+    experienceLevel: '',
   });
 
   const mutation = useMutation({
-    mutationFn: (newSkills) => apiClient.post('skills', newSkills),
+    mutationFn: (newExperienceLevel) => apiClient.post('experienceLevel', newExperienceLevel),
     onSuccess: () => {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
         onClose();
-        setFormData({ skillsName: '', });
+        setFormData({ experienceLevel: '', });
         onSubmit(); // Callback to refetch data
       }, 3000); // Alert will be shown for 3 seconds
     },
@@ -51,14 +51,14 @@ const SkillsPopup = ({ open, onClose, onSubmit, title }) => {
       ...prevData,
       [name]: value,
     }));
-    if(name=== 'skillsName' && value.trim() !== ''){
+    if(name=== 'experienceLevel' && value.trim() !== ''){
       setError('');
     }
   };
 
   const handleSubmit = () => {
-    if(formData.skillsName.trim()=== ''){
-      setError('Skills cannot be empty');
+    if(formData.experienceLevel.trim()=== ''){
+      setError('experience Level cannot be empty');
       return;
     }
 
@@ -68,13 +68,13 @@ const SkillsPopup = ({ open, onClose, onSubmit, title }) => {
       year: 'numeric',
     });
 
-    const newSkills = {
-        skillsName: formData.skillsName,
+    const newExperienceLevel = {
+        experienceLevel: formData.experienceLevel,
       createdAt: currentDate,
       isActive:true,
     };
 
-    mutation.mutate(newSkills);
+    mutation.mutate(newExperienceLevel);
   };
 
   return (
@@ -101,11 +101,11 @@ const SkillsPopup = ({ open, onClose, onSubmit, title }) => {
       </PopupHeader>
       <DialogContent>
         <TextField
-          name="skillsName"
-          label="Skills Name"
+          name="experienceLevel"
+          label="Experience Level Name"
           fullWidth
           margin="normal"
-          value={formData.skillsName}
+          value={formData.experienceLevel}
           onChange={handleInputChange}
           error={!!error}
           helperText={error}
@@ -113,11 +113,11 @@ const SkillsPopup = ({ open, onClose, onSubmit, title }) => {
         
       </DialogContent>
       <div className="submitbtn p-6 text-[#fff] font-medium text-base flex flex-col gap-2">
-        {showAlert && <Alert message="Skills added sucessfully!"/> }
+        {showAlert && <Alert message="Experience Level added sucessfully!"/> }
         <Buttons width="412px" onClick={handleSubmit} type="create" title="Create" />
       </div>
     </StyledDialog>
   );
 };
 
-export default SkillsPopup;
+export default ExperienceLevelPopup;

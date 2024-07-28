@@ -3,16 +3,15 @@ import styled from "styled-components";
 import BackButton from "../Components/BackButton";
 import Buttons from "../Components/Buttons";
 import NoData from "../Components/NoData";
-import WorkLocationPopup from "../Components/PopUps/WorkLocationPopup";
+import ExperienceLevelPopup from "../Components/PopUps/ExperienceLevelPopup";
+import ExperienceLevelTable from "../Components/Table/ExperienceLevelTable/ExperienceLevelTable";
 import DeleteBtn from "../../Components/DeleteBtn";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "../../Api";
 import ConfirmationDialog from "../../Components/ConfirmationDialog";
 import ImportFile from "../Components/ImportFile";
-import SkillsTable from "../Components/Table/SkillsTable/SkillsTable";
-import WorkLocationTable from "../Components/Table/WorkLocation/WorkLocationTable";
 
-const WorkLocationContainer = styled.div`
+const ExperienceLevelContainer = styled.div`
   width: 100%;
   height: auto;
   display: flex;
@@ -20,7 +19,7 @@ const WorkLocationContainer = styled.div`
   gap: 24px;
 `;
 
-const WorkLocationHeader = styled.div`
+const ExperienceLevelHeader = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -40,7 +39,7 @@ const OtherButtons = styled.div`
   gap: 16px;
 `;
 
-const WorkLocationBody = styled.div`
+const ExperienceLevelBody = styled.div`
   display: flex;
   width: 100%;
   padding: 0px 0px 379px 0px;
@@ -53,31 +52,31 @@ const WorkLocationBody = styled.div`
     0px 2px 12px 0px rgba(176, 184, 211, 0.3);
 `;
 
-function WorkLocation() {
+function ExperienceLevel() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const WorkLocationSampleFile = "/SampleFiles/WorkLocationSample.csv";
+  const ExperienceLevelSampleFile = "/SampleFiles/ExperienceLevelSample.csv";
 
   const queryClient = useQueryClient();
 
   const {
-    data: workLocation = [],
+    data: experienceLevel = [],
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["workLocations"],
-    queryFn: () => apiClient.get("workLocation"),
+    queryKey: ["experienceLevels"],
+    queryFn: () => apiClient.get("experienceLevel"),
   });
 
 
   
-  const deleteWorkLocationMutation = useMutation({
-    mutationFn: (id) => apiClient.delete('workLocation',id),
+  const deleteExperienceLevelMutation = useMutation({
+    mutationFn: (id) => apiClient.delete('experienceLevel',id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['workLocations']);
+      queryClient.invalidateQueries(['experienceLevels']);
     },
   });
 
@@ -90,7 +89,7 @@ function WorkLocation() {
   };
 
   const handleSubmit = () => {
-    queryClient.invalidateQueries(['workLocations']);
+    queryClient.invalidateQueries(['experienceLevels']);
   };
 
   const handleDeleteSelected = (e) => {
@@ -105,13 +104,13 @@ setIsDeleting(true);
     try {
       for (let id of selectedRows) {
         await new Promise((resolve, reject) => {
-          deleteWorkLocationMutation.mutate(id, {
+          deleteExperienceLevelMutation.mutate(id, {
             onSuccess: () => {
-              console.log(`Deleted WorkLocation with id: ${id}`);
+              console.log(`Deleted ExperienceLevel with id: ${id}`);
               resolve();
             },
             onError: (error) => {
-              console.error(`Error deleting WorkLocation with id: ${id}`, error);
+              console.error(`Error deleting ExperienceLevel with id: ${id}`, error);
               reject(error);
             },
           });
@@ -121,9 +120,9 @@ setIsDeleting(true);
       setSelectedRows([]);
       // Close confirmation dialog
       setShowConfirmation(false);
-      console.log("All selected WorkLocation deleted successfully.");
+      console.log("All selected ExperienceLevel deleted successfully.");
     } catch (error) {
-      console.error("Error deleting WorkLocation:", error);
+      console.error("Error deleting ExperienceLevel:", error);
     }
   };
 
@@ -132,7 +131,7 @@ setIsDeleting(true);
   };
 
   const getFields = () => [
-    { name: "workLocationName", label: "WorkLocation Name" },
+    { name: "experienceLevelName", label: "ExperienceLevel Name" },
     { name: "description", label: "Description" },
   ];
   const handleCheckboxChange = (id) => {
@@ -168,12 +167,12 @@ setIsDeleting(true);
   };
 
   if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error fetching WorkLocation data</p>;
+  if (isError) return <p>Error fetching Experience Level datas</p>;
 
   return (
-    <WorkLocationContainer>
-      <WorkLocationHeader>
-        <BackButton title="Work Location" />
+    <ExperienceLevelContainer>
+      <ExperienceLevelHeader>
+        <BackButton title="Experience Level" />
         <OtherButtons>
           {selectedRows.length > 0 && (
             <DeleteBtn onClick={handleDeleteSelected} number={selectedRows.length}/>
@@ -183,53 +182,53 @@ setIsDeleting(true);
             title="Download .xlsx Sample"
             type="download"
             iconType="download"
-            filePath={WorkLocationSampleFile}
+            filePath={ExperienceLevelSampleFile}
           />
           <Buttons title="Import .xlsx File" type="upload" iconType="upload" onClick={handleOpenDialog} />
           <Buttons
-            width="281px"
-            title="Add Location Type"
+            width="251px"
+            title="Add Experience Level"
             type="create"
             onClick={handleCreateClick}
             iconType="create"
           />
         </OtherButtons>
-      </WorkLocationHeader>
-      <WorkLocationBody>
+      </ExperienceLevelHeader>
+      <ExperienceLevelBody>
       <ImportFile
         open={dialogOpen}
         onClose={handleCloseDialog}
         onUpload={handleUpload}
         fileType="csv"
-        section="workLocation"
+        section="experienceLevel"
       />
-        <WorkLocationPopup
+        <ExperienceLevelPopup
           open={isPopupOpen}
           onClose={handleClosePopup}
           onSubmit={handleSubmit}
-          title="Create New Work Location"
-          label="Work Location Name"
+          title="Create New Experience Level"
+          label="Experience Level"
           fields={getFields()}
         />
-        {workLocation.length === 0 ? (
+        {experienceLevel.length === 0 ? (
           <NoData />
         ) : (
-          <WorkLocationTable data={workLocation} selectedRows={selectedRows} 
+          <ExperienceLevelTable data={experienceLevel} selectedRows={selectedRows} 
           onCheckboxChange={handleCheckboxChange}
             onSelectAll={handleSelectAll}
-            refetchData={() => queryClient.invalidateQueries(['workLocation'])} // Pass refetch function
+            refetchData={() => queryClient.invalidateQueries(['ExperienceLevels'])} // Pass refetch function
             />
         )}
-      </WorkLocationBody>
+      </ExperienceLevelBody>
       <ConfirmationDialog
         open={showConfirmation}
         onConfirm={confirmDeletion}
         onCancel={cancelDeletion}
         title="Confirm Deletion"
-        message={isDeleting ? "Please Wait your Rows Are Being Deleted...":"Are you sure you want to delete the selected categories?"}
+        message={isDeleting ? "Please Wait your Rows Are Being Deleted...":"Are you sure you want to delete the selected datas?"}
       />
-    </WorkLocationContainer>
+    </ExperienceLevelContainer>
   );
 }
 
-export default WorkLocation;
+export default ExperienceLevel;

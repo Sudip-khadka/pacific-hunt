@@ -111,6 +111,9 @@ function ImportFile({ open, onClose, fileType = 'csv', section }) {
       socialMedia: ['Social Media Name','Created On','Is Active','Social Media Url','Icon Url'],
       jobType: ['Job Type', 'Created On', 'Is Active'],
       skills: ['Skill Name', 'Created On', 'Is Active'],
+      workLocation: ['Work Location','Created On', 'Is Active'],
+      educationLevel: ['Education Level','Created On', 'Is Active'],
+      experienceLevel: ['Experience Level','Created On', 'Is Active'],
     };
     const requiredHeaders = headerMapping[section];
     return requiredHeaders.every(header => headers.includes(header));

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, Button } from '@mui/material';
 import styled from 'styled-components';
 import Buttons from '../Buttons';
@@ -21,27 +21,36 @@ const PopupHeader = styled.div`
 
 
 
-const SkillsPopup = ({ open, onClose, onSubmit, title }) => {
+const UpdateExperienceLevel = ({ open, onClose, onSubmit, title ,experienceLevel}) => {
   const [showAlert,setShowAlert] = useState(false);
   const [error,setError] = useState('')
   const [formData, setFormData] = useState({
-    skillsName: '',
+    experienceLevel: '',
   });
 
+  useEffect(() => {
+    if (experienceLevel) {
+      // Initialize form data with category details
+      setFormData({
+        experienceLevel: experienceLevel.experienceLevel || '',
+      });
+    }
+  }, [experienceLevel]);
+
   const mutation = useMutation({
-    mutationFn: (newSkills) => apiClient.post('skills', newSkills),
+    mutationFn: (updatedExperienceLevel) => apiClient.update('experienceLevel',updatedExperienceLevel.id, updatedExperienceLevel),
     onSuccess: () => {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
         onClose();
-        setFormData({ skillsName: '', });
+        setFormData({ experienceLevel: '', });
         onSubmit(); // Callback to refetch data
       }, 3000); // Alert will be shown for 3 seconds
     },
     onError: (error) => {
-      console.error('Error posting New Skill:', error);
-      setError('Failed to create New Skill. Please try again.');
+      console.error('Error posting Experience level:', error);
+      setError('Failed to create Experience level. Please try again.');
     }
   });
 
@@ -51,14 +60,14 @@ const SkillsPopup = ({ open, onClose, onSubmit, title }) => {
       ...prevData,
       [name]: value,
     }));
-    if(name=== 'skillsName' && value.trim() !== ''){
+    if(name=== 'experienceLevel' && value.trim() !== ''){
       setError('');
     }
   };
 
   const handleSubmit = () => {
-    if(formData.skillsName.trim()=== ''){
-      setError('Skills cannot be empty');
+    if(formData.experienceLevel.trim()=== ''){
+      setError('experienceLevel cannot be empty');
       return;
     }
 
@@ -68,13 +77,14 @@ const SkillsPopup = ({ open, onClose, onSubmit, title }) => {
       year: 'numeric',
     });
 
-    const newSkills = {
-        skillsName: formData.skillsName,
+    const updatedExperienceLevel = {
+        id: experienceLevel.id,
+        experienceLevel: formData.experienceLevel,
       createdAt: currentDate,
       isActive:true,
     };
 
-    mutation.mutate(newSkills);
+    mutation.mutate(updatedExperienceLevel);
   };
 
   return (
@@ -101,11 +111,11 @@ const SkillsPopup = ({ open, onClose, onSubmit, title }) => {
       </PopupHeader>
       <DialogContent>
         <TextField
-          name="skillsName"
-          label="Skills Name"
+          name="experienceLevel"
+          label="Experience Level Name"
           fullWidth
           margin="normal"
-          value={formData.skillsName}
+          value={formData.experienceLevel}
           onChange={handleInputChange}
           error={!!error}
           helperText={error}
@@ -113,11 +123,11 @@ const SkillsPopup = ({ open, onClose, onSubmit, title }) => {
         
       </DialogContent>
       <div className="submitbtn p-6 text-[#fff] font-medium text-base flex flex-col gap-2">
-        {showAlert && <Alert message="Skills added sucessfully!"/> }
-        <Buttons width="412px" onClick={handleSubmit} type="create" title="Create" />
+        {showAlert && <Alert message="Experience Level Updated sucessfully!"/> }
+        <Buttons width="412px" onClick={handleSubmit} type="create" title="Update" />
       </div>
     </StyledDialog>
   );
 };
 
-export default SkillsPopup;
+export default UpdateExperienceLevel;

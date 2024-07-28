@@ -8,6 +8,9 @@ import CompanyType from "./Configurations/CompanyType";
 import SocialMedia from "./Configurations/SocialMedia";
 import JobType from "./Configurations/JobType";
 import Skills from "./Configurations/Skills";
+import WorkLocation from "./Configurations/WorkLocation";
+import EducationLevel from "./Configurations/EducationLevel";
+import ExperienceLevel from "./Configurations/ExperienceLevel";
 
 const ConfigurationContainer = styled.div`
   margin-left: 264px;
@@ -185,9 +188,9 @@ function Configurations() {
           <Route path="/social-media" element={<SocialMedia />} />
           <Route path="/job-type" element={<JobType />} />
           <Route path="/company-type" element={<UnderConstruction />} />
-          <Route path="/education-level" element={<UnderConstruction />} />
-          <Route path="/experience-level" element={<UnderConstruction />} />
-          <Route path="/work-location" element={<UnderConstruction />} />
+          <Route path="/education-level" element={<EducationLevel />} />
+          <Route path="/experience-level" element={<ExperienceLevel />} />
+          <Route path="/work-location" element={<WorkLocation />} />
           {/* Add routes for other configuration pages */}
         </Routes>
       </div>

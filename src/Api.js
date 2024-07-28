@@ -5,7 +5,9 @@ const apiConfig = {
     socialMedia: "https://retoolapi.dev/MIObfd/socialMedia",
     jobType: "https://retoolapi.dev/UW8iqb/jobType",
     skills: "https://retoolapi.dev/HLrIcS/skills",
-    workLocation: "",
+    workLocation: "https://retoolapi.dev/sm4oW9/workLocation",
+    educationLevel: "https://retoolapi.dev/XrNqT3/educationLevel",
+    experienceLevel: "https://retoolapi.dev/nds3hV/experienceLevel",
   };
   
   const apiClient = {

@@ -3,16 +3,15 @@ import styled from "styled-components";
 import BackButton from "../Components/BackButton";
 import Buttons from "../Components/Buttons";
 import NoData from "../Components/NoData";
-import WorkLocationPopup from "../Components/PopUps/WorkLocationPopup";
+import EducationLevelPopup from "../Components/PopUps/EducationLevelPopup";
+import EducationLevelTable from "../Components/Table/EducationLevelTable/EducationLevelTable";
 import DeleteBtn from "../../Components/DeleteBtn";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "../../Api";
 import ConfirmationDialog from "../../Components/ConfirmationDialog";
 import ImportFile from "../Components/ImportFile";
-import SkillsTable from "../Components/Table/SkillsTable/SkillsTable";
-import WorkLocationTable from "../Components/Table/WorkLocation/WorkLocationTable";
 
-const WorkLocationContainer = styled.div`
+const EducationLevelContainer = styled.div`
   width: 100%;
   height: auto;
   display: flex;
@@ -20,7 +19,7 @@ const WorkLocationContainer = styled.div`
   gap: 24px;
 `;
 
-const WorkLocationHeader = styled.div`
+const EducationLevelHeader = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -40,7 +39,7 @@ const OtherButtons = styled.div`
   gap: 16px;
 `;
 
-const WorkLocationBody = styled.div`
+const EducationLevelBody = styled.div`
   display: flex;
   width: 100%;
   padding: 0px 0px 379px 0px;
@@ -53,31 +52,31 @@ const WorkLocationBody = styled.div`
     0px 2px 12px 0px rgba(176, 184, 211, 0.3);
 `;
 
-function WorkLocation() {
+function EducationLevel() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const WorkLocationSampleFile = "/SampleFiles/WorkLocationSample.csv";
+  const EducationLevelSampleFile = "/SampleFiles/EducationLevelSample.csv";
 
   const queryClient = useQueryClient();
 
   const {
-    data: workLocation = [],
+    data: educationLevel = [],
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["workLocations"],
-    queryFn: () => apiClient.get("workLocation"),
+    queryKey: ["educationLevels"],
+    queryFn: () => apiClient.get("educationLevel"),
   });
 
 
   
-  const deleteWorkLocationMutation = useMutation({
-    mutationFn: (id) => apiClient.delete('workLocation',id),
+  const deleteEducationLevelMutation = useMutation({
+    mutationFn: (id) => apiClient.delete('educationLevel',id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['workLocations']);
+      queryClient.invalidateQueries(['educationLevels']);
     },
   });
 
@@ -90,7 +89,7 @@ function WorkLocation() {
   };
 
   const handleSubmit = () => {
-    queryClient.invalidateQueries(['workLocations']);
+    queryClient.invalidateQueries(['educationLevels']);
   };
 
   const handleDeleteSelected = (e) => {
@@ -105,13 +104,13 @@ setIsDeleting(true);
     try {
       for (let id of selectedRows) {
         await new Promise((resolve, reject) => {
-          deleteWorkLocationMutation.mutate(id, {
+          deleteEducationLevelMutation.mutate(id, {
             onSuccess: () => {
-              console.log(`Deleted WorkLocation with id: ${id}`);
+              console.log(`Deleted EducationLevel with id: ${id}`);
               resolve();
             },
             onError: (error) => {
-              console.error(`Error deleting WorkLocation with id: ${id}`, error);
+              console.error(`Error deleting EducationLevel with id: ${id}`, error);
               reject(error);
             },
           });
@@ -121,9 +120,9 @@ setIsDeleting(true);
       setSelectedRows([]);
       // Close confirmation dialog
       setShowConfirmation(false);
-      console.log("All selected WorkLocation deleted successfully.");
+      console.log("All selected EducationLevel deleted successfully.");
     } catch (error) {
-      console.error("Error deleting WorkLocation:", error);
+      console.error("Error deleting EducationLevel:", error);
     }
   };
 
@@ -132,7 +131,7 @@ setIsDeleting(true);
   };
 
   const getFields = () => [
-    { name: "workLocationName", label: "WorkLocation Name" },
+    { name: "EducationLevelName", label: "EducationLevel Name" },
     { name: "description", label: "Description" },
   ];
   const handleCheckboxChange = (id) => {
@@ -168,12 +167,12 @@ setIsDeleting(true);
   };
 
   if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error fetching WorkLocation data</p>;
+  if (isError) return <p>Error fetching Education Level datas</p>;
 
   return (
-    <WorkLocationContainer>
-      <WorkLocationHeader>
-        <BackButton title="Work Location" />
+    <EducationLevelContainer>
+      <EducationLevelHeader>
+        <BackButton title="Education Level" />
         <OtherButtons>
           {selectedRows.length > 0 && (
             <DeleteBtn onClick={handleDeleteSelected} number={selectedRows.length}/>
@@ -183,53 +182,53 @@ setIsDeleting(true);
             title="Download .xlsx Sample"
             type="download"
             iconType="download"
-            filePath={WorkLocationSampleFile}
+            filePath={EducationLevelSampleFile}
           />
           <Buttons title="Import .xlsx File" type="upload" iconType="upload" onClick={handleOpenDialog} />
           <Buttons
-            width="281px"
-            title="Add Location Type"
+            width="251px"
+            title="Add Education Level"
             type="create"
             onClick={handleCreateClick}
             iconType="create"
           />
         </OtherButtons>
-      </WorkLocationHeader>
-      <WorkLocationBody>
+      </EducationLevelHeader>
+      <EducationLevelBody>
       <ImportFile
         open={dialogOpen}
         onClose={handleCloseDialog}
         onUpload={handleUpload}
         fileType="csv"
-        section="workLocation"
+        section="educationLevel"
       />
-        <WorkLocationPopup
+        <EducationLevelPopup
           open={isPopupOpen}
           onClose={handleClosePopup}
           onSubmit={handleSubmit}
-          title="Create New Work Location"
-          label="Work Location Name"
+          title="Create New Education Level"
+          label="Education Level"
           fields={getFields()}
         />
-        {workLocation.length === 0 ? (
+        {educationLevel.length === 0 ? (
           <NoData />
         ) : (
-          <WorkLocationTable data={workLocation} selectedRows={selectedRows} 
+          <EducationLevelTable data={educationLevel} selectedRows={selectedRows} 
           onCheckboxChange={handleCheckboxChange}
             onSelectAll={handleSelectAll}
-            refetchData={() => queryClient.invalidateQueries(['workLocation'])} // Pass refetch function
+            refetchData={() => queryClient.invalidateQueries(['educationLevels'])} // Pass refetch function
             />
         )}
-      </WorkLocationBody>
+      </EducationLevelBody>
       <ConfirmationDialog
         open={showConfirmation}
         onConfirm={confirmDeletion}
         onCancel={cancelDeletion}
         title="Confirm Deletion"
-        message={isDeleting ? "Please Wait your Rows Are Being Deleted...":"Are you sure you want to delete the selected categories?"}
+        message={isDeleting ? "Please Wait your Rows Are Being Deleted...":"Are you sure you want to delete the selected datas?"}
       />
-    </WorkLocationContainer>
+    </EducationLevelContainer>
   );
 }
 
-export default WorkLocation;
+export default EducationLevel;
