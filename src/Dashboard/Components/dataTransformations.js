@@ -34,6 +34,18 @@ socialMedia: (row)=>({
   socialMediaImage:row['Icon Url'],
   createdAt: new Date(row['Created On']).toISOString(),
   isActiveMedia:stringToBoolean(row['Is Active']),
+}),
+jobType: (row)=>({
+  id:uuidv4(),
+  jobType: row['Job Type'],
+  createdAt: new Date(row['Created On']).toISOString(),
+  isActive:stringToBoolean(row['Is Active']),
+}),
+skills: (row)=>({
+  id:uuidv4(),
+  skillsName: row['Skill Name'],
+  createdAt: new Date(row['Created On']).toISOString(),
+  isActive:stringToBoolean(row['Is Active']),
 })
   // Add more categories if needed
 };

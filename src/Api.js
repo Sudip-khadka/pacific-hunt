@@ -3,6 +3,9 @@ const apiConfig = {
     profession: "https://retoolapi.dev/blNZdv/profession",
     companyType: "https://retoolapi.dev/Lwdufz/companyType",
     socialMedia: "https://retoolapi.dev/MIObfd/socialMedia",
+    jobType: "https://retoolapi.dev/UW8iqb/jobType",
+    skills: "https://retoolapi.dev/HLrIcS/skills",
+    workLocation: "",
   };
   
   const apiClient = {
