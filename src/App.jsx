@@ -4,6 +4,11 @@ import Dashboard from './DashBoard';
 import './styles/tailwind.css';
 import { Route, Routes } from 'react-router-dom';
 import { QueryClient,QueryClientProvider } from '@tanstack/react-query';
+import JobSeekerLogin from './Logins/JobSeekerLogin';
+import EmployeerLogin from './Logins/EmployeerLogin';
+import UserDashboard from './UserDashBoard/UserDashboard';
+import JobSeekerSignup from './Logins/JobSeekerSignup';
+import JobsSearching from './JobsSearching';
 
 function App() {
   const queryClient = new QueryClient();
@@ -12,6 +17,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/jobseekerlogin" element={<JobSeekerLogin />} />
+        <Route path="/jobseekerSignUp" element={<JobSeekerSignup />} />
+        <Route path="/employeerlogin" element={<EmployeerLogin />} />
+        <Route path="/jobsSearching" element={<JobsSearching />} />
+        <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
       </Routes>
       </QueryClientProvider>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import styled from "styled-components";
 import Button from "../Components/Button";
+import { NavLink } from "react-router-dom";
 
 const Navigation = styled.div`
   height: 80px;
@@ -67,7 +68,7 @@ const Navbar = () => {
   return (
     <Navigation>
       <Logo>
-        <img src={logo} alt="Pacific Hunt logo" />
+       <NavLink to='/'> <img src={logo} alt="Pacific Hunt logo" /></NavLink>
       </Logo>
       <div className="navigations flex gap-32 items-center">
         <NavItems>
@@ -97,8 +98,11 @@ const Navbar = () => {
           </NavItem>
         </NavItems>
         <div className="buttons flex gap-16">
+          <NavLink to='/jobseekerlogin'>
           <Button text="Sign Up" />
-          <Button text="Post a Job" primary="primary" />
+          </NavLink>
+          <NavLink to='/employeerlogin'>
+          <Button text="Post a Job" primary="primary" /></NavLink>
         </div>
       </div>
     </Navigation>

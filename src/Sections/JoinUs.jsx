@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Button from '../Components/Button'
 import WhyJoinUs from '../assets/whyjoinus.png'
+import { NavLink } from 'react-router-dom'
 
 const JoinContainer = styled.div`
 width: 100%;
@@ -68,9 +69,10 @@ function JoinUs() {
             <Title>Join <PacificHunt>Pacific Hunt </PacificHunt>today. Connect, Grow, Succeed.</Title>
             <WhyJoinUS>Whether you're seeking your next career move or searching for top talent, our platform offers the perfect avenue to connect and thrive.</WhyJoinUS>
             <ButtonWrapper>
+            <NavLink to='/jobseekerlogin'>
                 <Button text="Join As Jobseeker" primary="primary" width="176px"/>
-
-                <Button text="Join As Employer" width="176px" />
+</NavLink>
+<NavLink to='/employeerlogin'>   <Button text="Join As Employer" width="176px" /></NavLink>
             </ButtonWrapper>
             <img src={WhyJoinUs} alt="person looking for jobs in his laptop" />
         </JoinUsWrapper>

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import homePageImage from '../assets/homePageImage.png';
 import { RiCheckboxCircleFill } from "react-icons/ri";
 import { FaSearch } from 'react-icons/fa';
 import { IoLocationOutline } from "react-icons/io5";
 import Button from '../Components/Button';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = styled.div`
   background: var(--Neutral-Grey-50, #F5F6F6);
@@ -107,14 +108,22 @@ const LocationIcon = styled(IoLocationOutline)`
   transform: translateY(-50%);
 `;
 
-const InputWithIcon = ({ icon: Icon, placeholder }) => (
+const InputWithIcon = ({ icon: Icon, placeholder, value, onChange }) => (
   <InputContainer>
     <Icon />
-    <StyledInput placeholder={placeholder} />
+    <StyledInput placeholder={placeholder} value={value} onChange={onChange} />
   </InputContainer>
 );
 
 function Home() {
+  const [jobTitle, setJobTitle] = useState('');
+  const [location, setLocation] = useState('');
+  const navigate = useNavigate(); // Or useNavigate() if you're using React Router v6
+
+  const handleSearch = () => {
+    console.log(jobTitle,location);
+    navigate(`/jobssearching?title=${jobTitle}&location=${location}`);
+  };
   return (
     <HomePage>
       <div className='home flex items-center justify-center' id='#'>
@@ -129,10 +138,10 @@ function Home() {
           </p>
           <div className="searchBar flex items-center p-[12px] gap-[12px]">
             <div className="search-inputs flex gap-4">
-              <InputWithIcon icon={SearchIcon} placeholder="Job title, Keyword..." />
-              <InputWithIcon icon={LocationIcon} placeholder="Enter Location" />
+              <InputWithIcon icon={SearchIcon} placeholder="Job title, Keyword..." value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} />
+              <InputWithIcon icon={LocationIcon} placeholder="Enter Location" value={location} onChange={(e) => setLocation(e.target.value)}/>
             </div>
-            <Button text="Search Job" primary="primary" />
+            <Button text="Search Job" primary="primary" onClick={handleSearch}/>
           </div>
           <p className='mt-[24px]'><span className='font-semibold text-base'>Popular Searches: </span><span className='text-[#6B6D6F]'>Designer, Developer, Programmer, Architect</span></p>
         </TextSection>

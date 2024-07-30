@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import BatmanLogo from '../assets/Logos/Batman.png';
@@ -7,6 +7,7 @@ import TeslaLogo from '../assets/Logos/Tesla.png';
 import Button from '../Components/Button';
 import { IoLocationOutline } from "react-icons/io5";
 import { CiClock2 } from "react-icons/ci";
+import jobs from '../Datas/Jobs'
 
 const JobsContainer = styled.div`
   padding: 50px 70px 50px;
@@ -101,87 +102,24 @@ const JobFooter= styled.div`
 display:flex;
 justify-content:space-between;
 `
-const jobs = [
-  {
-    id: 1,
-    logo: TeslaLogo,
-    title: 'Deep learning Engineer',
-    location: 'Sydney, Australia',
-    expiration: 25,
-    tags: ['Remote', 'Entry Level', 'Full Time'],
-    salary: '50K - 80K AUD(Yearly)',
-    company: 'Tesla Inc.',
-    saved: true,
-  },
-  {
-    id: 2,
-    logo: BatmanLogo,
-    title: 'Game Developer',
-    location: 'Melbourn, Australia',
-    expiration: 25,
-    tags: ['Onsite', 'Intermediate', 'Internship'],
-    salary: '50K - 90K AUD(Yearly)',
-    company: 'The Batman Corporation',
-    saved: false,
-  },
-  {
-    id: 3,
-    logo: GoogleLogo,
-    title: 'AI Engineer',
-    location: 'Perth, Australia',
-    expiration: 25,
-    tags: ['Hybrid', 'Experienced', 'Full Time'],
-    salary: '20K - 50K AUD(Yearly)',
-    company: 'Google',
-    saved: true,
-  },
-  {
-    id: 4,
-    logo: BatmanLogo,
-    title: 'Software Engineer',
-    location: 'Melbourn, Australia',
-    expiration: 25,
-    tags: ['Onsite', 'Intermediate', 'Internship'],
-    salary: '50K - 90K AUD(Yearly)',
-    company: 'The Batman Corporation',
-    saved: true,
-  },
-  {
-    id: 5,
-    logo: GoogleLogo,
-    title: 'Data Scientist',
-    location: 'Perth, Australia',
-    expiration: 25,
-    tags: ['Hybrid', 'Experienced', 'Full Time'],
-    salary: '20K - 50K AUD(Yearly)',
-    company: 'Google',
-    saved: false,
-  },
-  {
-    id: 6,
-    logo: TeslaLogo,
-    title: 'Product Designer',
-    location: 'Sydney, Australia',
-    expiration: 25,
-    tags: ['Remote', 'Entry Level', 'Full Time'],
-    salary: '50K - 80K AUD(Yearly)',
-    company: 'Tesla Inc.',
-    saved: true,
-  },
-];
+
 
 function Jobs() {
+  const [jobsNumber,setJobsNumber] = useState(6);
+  const increaseJobs=()=>{
+    setJobsNumber(prev=>prev+6)
+  }
   return (
     <JobsContainer id='jobs'>
       <JobsHeader>
         <Title>Top Jobs Openings</Title>
         <SeeMoreButton>
-          <p>See More</p>
+          <p onClick={increaseJobs}>See More</p>
           <FaArrowRightLong />
         </SeeMoreButton>
       </JobsHeader>
       <JobsBody>
-        {jobs.map((job) => (
+        {jobs.slice(0,jobsNumber).map((job) => (
           <JobCard key={job.id}>
             <JobHeader>
               <img src={job.logo} alt={`${job.company} logo`} />

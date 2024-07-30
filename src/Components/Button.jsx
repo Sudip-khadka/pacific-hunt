@@ -38,8 +38,8 @@ const StyledButton = styled.button`
   width: ${(props) => props.width || (props.primary ? '155px' : '130px')};
 `;
 
-const Button = ({ text, primary,width }) => {
-  return <StyledButton primary={primary} width={width}>{text}</StyledButton>;
+const Button = ({ text, primary,width,onClick }) => {
+  return <StyledButton primary={primary} width={width} onClick={onClick}>{text}</StyledButton>;
 };
 
 export default Button;
