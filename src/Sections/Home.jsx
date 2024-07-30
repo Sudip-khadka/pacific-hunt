@@ -13,6 +13,7 @@ const HomePage = styled.div`
   padding: 80px 112px 0;
   height: 680px;
   display: flex;
+  flex-wrap:wrap;
   justify-content: center;
   .searchBar{
   margin-top:64px;
@@ -23,6 +24,13 @@ background: var(--Neutral-White, #FFF);
 
 /* Shadow 1 */
 box-shadow: 0px 2px 5px 2px rgba(190, 204, 255, 0.15);}
+
+ @media (max-width: 768px) {
+ position:relative;
+ padding:0px;
+ height:100vh;
+ overflow:hidden;
+ }
 `;
 
 const ImageContainer = styled.div`
@@ -31,6 +39,12 @@ const ImageContainer = styled.div`
   position: relative;
   padding-top: 50px;
   flex-shrink: 0;
+  @media (max-width: 768px) {
+width:80%;
+height:100%;
+bottom:0px;
+ position:absolute;
+ }
 `;
 
 const JobVacancyCard = styled.div`
@@ -73,6 +87,44 @@ const TextSection = styled.div`
     font-weight: 400;
     line-height: 1.5;
   }
+    @media (max-width: 768px) {
+    height:100%;
+z-index:100;
+background: rgba( 255, 255, 255, 0.25 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 4px );
+-webkit-backdrop-filter: blur( 4px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+padding:70px 50px 0px 50px;
+margin:0px;
+.title{
+margin:8px 0px;
+font-size:35px;
+width:90%;}
+.description {
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+.searchBar{
+width:90%;
+padding:6px;
+margin-top:20px;
+}
+ }
+ @media (max-width: 620px) {
+ padding-top:60px;
+.title{
+margin:8px 0px;
+font-size:30px;
+width:90%;}
+.description {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+ }
 `;
 
 const StyledIcon = styled(RiCheckboxCircleFill)`
@@ -92,6 +144,8 @@ const StyledInput = styled.input`
   padding: 16px 60px 16px 40px;
   border-radius: 4px;
   font-size: 16px;
+  @media(max-width:768px){
+  padding:8px 30px 8px 30px;}
 `;
 
 const SearchIcon = styled(FaSearch)`
@@ -143,7 +197,11 @@ function Home() {
             </div>
             <Button text="Search Job" primary="primary" onClick={handleSearch}/>
           </div>
-          <p className='mt-[24px]'><span className='font-semibold text-base'>Popular Searches: </span><span className='text-[#6B6D6F]'>Designer, Developer, Programmer, Architect</span></p>
+          <p className='lg:mt-6 md:mt-12 sm:mt-[4px]'>
+  <span className='font-semibold text-base'>Popular Searches: </span>
+  <span className='text-[#6B6D6F]'>Designer, Developer, Programmer, Architect</span>
+</p>
+
         </TextSection>
         <ImageContainer>
           <JobVacancyCard>
