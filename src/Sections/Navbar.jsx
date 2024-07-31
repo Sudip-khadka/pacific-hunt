@@ -23,7 +23,7 @@ const Navigation = styled.div`
   
     height: ${props => (props.isNavOpen ? '100%' : '50px')};
     width: ${props => (props.isNavOpen ? '40%' : '50px')};
-    padding: 16px;
+    padding: 25px;
     flex-direction: column;
     align-items: flex-start;
     overflow: hidden;
@@ -40,7 +40,7 @@ position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-  font-size: 30px;
+  font-size: 40px;
   cursor: pointer;
   display:none;
   z-index: 15; /* Ensure it's above other elements */

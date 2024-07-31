@@ -31,6 +31,9 @@ const HomePage = styled.div`
     height: auto;
 
     .searchBar {
+    background:transparent;
+    border:none;
+    box-shadow:none;
       width: 90%;
       padding: 15px;
       margin-top: 20px;
@@ -149,7 +152,7 @@ const StyledInput = styled.input`
   @media(max-width:768px){
   padding:8px 30px 8px 30px;
   border:2px solid #01A3E0;
-  border-radius:20px;}
+  border-radius:10px;}
 `;
 
 const SearchIcon = styled(FaSearch)`
@@ -229,7 +232,7 @@ function Home() {
               <p className='text-xl font-medium'>Job Vacancy</p>
             </div>
           </JobVacancyCard>
-          <img style={{ position: "absolute", bottom: "-10px", width: "calc(100% - 50px)" }} src={homePageImage} alt="lady looking for job on her laptop" />
+          <img style={{ position: "absolute", width: "calc(100% - 50px)" }} src={homePageImage} alt="lady looking for job on her laptop" />
         </ImageContainer>
       </div>
     </HomePage>
