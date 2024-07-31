@@ -1,4 +1,4 @@
-# It Is Online Job Portal Currently Under Development & REquires No Login
+# It Is Online Job Portal Currently Under Development & Requires No Login
 ## Check It Out at :- https://pacifichunt.netlify.app/
 
 ![pacificWebpage](https://github.com/user-attachments/assets/c23881b4-facc-4dbe-9b74-b6ae3d035082)
