@@ -10,8 +10,10 @@ import twitter from '../assets/Logos/twitter.svg'
 import { IoLocationOutline } from 'react-icons/io5';
 
 const CompaniesContainer = styled.div`
-  padding: 50px 70px 96px;
+  padding: 50px 112px 96px;
   width: 100%;
+  @media (max-width:768px){
+  padding:25px;}
 `;
 
 const CompaniesHeader = styled.div`
@@ -60,7 +62,14 @@ display: grid;
     padding:24px 24px 32px;
 border-radius: 12px;
 border: 1px solid var(--Neutral-Grey-100, #E6E7E7);
-background: var(--Neutral-White, #FFF);}`
+background: var(--Neutral-White, #FFF);}
+@media (max-width: 768px) {
+    gap: 12px 16px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+    @media (max-width: 650px) {
+      grid-template-columns: repeat(1, 1fr);
+    }`
 const ImageContainer = styled.div`
 padding:8px;
 border-radius: 50%;
@@ -123,6 +132,9 @@ align-items: center;
 gap: 8px;
 border-radius: 30px;
 border: 1px solid var(--Neutral-Grey-100, #E6E7E7);
+@media (max-width: 768px) {
+    height:40px;
+  }
 `
 
 const companies = [

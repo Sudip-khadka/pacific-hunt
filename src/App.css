@@ -7,7 +7,9 @@
 body, html {
   width: 100%;
   overflow-x: hidden; /* Prevent horizontal scrollbar */
-
+    scroll-behavior: smooth;
+  
+  
 }
 body{
   ::-webkit-scrollbar {

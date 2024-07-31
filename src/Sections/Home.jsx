@@ -9,29 +9,35 @@ import { useNavigate } from 'react-router-dom';
 
 const HomePage = styled.div`
   background: var(--Neutral-Grey-50, #F5F6F6);
-  width:100%;
-  padding: 80px 112px 0;
+  width: 100%;
+  padding: 80px 112px 0px;
   height: 680px;
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   justify-content: center;
-  .searchBar{
-  margin-top:64px;
-  width:696px;
-  border-radius: 8px;
-border: 1px solid var(--Neutral-Grey-100, #E6E7E7);
-background: var(--Neutral-White, #FFF);
 
-/* Shadow 1 */
-box-shadow: 0px 2px 5px 2px rgba(190, 204, 255, 0.15);}
+  .searchBar {
+    margin-top: 64px;
+    width: 696px;
+    border-radius: 8px;
+    border: 1px solid var(--Neutral-Grey-100, #E6E7E7);
+    background: var(--Neutral-White, #FFF);
+    box-shadow: 0px 2px 5px 2px rgba(190, 204, 255, 0.15);
+  }
 
- @media (max-width: 768px) {
- position:relative;
- padding:0px;
- height:100vh;
- overflow:hidden;
- }
+  @media (max-width: 768px) {
+    position: relative;
+    padding: 0px;
+    height: auto;
+
+    .searchBar {
+      width: 90%;
+      padding: 15px;
+      margin-top: 20px;
+    }
+  }
 `;
+
 
 const ImageContainer = styled.div`
   width: 670px;
@@ -64,7 +70,7 @@ const JobVacancyCard = styled.div`
 
 const TextSection = styled.div`
   max-width: 800px;
-  padding: 86px 112px 0px;
+  padding: 86px 80px 0px;
   .caption {
     color: var(--Neutral-Grey-900, #3C3D3D);
     font-family: "Be Vietnam Pro";
@@ -89,6 +95,7 @@ const TextSection = styled.div`
   }
     @media (max-width: 768px) {
     height:100%;
+    width:100%;
 z-index:100;
 background: rgba( 255, 255, 255, 0.25 );
 box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
@@ -107,11 +114,6 @@ width:90%;}
     font-weight: 400;
     line-height: 1.5;
   }
-.searchBar{
-width:90%;
-padding:6px;
-margin-top:20px;
-}
  }
  @media (max-width: 620px) {
  padding-top:60px;
@@ -145,7 +147,9 @@ const StyledInput = styled.input`
   border-radius: 4px;
   font-size: 16px;
   @media(max-width:768px){
-  padding:8px 30px 8px 30px;}
+  padding:8px 30px 8px 30px;
+  border:2px solid #01A3E0;
+  border-radius:20px;}
 `;
 
 const SearchIcon = styled(FaSearch)`
@@ -190,14 +194,25 @@ function Home() {
           <p className='description'>
             Our platform is dedicated to empowering individuals, connecting talent with the right opportunities, and fostering professional growth.
           </p>
-          <div className="searchBar flex items-center p-[12px] gap-[12px]">
-            <div className="search-inputs flex gap-4">
-              <InputWithIcon icon={SearchIcon} placeholder="Job title, Keyword..." value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} />
-              <InputWithIcon icon={LocationIcon} placeholder="Enter Location" value={location} onChange={(e) => setLocation(e.target.value)}/>
-            </div>
-            <Button text="Search Job" primary="primary" onClick={handleSearch}/>
-          </div>
-          <p className='lg:mt-6 md:mt-12 sm:mt-[4px]'>
+          <div className="searchBar flex flex-col sm:flex-row items-center p-3 gap-4">
+  <div className="search-inputs flex flex-col sm:flex-row gap-4 w-full">
+    <InputWithIcon 
+      icon={SearchIcon} 
+      placeholder="Job title, Keyword..." 
+      value={jobTitle} 
+      onChange={(e) => setJobTitle(e.target.value)} 
+    />
+    <InputWithIcon 
+      icon={LocationIcon} 
+      placeholder="Enter Location" 
+      value={location} 
+      onChange={(e) => setLocation(e.target.value)}
+    />
+  </div>
+  <Button text="Search Job" primary="primary" onClick={handleSearch} />
+</div>
+
+          <p className='mb-4 mt-2 sm:mb-0 lg:mt-6 md:mt-12 sm:mt-[4px]'>
   <span className='font-semibold text-base'>Popular Searches: </span>
   <span className='text-[#6B6D6F]'>Designer, Developer, Programmer, Architect</span>
 </p>

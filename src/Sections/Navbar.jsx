@@ -21,13 +21,13 @@ const Navigation = styled.div`
   transition: width 0.3s ease;
   @media (max-width: 768px) {
   
-    height: ${props => (props.isNavOpen ? '100%' : '15%')};
-    width: ${props => (props.isNavOpen ? '40%' : '10%')};
+    height: ${props => (props.isNavOpen ? '100%' : '50px')};
+    width: ${props => (props.isNavOpen ? '40%' : '50px')};
     padding: 16px;
     flex-direction: column;
     align-items: flex-start;
     overflow: hidden;
-    background: #FFF; /* Ensure background covers entire width */
+    background: ${props => (props.isNavOpen ? '#FFF' : 'transparent')}; /* Ensure background covers entire width */
     box-shadow: none; /* Optional: remove box-shadow on mobile */
   }
      @media (max-width: 500px) {
@@ -36,6 +36,10 @@ const Navigation = styled.div`
 `;
 
 const MenuIcon = styled.div`
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
   font-size: 30px;
   cursor: pointer;
   display:none;
@@ -57,6 +61,7 @@ const CloseIcon = styled.div`
 const Logo = styled.div`
   display: flex;
   align-items: center;
+  
   @media (max-width: 768px) {
     width: 100%;
     justify-content: space-between;
@@ -125,7 +130,11 @@ const ButtonsContainer = styled.div`
     margin-top: auto; /* Align buttons at the bottom */
   }
 `;
-
+const LogoContainer = styled.div`
+@media(max-width:768px){
+  display: ${props => (props.isNavOpen ? 'block' : 'none')};
+  }
+`;
 const Navbar = () => {
   const [activePage, setActivePage] = useState("Home");
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -141,7 +150,7 @@ const Navbar = () => {
   return (
     <Navigation isNavOpen={isNavOpen}>
       <Logo>
-        <NavLink to='/'> <img src={logo} alt="Pacific Hunt logo" /></NavLink>
+        <NavLink to='/'><LogoContainer isNavOpen={isNavOpen}> <img  src={logo} alt="Pacific Hunt logo" /></LogoContainer></NavLink>
         <MenuIcon isNavOpen={isNavOpen} onClick={toggleNav}>
           <IoMenu />
         </MenuIcon>

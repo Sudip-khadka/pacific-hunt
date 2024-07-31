@@ -9,8 +9,10 @@ import { HiOutlineMegaphone } from "react-icons/hi2";
 import { MdBarChart } from "react-icons/md";
 
 const CategoriesContainer = styled.div`
-  padding: 50px 70px 0px;
+  padding: 50px 112px 0px;
   width: 100%;
+  @media (max-width:768px){
+  padding:25px;}
 `;
 
 const CategoriesHeader = styled.div`
@@ -56,6 +58,12 @@ const CategoriesBody = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px 32px;
+  @media (max-width:768px){
+  grid-template-columns: repeat(2,1fr);
+  }
+  @media (max-width:600px){
+  grid-template-columns: repeat(1,1fr);
+  }
 `;
 
 const CategoryCard = styled.div`

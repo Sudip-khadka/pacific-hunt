@@ -7,7 +7,10 @@ import { NavLink } from 'react-router-dom'
 const JoinContainer = styled.div`
 width: 100%;
 padding:167px 70px 112px 70px;
-height: 647px;`
+height: 647px;
+@media (max-width:768px){
+padding:20px;
+height:460px;}`
 
 const JoinUsWrapper = styled.div`
 border-radius: 12px;
@@ -21,6 +24,13 @@ img{
 position:absolute;
 bottom:0px;
 right:56px}
+@media (max-width:768px){
+padding:20px;
+height:100%;
+img{
+right:0px;
+z-index:1;}
+}
 `
 
 const Title=styled.h1`
@@ -34,6 +44,11 @@ font-weight: 600;
 line-height: 32px; /* 133.333% */
 letter-spacing: -0.48px;
 margin-bottom:32px;
+z-index:10;
+position:relative;
+@media (max-width:768px){
+  margin-bottom:16px;
+}
 `
 const PacificHunt =styled.span`
 color: var(--Primary-500, #01A3E0);
@@ -47,7 +62,9 @@ line-height: 32px;
 letter-spacing: -0.48px;`
 
 const WhyJoinUS = styled.p`
-width: 592px;
+max-width: 592px;
+z-index:10;
+position:relative;
 color: var(--Neutral-Grey-100, #E6E7E7);
 
 /* Body/Large/Regular */
@@ -58,10 +75,16 @@ font-weight: 400;
 line-height: 24px; /* 150% */
 `
 const ButtonWrapper = styled.div`
+position:relative;
 display: inline-flex;
 align-items: flex-start;
 gap: 24px;
-margin-top:48px;`
+z-index:10;
+margin-top:48px;
+  @media (max-width:768px){
+    margin-top:24px;
+align-items:center;
+flex-direction:column;}`
 function JoinUs() {
   return (
     <JoinContainer>

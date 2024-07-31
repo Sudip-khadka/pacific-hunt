@@ -6,11 +6,13 @@ import hary from '../assets/Profile/hary.svg'
 import robert from '../assets/Profile/Robert.png'
 
 const AboutUsContainer = styled.div`
-  padding: 72px 70px;
+  padding: 72px 112px;
   width: 100%;
   height: 592px;
   flex-shrink: 0;
   background: var(--Neutral-Grey-50, #f5f6f6);
+  @media (max-width:750px){
+  padding:50px;}
 `;
 
 const AboutUsHeader = styled.div`
@@ -151,23 +153,28 @@ const testimonials = [
 ];
 
 function AboutUs() {
-    const [currentCard, setCurrentCard] = useState(2);
+    const [currentCard, setCurrentCard] = useState(window.innerWidth<750? 1: 2);
   const cardsRef = useRef(null);
 
+  
   const handleScroll = () => {
     if (cardsRef.current) {
       const cardWidth = cardsRef.current.children[0].clientWidth + 32; 
       const scrollLeft = cardsRef.current.scrollLeft;
-      const index = Math.round(scrollLeft / cardWidth) + 1;
+      const index = Math.round(scrollLeft / cardWidth) +(window.innerWidth>750? 1: 0);
       setCurrentCard(index + 1);
     }
   };
-
+  const updateCardCount = () => {
+    setCurrentCard(window.innerWidth < 750 ? 1 : 2);
+  };  
   useEffect(() => {
     const container = cardsRef.current;
     if (container) {
       container.addEventListener("scroll", handleScroll);
-      return () => container.removeEventListener("scroll", handleScroll);
+      window.addEventListener("resize", updateCardCount);
+      return () => {container.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", updateCardCount);}
     }
   }, []); 
 

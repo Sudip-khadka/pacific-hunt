@@ -25,7 +25,9 @@ font-size: 24px;
 font-style: normal;
 font-weight: 600;
 line-height: 32px; /* 133.333% */
-letter-spacing: -0.48px;}`
+letter-spacing: -0.48px;}
+@media (max-width:768px){
+padding:40px}`
 
 function Branding() {
   return (
