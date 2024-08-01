@@ -102,7 +102,7 @@ function UnderConstruction() {
       <Announcement>
         <img src={announcement} alt="announcement bar" />
         <Title>Danger Zone !</Title>
-        <Description>This Page Is Under Construction. We Will Let You Know Once Completed<br/>
+        <Description>This Page Is Either Under Construction Or Not Defined. We Will Let You Know Once Completed.<br/>
           <span className='italic text-2xl'>- Sudip Khadka</span>
         </Description>
         <img className='working' src={working} alt="working person" />

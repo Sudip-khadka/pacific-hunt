@@ -26,7 +26,7 @@ const StyledButton = styled.button`
 function DeleteBtn({onClick,number}) {
   return (
     <StyledButton onClick={onClick}>
-      <FaTrash />Delete ({number})
+      <FaTrash />Delete {number && ({number})}
     </StyledButton>
   );
 }

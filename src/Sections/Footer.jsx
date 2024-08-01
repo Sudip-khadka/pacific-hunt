@@ -52,6 +52,7 @@ const Socials = styled.div`
     font-weight: 400;
     line-height: 24px; /* 150% */
     @media(max-width:768px){
+    padding:20px;
 flex-direction:column;}
   }
   .copywriteandsocials > p {

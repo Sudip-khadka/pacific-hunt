@@ -8,6 +8,7 @@ import Button from "../Components/Button";
 import { IoLocationOutline } from "react-icons/io5";
 import { CiClock2 } from "react-icons/ci";
 import jobs from "../Datas/Jobs";
+import { useNavigate } from "react-router-dom";
 
 const JobsContainer = styled.div`
   padding: 50px 112px 50px;
@@ -131,6 +132,11 @@ function Jobs() {
   const increaseJobs = () => {
     setJobsNumber((prev) => prev + 6);
   };
+  const navigate = useNavigate();
+  const goToJobsSection =(jobTitle,jobLocation)=>{
+
+    navigate(`/jobssearching?title=${jobTitle}&location=${jobLocation}`);
+  }
   return (
     <JobsContainer id="jobs">
       <JobsHeader>
@@ -145,7 +151,7 @@ function Jobs() {
           <JobCard key={job.id}>
             <JobHeader>
               <img src={job.logo} alt={`${job.company} logo`} />
-              <Button text="Apply Now" />
+              <Button text="Apply Now" onClick={()=>goToJobsSection(job.title,job.location)} />
             </JobHeader>
             <JobBody>
               <div className="upper">

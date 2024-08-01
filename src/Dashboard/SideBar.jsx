@@ -111,7 +111,9 @@ function SideBar() {
 
   return (
     <Sidebar>
+      <NavLink to='/'>
       <img src={logo} alt="pacific hunt logo" />
+      </NavLink>
       <SideNavigation>
         <NavContainer>
           <StyledNavLink to="/dashboard/jobseeker" end>
