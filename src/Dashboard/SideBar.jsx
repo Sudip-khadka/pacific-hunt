@@ -20,10 +20,9 @@ const Sidebar = styled.div`
   position: absolute;
   top: 0px;
   @media (max-width: 768px) {
-  position: absolute; /* Fix the navbar at the top */
-  top: 0;
+  position:fixed
   z-index: 1000;
-    height: ${props => (props.isNavOpen ? '100%' : '80px')};
+    height: ${props => (props.isNavOpen ? '100vh' : '80px')};
     width: ${props => (props.isNavOpen ? '60%' : '80px')};
     padding: 25px;
     flex-direction: column;
@@ -80,6 +79,8 @@ const SideNavigation = styled.div`
   align-items: flex-start;
   gap: 200px;
   color: rgba(239, 250, 255, 1);
+  @media(max-width:768px){
+  gap:100px;}
 `;
 const NavContainer = styled.div`
   display: flex;
