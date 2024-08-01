@@ -87,7 +87,7 @@ const Navigation = styled.div`
   @media (max-width: 768px) {
   
     height: ${props => (props.isNavOpen ? '100vh' : '50px')};
-    width: ${props => (props.isNavOpen ? '55%' : '50px')};
+    width: ${props => (props.isNavOpen ? '65%' : '50px')};
     padding: 25px;
     flex-direction: column;
     align-items: flex-start;
@@ -187,7 +187,7 @@ navigate('/dashboard');
   
   return (
     <>
-      <Navigation>
+      <Navigation isNavOpen={isNavOpen}>
       <Logo>
         <NavLink to='/'><LogoContainer isNavOpen={isNavOpen}> <img  src={logo} alt="Pacific Hunt logo" /></LogoContainer></NavLink>
         <MenuIcon isNavOpen={isNavOpen} onClick={toggleNav}>
@@ -197,7 +197,7 @@ navigate('/dashboard');
           <IoClose />
         </CloseIcon>
       </Logo>
-        <div className="flex gap-2">
+        <div className="userdata flex gap-2 flex-col md:flex-row">
         <NavLink to='/jobseekerLogin'>
         <Button width="210px" text="Login As JobSeeker " primary="secondary"/></NavLink>
         <NavLink to='/jobseekerSignUp'>
