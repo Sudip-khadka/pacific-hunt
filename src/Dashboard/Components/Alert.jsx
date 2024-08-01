@@ -21,10 +21,15 @@ font-size: 14px;
 font-style: normal;
 font-weight: 500;
 line-height: 20px; /* 142.857% */
+ @media (max-width: 768px) {
+    height: auto; /* Adjust height for small devices */
+    width: 90%; /* Make width responsive */
+    max-width: 400px; /* Set a maximum width */
+  }
 `;
 
-const Alert = ({ message }) => {
-  return <AlertContainer>{message} <FaCircleCheck/></AlertContainer>;
+const Alert = ({ message, }) => {
+  return <AlertContainer >{message} <FaCircleCheck/></AlertContainer>;
 };
 
 export default Alert;

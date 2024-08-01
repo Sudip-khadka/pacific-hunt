@@ -449,7 +449,11 @@ useEffect(() => {
       )}
     </Navigation>
     <JobsSearchContainer>
-    {showAlert && <div className='fixed top-[90px] z-40 right-3'><Alert message={`Application Sucessfully Submitted To ${appliedCompany}.`} /></div> }
+    {showAlert && (
+        <div className="fixed inset-0 z-40 flex justify-center items-center w-[90px] ">
+          <Alert message={`Application Successfully Submitted To ${appliedCompany}.`} />
+        </div>
+      )}
       <SearchBar className="searchBar flex items-center  gap-[12px]">
         <h1 className='font-bold'>Search <span className=' text-[#01A3E0]'>Jobs</span></h1>
         <div className="search-inputs flex gap-4 flex-col md:flex-row">
