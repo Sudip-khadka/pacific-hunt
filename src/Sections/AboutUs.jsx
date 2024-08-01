@@ -13,6 +13,8 @@ const AboutUsContainer = styled.div`
   background: var(--Neutral-Grey-50, #f5f6f6);
   @media (max-width:750px){
   padding:50px;}
+  @media (max-width:550px){
+  padding:40px;}
 `;
 
 const AboutUsHeader = styled.div`
