@@ -18,6 +18,8 @@ const ConfigurationContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  @media(max-width:768px){
+  margin:0px;}
 `;
 const ConfigurationTitle = styled.div`
   display: inline-flex;

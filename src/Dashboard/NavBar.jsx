@@ -13,9 +13,6 @@ const Navbar = styled.nav`
   gap: 24px;
   background: var(--Primary-950, #04334d);
   box-shadow: 0px 2px 5px 2px rgba(190, 204, 255, 0.15);
-  @media(max-width:768px){
-  height:100vh;
-  width:40%;}
 `;
 
 const Profile = styled.div`

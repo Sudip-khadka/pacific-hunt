@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import UnderConstruction from '../UnderConstruction';
 import styled from 'styled-components';
 import DeleteBtn from '../Components/DeleteBtn';
 
 const JobSeekersContainer = styled.div`
   margin-left: 264px;
   padding: 20px;
+
+  @media(max-width: 768px) {
+    margin: 0;
+    padding: 10px;
+  }
 `;
 
 const SearchBar = styled.input`
@@ -14,22 +18,42 @@ const SearchBar = styled.input`
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
+  width: 100%;
+  max-width:300px;
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  table-layout: auto;
 `;
 
 const TableHeader = styled.th`
   border-bottom: 2px solid #ddd;
   padding: 10px;
   text-align: left;
+  font-size: 16px;
+
+  @media(max-width: 768px) {
+    font-size: 14px;
+    padding: 8px;
+  }
 `;
 
 const TableCell = styled.td`
   padding: 10px;
+  font-size: 16px;
+
+  @media(max-width: 768px) {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  &.email-cell {
+    word-break: break-word;
+    white-space: normal;
+  }
 `;
 
 const TableRow = styled.tr`
@@ -88,9 +112,9 @@ function Jobseekers() {
             <TableRow key={user.id}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>{user.username}</TableCell>
-              <TableCell>{user.email}</TableCell>
+              <TableCell className="email-cell">{user.email}</TableCell>
               <TableCell>
-                <DeleteBtn/>
+                <DeleteBtn />
                 {/* Add action buttons or links here */}
               </TableCell>
             </TableRow>

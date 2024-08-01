@@ -16,6 +16,7 @@ const HeaderContainer = styled.div`
   font-weight: 400;
   line-height: 24px;
   margin-bottom:10px;
+  flex-wrap:wrap;
 `;
 
 const RowsPerPageSelect = styled.select`
@@ -143,7 +144,7 @@ function TableHeader({ rowsPerPage, onRowsPerPageChange, onSearch, onDateFilter,
         </RowsPerPageSelect>
         <span> rows per page</span>
       </div>
-      <div className='flex gap-2 '>
+      <div className='flex gap-2 flex-wrap'>
       <SearchContainer>
         <FaSearch />
         <SearchInput type="text" placeholder="Search..." onChange={handleSearchChange} />

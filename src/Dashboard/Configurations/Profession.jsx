@@ -17,6 +17,7 @@ const ProfessionContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+ 
 `;
 
 const ProfessionHeader = styled.div`
@@ -31,12 +32,17 @@ const ProfessionHeader = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 24px; /* 150% */
+   @media(max-width:768px){
+  flex-direction:column;
+  align-items:start;
+  gap:10px;}
 `;
 
 const OtherButtons = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 16px;
+  flex-wrap:wrap;
 `;
 
 const ProfessionBody = styled.div`

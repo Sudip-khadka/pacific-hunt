@@ -4,7 +4,9 @@ import styled from "styled-components";
 import logo from "../assets/logofooter.png";
 import { IoPersonCircle } from "react-icons/io5";
 import ConfirmationDialog from '../Components/ConfirmationDialog';
-
+import { AiOutlineUser, AiFillCrown } from 'react-icons/ai';
+import { IoMenu } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
 const Sidebar = styled.div`
   display: flex;
   width: 264px;
@@ -17,6 +19,60 @@ const Sidebar = styled.div`
   background: var(--Primary-950, #04334d);
   position: absolute;
   top: 0px;
+  @media (max-width: 768px) {
+  position: absolute; /* Fix the navbar at the top */
+  top: 0;
+  z-index: 1000;
+    height: ${props => (props.isNavOpen ? '100%' : '80px')};
+    width: ${props => (props.isNavOpen ? '60%' : '80px')};
+    padding: 25px;
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: hidden;
+    background: ${props => (props.isNavOpen ? '#04334d' : 'transparent')}; /* Ensure background covers entire width */
+    box-shadow: none; /* Optional: remove box-shadow on mobile */
+  }
+`;
+
+const MenuIcon = styled.div`
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+  font-size: 40px;
+  cursor: pointer;
+  color:white;
+  display:none;
+  z-index: 15; /* Ensure it's above other elements */
+  @media (max-width: 768px) {
+    display: ${props => (props.isNavOpen ? 'none' : 'block')};
+  }
+`;
+
+const CloseIcon = styled.div`
+  display: none;
+  font-size: 30px;
+  cursor: pointer;
+  color:white;
+  @media (max-width: 768px) {
+    display: ${props => (props.isNavOpen ? 'block' : 'none')};
+  }
+`;
+
+const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 16px; /* Space between logo and menu items */
+  }
+`;
+const LogoContainer = styled.div`
+@media(max-width:768px){
+  display: ${props => (props.isNavOpen ? 'block' : 'none')};
+  }
 `;
 const SideNavigation = styled.div`
   display: flex;
@@ -104,6 +160,7 @@ const DropdownMenu = styled.div`
 function SideBar() {
   const navigate = useNavigate();
     const location = useLocation();
+    const [isNavOpen,setIsNavOpen]= useState(false)
   const [openDropdown, setOpenDropdown] = useState(null);
   const [showConfirmation,setShowConfirmation] = useState(false)
   const logout = ()=>{
@@ -117,13 +174,21 @@ function SideBar() {
   const toggleDropdown = (name) => {
     setOpenDropdown((prev) => (prev === name ? null : name));
   };
-
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
   return (
     <>
-    <Sidebar>
-      <NavLink to='/'>
-      <img src={logo} alt="pacific hunt logo" />
-      </NavLink>
+    <Sidebar isNavOpen={isNavOpen}>
+    <Logo>
+        <NavLink to='/'><LogoContainer isNavOpen={isNavOpen}> <img  src={logo} alt="Pacific Hunt logo" /></LogoContainer></NavLink>
+        <MenuIcon isNavOpen={isNavOpen} onClick={toggleNav}>
+          <IoMenu />
+        </MenuIcon>
+        <CloseIcon isNavOpen={isNavOpen} onClick={toggleNav}>
+          <IoClose />
+        </CloseIcon>
+      </Logo>
       <SideNavigation>
         <NavContainer>
           <StyledNavLink to="/dashboard/jobseeker" end>
@@ -188,10 +253,12 @@ function SideBar() {
           {openDropdown === 'employer' && (
   <DropdownMenu open={openDropdown === 'employer'}>
     <StyledNavLink to="/dashboard/employer/employe1"><div className="flex gap-2 items-center">
-      <div className="text">Employer 1</div>
+      <div className="text">Normal Employer </div>
       <IoPersonCircle className='w-7  h-7' /></div></StyledNavLink>
       
-    <StyledNavLink to="/dashboard/employer/employe2">Employer 2</StyledNavLink>
+    <StyledNavLink to="/dashboard/employer/employe2"><div className="flex gap-2 items-center">
+      <div className="text">Premium Employer </div>
+      <AiFillCrown className='w-7  h-7' /></div></StyledNavLink>
   </DropdownMenu>
 )}
           <StyledNavLink to="/dashboard/configurations">
