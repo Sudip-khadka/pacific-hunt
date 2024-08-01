@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import logo from "../assets/logofooter.png";
 import { IoPersonCircle } from "react-icons/io5";
+import ConfirmationDialog from '../Components/ConfirmationDialog';
 
 const Sidebar = styled.div`
   display: flex;
@@ -101,15 +102,24 @@ const DropdownMenu = styled.div`
 `;
 
 function SideBar() {
+  const navigate = useNavigate();
     const location = useLocation();
   const [openDropdown, setOpenDropdown] = useState(null);
-  
-
+  const [showConfirmation,setShowConfirmation] = useState(false)
+  const logout = ()=>{
+      localStorage.removeItem('adminEmail');
+      localStorage.removeItem('adminPassword');
+      navigate('/employeerLogin')
+  }
+  const cancelDeletion = () => {
+    setShowConfirmation(false);
+  };
   const toggleDropdown = (name) => {
     setOpenDropdown((prev) => (prev === name ? null : name));
   };
 
   return (
+    <>
     <Sidebar>
       <NavLink to='/'>
       <img src={logo} alt="pacific hunt logo" />
@@ -230,7 +240,7 @@ function SideBar() {
           </StyledNavLink>
         </NavContainer>
         <LogoutContainer>
-          <div className="logout">
+          <div className="logout" onClick={()=>setShowConfirmation(true)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -248,6 +258,14 @@ function SideBar() {
         </LogoutContainer>
       </SideNavigation>
     </Sidebar>
+    <ConfirmationDialog
+        open={showConfirmation}
+        onConfirm={logout}
+        onCancel={cancelDeletion}
+        title="Confirm Deletion"
+        message="Are you sure you want to Logout?"
+      />
+    </>
   );
 }
 

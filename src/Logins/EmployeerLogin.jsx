@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import logo from "../assets/logo.png";
-import { NavLink } from "react-router-dom";
+import { NavLink} from "react-router-dom";
 import Button from "../Components/Button";
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -83,14 +84,42 @@ const Logo = styled.div`
 function EmployeerLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
+useEffect(()=>{
+  if(localStorage.getItem('adminEmail') && localStorage.getItem('adminPassword')){
+navigate('/dashboard');
+  }
+},[])
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle login logic here
+    e.preventDefault();  // Prevent form submission
+  
+    console.log("Form submitted");
     console.log("Email:", email);
     console.log("Password:", password);
+    
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    
+    console.log("Trimmed Email:", trimmedEmail);
+    console.log("Trimmed Password:", trimmedPassword);
+    
+    const isEmailMatch = trimmedEmail === "superadmin@gmail.com";
+    const isPasswordMatch = trimmedPassword === "superadmin";
+    
+    console.log("Email match:", isEmailMatch);
+    console.log("Password match:", isPasswordMatch);
+    
+    if (isEmailMatch && isPasswordMatch) {
+      localStorage.setItem('adminEmail',trimmedEmail)
+      localStorage.setItem('adminPassword',trimmedPassword)
+      console.log("Condition met, navigating...");
+      navigate('/dashboard');
+    } else {
+      console.log("Condition not met");
+    }
   };
-
+  
+  
   return (
     <LoginContainer>
       <Navigation>

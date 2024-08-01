@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import NavBar from './Dashboard/NavBar';
 import SideBar from './Dashboard/SideBar';
 import Configurations from './Dashboard/Configurations';
@@ -8,6 +8,14 @@ import RegistryManager from './Dashboard/RegistryManager';
 import Employer from './Dashboard/Employer';
 
 function Dashboard() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const email = localStorage.getItem('adminEmail');
+    if (!email) {
+      navigate('/employeerLogin'); // Use navigate to redirect
+    }
+  }, [navigate]);
   return (
     <div className=' bg-[#F5F6F6] h-[1284px]'>
       <NavBar />
