@@ -16,7 +16,7 @@ const HeaderContainer = styled.div`
   font-weight: 400;
   line-height: 24px;
   margin-bottom:10px;
-  )
+  flex-wrap:wrap;
 `;
 
 const RowsPerPageSelect = styled.select`

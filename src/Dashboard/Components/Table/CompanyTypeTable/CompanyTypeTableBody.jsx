@@ -13,7 +13,13 @@ const StyledTable = styled.table`
     background: var(--Neutral-Grey-50, #F5F6F6);
   }
 `;
-
+const TableContainer = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  @media(max-width: 768px) {
+    overflow-x: scroll;
+  }
+`;
 const StyledTh = styled.th`
   padding: 8px;
   color: var(--Neutral-Grey-900, #3C3D3D);
@@ -100,7 +106,7 @@ function CompanyTypeTableBody({ data, selectedRows, onCheckboxChange, onSelectAl
   };
 
   return (
-    <>
+    <><TableContainer>
     <StyledTable>
       <thead>
         <tr>
@@ -141,7 +147,7 @@ function CompanyTypeTableBody({ data, selectedRows, onCheckboxChange, onSelectAl
           </StyledTr>
         ))}
       </tbody>
-    </StyledTable>
+    </StyledTable></TableContainer>
     {selectedCompanyType && (
         <UpdateCompanyType
         title="Update CompanyType"

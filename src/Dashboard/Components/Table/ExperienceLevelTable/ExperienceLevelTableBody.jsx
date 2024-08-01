@@ -13,7 +13,13 @@ const StyledTable = styled.table`
     background: var(--Neutral-Grey-50, #F5F6F6);
   }
 `;
-
+const TableContainer = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  @media(max-width: 768px) {
+    overflow-x: scroll;
+  }
+`;
 const StyledTh = styled.th`
   padding: 8px;
   color: var(--Neutral-Grey-900, #3C3D3D);
@@ -92,8 +98,8 @@ function ExperienceLevelTableBody({ data, selectedRows, onCheckboxChange, onSele
       onSelectAll(currentRows); // Select only the current page's rows
     }
   };
-  return (
-    <>
+  return (<>
+    <TableContainer>
     <StyledTable>
       <thead>
         <tr>
@@ -134,7 +140,7 @@ function ExperienceLevelTableBody({ data, selectedRows, onCheckboxChange, onSele
           </StyledTr>
         ))}
       </tbody>
-    </StyledTable>
+    </StyledTable></TableContainer>
     {selectedExperienceLevel && (
         <UpdateExperienceLevel
         title="Update Experience Level"

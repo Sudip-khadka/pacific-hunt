@@ -31,12 +31,17 @@ const EducationLevelHeader = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 24px; /* 150% */
+  @media(max-width:768px){
+  flex-direction:column;
+  gap:10px;
+  align-items:start;}
 `;
 
 const OtherButtons = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 16px;
+  flex-wrap:wrap;
 `;
 
 const EducationLevelBody = styled.div`

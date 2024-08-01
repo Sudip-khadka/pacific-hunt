@@ -3,6 +3,14 @@ import styled from 'styled-components';
 import Switch from '../../Switch'
 import UpdateSkills from '../../PopUps/UpdateSkills';
 
+const TableContainer = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  @media(max-width: 768px) {
+    overflow-x: scroll;
+  }
+`;
+
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -93,7 +101,7 @@ function SkillsTableBody({ data, selectedRows, onCheckboxChange, onSelectAll, on
     }
   };
   return (
-    <>
+    <><TableContainer>
     <StyledTable>
       <thead>
         <tr>
@@ -134,7 +142,7 @@ function SkillsTableBody({ data, selectedRows, onCheckboxChange, onSelectAll, on
           </StyledTr>
         ))}
       </tbody>
-    </StyledTable>
+    </StyledTable></TableContainer>
     {selectedSkills && (
         <UpdateSkills
         title="Update Skills"
