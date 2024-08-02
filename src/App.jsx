@@ -10,6 +10,8 @@ import UserDashboard from './UserDashBoard/UserDashboard';
 import JobSeekerSignup from './Logins/JobSeekerSignup';
 import JobsSearching from './JobsSearching';
 import UnderConstruction from './UnderConstruction';
+import EmployeerSignup from './Logins/EmployeerSignup';
+import EmployeerDashboard from './EmployeerDashboard';
 
 function App() {
   const queryClient = new QueryClient();
@@ -21,8 +23,10 @@ function App() {
         <Route path="/jobseekerlogin" element={<JobSeekerLogin />} />
         <Route path="/jobseekerSignUp" element={<JobSeekerSignup />} />
         <Route path="/employeerlogin" element={<EmployeerLogin />} />
+        <Route path="/employeerSignUp" element={<EmployeerSignup />} />
         <Route path="/jobsSearching" element={<JobsSearching />} />
         <Route path="/userDashboard" element={<UserDashboard />} />
+        <Route path="/employeerDashboard" element={<EmployeerDashboard />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="*" element={<UnderConstruction />} />
       </Routes>

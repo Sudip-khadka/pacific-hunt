@@ -151,8 +151,13 @@ function EmployeerLogin() {
     setIsNavOpen(!isNavOpen);
   };
 useEffect(()=>{
-  if(localStorage.getItem('adminEmail') && localStorage.getItem('adminPassword')){
+  let employeerEmail = localStorage.getItem('adminEmail');
+  let employeerPassword = localStorage.getItem('adminPassword');
+  if(employeerEmail == "superadmin@gmail.com" && employeerPassword=="superadmin"){
 navigate('/dashboard');
+  }
+  else if(employeerEmail && employeerPassword){
+    navigate('/employeerDashboard');
   }
 },[])
   const handleSubmit = (e) => {
