@@ -7,6 +7,7 @@ import Alert from "../Dashboard/Components/Alert";
 import { v4 as uuidv4 } from "uuid";
 import { IoMenu } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
+import { CiImageOn } from "react-icons/ci";
 
 const EmployeerUsers = "https://retoolapi.dev/VWGDSZ/EmployeerUsers";
 
@@ -55,6 +56,16 @@ const InputField = styled.input`
   border-radius: 5px;
   font-size: 1rem;
 `;
+const LogoPreview = styled.div`
+width:48%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom: 1rem;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;`
 
 const ErrorMessage = styled.p`
   color: red;
@@ -348,20 +359,23 @@ function EmployeerSignup() {
         <div className="flex justify-between flex-wrap">
           <InputField
             type="text"
-            placeholder="Company Logo"
+            placeholder="Company Logo Url"
             value={companyLogo}
             onChange={(e) => setCompanyLogo(e.target.value)}
             required
           />
-          <div className="flex items-center space-between ">
+          <LogoPreview>
             <h2> Logo preview:</h2>
+            {companyLogo==="" ? <div className="text-2xl">
+            <CiImageOn/></div>:
+            
             <img
               src={companyLogo}
               alt={companyname}
-              height={"50px"}
-              width={"50px"}
-            />
-          </div>
+              height={"40px"}
+              width={"40px"}
+            />}
+          </LogoPreview>
         </div>
         {companynameValid === false && (
           <ErrorMessage>Please enter your companyname</ErrorMessage>
