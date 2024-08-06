@@ -12,6 +12,8 @@ import { IoMenu } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import Alert from './Dashboard/Components/Alert';
 
+const apiJobSearchingUrl = import.meta.env.VITE_API_JOBSEARCHING;
+
 const JobsSearchContainer = styled.div`
 width:100%;
 height:auto;
@@ -318,7 +320,7 @@ useEffect(() => {
     const locationParam = queryParams.get('location');
   
     try {
-      const response = await axios.get('https://retoolapi.dev/LRwL3E/availableJobs');
+      const response = await axios.get(apiJobSearchingUrl);
       const filteredJobs = response.data.filter(job => {
         const titleMatch = title ? job.jobTitle.toLowerCase().includes(title.toLowerCase()) : true;
         const locationMatch = locationParam ? job.address.toLowerCase().includes(locationParam.toLowerCase()) : true;
@@ -374,7 +376,7 @@ useEffect(() => {
 
     const fetchJobs = async () => {
       try {
-        const response = await axios.get('https://retoolapi.dev/LRwL3E/availableJobs');
+        const response = await axios.get(apiJobSearchingUrl);
         const filteredJobs = response.data.filter(job => {
           const titleMatch = title ? job.jobTitle.toLowerCase().includes(title.toLowerCase()) : true;
           const locationMatch = locationParam ? job.address.toLowerCase().includes(locationParam.toLowerCase()) : true;
