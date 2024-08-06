@@ -1,14 +1,15 @@
-const apiConfig = {
-    category: "https://retoolapi.dev/Pgomdn/category",
-    profession: "https://retoolapi.dev/blNZdv/profession",
-    companyType: "https://retoolapi.dev/Lwdufz/companyType",
-    socialMedia: "https://retoolapi.dev/MIObfd/socialMedia",
-    jobType: "https://retoolapi.dev/UW8iqb/jobType",
-    skills: "https://retoolapi.dev/HLrIcS/skills",
-    workLocation: "https://retoolapi.dev/sm4oW9/workLocation",
-    educationLevel: "https://retoolapi.dev/XrNqT3/educationLevel",
-    experienceLevel: "https://retoolapi.dev/nds3hV/experienceLevel",
-  };
+export const apiConfig = {
+  category: import.meta.env.VITE_API_CATEGORY,
+  profession: import.meta.env.VITE_API_PROFESSION,
+  companyType: import.meta.env.VITE_API_COMPANY_TYPE,
+  socialMedia: import.meta.env.VITE_API_SOCIAL_MEDIA,
+  jobType: import.meta.env.VITE_API_JOB_TYPE,
+  skills: import.meta.env.VITE_API_SKILLS,
+  workLocation: import.meta.env.VITE_API_WORK_LOCATION,
+  educationLevel: import.meta.env.VITE_API_EDUCATION_LEVEL,
+  experienceLevel: import.meta.env.VITE_API_EXPERIENCE_LEVEL,
+};
+
   
   const apiClient = {
     getAll: async (resource) => {

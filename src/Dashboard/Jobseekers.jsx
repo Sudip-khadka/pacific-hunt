@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DeleteBtn from '../Components/DeleteBtn';
+import ConfirmationDialog from '../Components/ConfirmationDialog';
 
 const JobSeekersContainer = styled.div`
   margin-left: 264px;
@@ -68,6 +69,9 @@ function Jobseekers() {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [userIdToDelete, setUserIdToDelete] = useState(null);
 
   useEffect(() => {
     fetch(jobSeekerUsers)
@@ -88,6 +92,42 @@ function Jobseekers() {
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleDeleteClick = (userId) => {
+    setUserIdToDelete(userId);
+    setShowConfirmation(true);
+  };
+
+  const confirmDeletion = () => {
+    if (userIdToDelete !== null) {
+      setIsDeleting(true);
+      fetch(`${jobSeekerUsers}/${userIdToDelete}`, {
+        method: 'DELETE',
+      })
+      .then(response => {
+        if (response.ok) {
+          // Remove user from local state if deletion is successful
+          const updatedUsers = users.filter(user => user.id !== userIdToDelete);
+          setUsers(updatedUsers);
+          setFilteredUsers(updatedUsers);
+          setUserIdToDelete(null);
+          setIsDeleting(false);
+        } else {
+          console.error('Failed to delete user');
+        }
+      })
+      .catch(error => console.error('Error deleting user:', error))
+      .finally(() => {
+        setShowConfirmation(false);
+        setIsDeleting(false);
+      });
+    }
+  };
+
+  const cancelDeletion = () => {
+    setUserIdToDelete(null);
+    setShowConfirmation(false);
   };
 
   return (
@@ -114,13 +154,19 @@ function Jobseekers() {
               <TableCell>{user.username}</TableCell>
               <TableCell className="email-cell">{user.email}</TableCell>
               <TableCell>
-                <DeleteBtn />
-                {/* Add action buttons or links here */}
+                <DeleteBtn onClick={() => handleDeleteClick(user.id)} />
               </TableCell>
             </TableRow>
           ))}
         </tbody>
       </Table>
+      <ConfirmationDialog
+        open={showConfirmation}
+        onConfirm={confirmDeletion}
+        onCancel={cancelDeletion}
+        title="Confirm Deletion"
+        message={isDeleting ? "Please wait, your rows are being deleted..." : "Are you sure you want to delete this user?"}
+      />
     </JobSeekersContainer>
   );
 }

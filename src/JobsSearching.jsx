@@ -450,7 +450,7 @@ useEffect(() => {
     </Navigation>
     <JobsSearchContainer>
     {showAlert && (
-        <div className="fixed inset-0 z-40 flex justify-center items-center w-[90px] ">
+        <div className="fixed right-[50px] top-[100px] flex justify-center items-center ">
           <Alert message={`Application Successfully Submitted To ${appliedCompany}.`} />
         </div>
       )}

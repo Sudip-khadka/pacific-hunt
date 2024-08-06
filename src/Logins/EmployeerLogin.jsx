@@ -6,8 +6,9 @@ import Button from "../Components/Button";
 import { useNavigate } from 'react-router-dom';
 import { IoMenu } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
+import axios from "axios";
 
-
+const EmployeerUsers = "https://retoolapi.dev/VWGDSZ/EmployeerUsers";
 const LoginContainer = styled.div`
   height: 100vh;
   width: 100%;
@@ -146,20 +147,38 @@ function EmployeerLogin() {
   const [email, setEmail] = useState("");
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [password, setPassword] = useState("");
+  const [employees, setEmployees] = useState([]);
   const navigate = useNavigate();
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
   };
+
+  
+const fetchEmployees = async () => {
+  try {
+    const response = await axios.get(EmployeerUsers);
+    setEmployees(response.data);
+  } catch (error) {
+    // Handle any errors that occur during the request
+    console.error('Error fetching employee data:', error);
+  }
+};
+
+
 useEffect(()=>{
+  fetchEmployees();
   let employeerEmail = localStorage.getItem('adminEmail');
   let employeerPassword = localStorage.getItem('adminPassword');
   if(employeerEmail == "superadmin@gmail.com" && employeerPassword=="superadmin"){
-navigate('/dashboard');
+navigate('/dashboard/jobseeker');
   }
+
   else if(employeerEmail && employeerPassword){
     navigate('/employeerDashboard');
   }
 },[])
+
+
   const handleSubmit = (e) => {
     e.preventDefault();  // Prevent form submission
   
@@ -178,13 +197,17 @@ navigate('/dashboard');
     
     console.log("Email match:", isEmailMatch);
     console.log("Password match:", isPasswordMatch);
-    
+    const user = employees.find(emp => emp.companyEmail === trimmedEmail && emp.password === trimmedPassword);
     if (isEmailMatch && isPasswordMatch) {
       localStorage.setItem('adminEmail',trimmedEmail)
       localStorage.setItem('adminPassword',trimmedPassword)
       console.log("Condition met, navigating...");
-      navigate('/dashboard');
-    } else {
+      navigate('/dashboard/jobseeker');
+    }
+    else if(user){
+      navigate('/employeerDashboard');
+    }
+     else {
       console.log("Condition not met");
     }
   };

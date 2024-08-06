@@ -83,6 +83,7 @@ const ConfigurationItem = styled(Link)`
   flex-shrink: 0;
   text-decoration: none;
 `;
+
 const ButtonTitle = styled.p`
   text-align: center;
 
