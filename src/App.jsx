@@ -28,6 +28,7 @@ function App() {
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/employeerDashboard" element={<EmployeerDashboard />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
+        <Route path="/employeerDashboard/*" element={<EmployeerDashboard />} />
         <Route path="*" element={<UnderConstruction />} />
       </Routes>
       </QueryClientProvider>

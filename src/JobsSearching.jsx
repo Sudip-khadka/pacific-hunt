@@ -13,6 +13,7 @@ import { IoClose } from "react-icons/io5";
 import Alert from './Dashboard/Components/Alert';
 
 const apiJobSearchingUrl = import.meta.env.VITE_API_JOBSEARCHING;
+const EmployeerDetails = import.meta.env.VITE_API_EMPLOYEER;
 
 const JobsSearchContainer = styled.div`
 width:100%;
@@ -303,14 +304,16 @@ useEffect(() => {
     if (jobLocation) queryParams.set('location', jobLocation);
     window.history.pushState(null, '', '?' + queryParams.toString());
     // Trigger filtering by calling fetchJobs after updating the URL
-    fetchJobs();
+    fetchJobs(1);
   };
   
   const handleClearFilters = () => {
     setJobTitle('');
     setJobLocation('');
     window.history.pushState(null, '', window.location.pathname);
-    fetchJobs();
+    setPage(1);  // Reset page number to 1 to start from the first page
+  setJobs([]);  // Clear the current jobs to fetch the new set
+  fetchJobs(1);  // Fetch jobs from the first page
   };
   
   const fetchJobs = async (page = 1) => {
@@ -339,6 +342,9 @@ useEffect(() => {
       setIsLoading(false);
     }
   };
+ 
+  
+  
   const observer = useRef();
   const lastJobElementRef = useCallback(node => {
     if (isLoading) return;
@@ -377,6 +383,8 @@ useEffect(() => {
     const fetchJobs = async () => {
       try {
         const response = await axios.get(apiJobSearchingUrl);
+        const response1 = await axios.get(EmployeerDetails);
+
         const filteredJobs = response.data.filter(job => {
           const titleMatch = title ? job.jobTitle.toLowerCase().includes(title.toLowerCase()) : true;
           const locationMatch = locationParam ? job.address.toLowerCase().includes(locationParam.toLowerCase()) : true;

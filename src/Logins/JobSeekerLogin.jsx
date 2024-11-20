@@ -6,7 +6,7 @@ import Button from "../Components/Button";
 import { IoMenu } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 
-const jobSeekerUsers = 'https://retoolapi.dev/iVQngS/jobSeeker';
+const jobSeekerUsers = import.meta.env.VITE_API_JOB_SEEKER;
 
 const LoginContainer = styled.div`
   height: 100vh;

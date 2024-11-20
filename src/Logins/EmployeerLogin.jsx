@@ -8,7 +8,7 @@ import { IoMenu } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import axios from "axios";
 
-const EmployeerUsers = "https://retoolapi.dev/VWGDSZ/EmployeerUsers";
+const EmployeerUsers = import.meta.env.VITE_API_EMPLOYEER;
 const LoginContainer = styled.div`
   height: 100vh;
   width: 100%;
@@ -148,6 +148,7 @@ function EmployeerLogin() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [employees, setEmployees] = useState([]);
+  const [loggedEmployeName,setLoggedEmployeeName]=useState("")
   const navigate = useNavigate();
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
@@ -205,7 +206,10 @@ navigate('/dashboard/jobseeker');
       navigate('/dashboard/jobseeker');
     }
     else if(user){
-      navigate('/employeerDashboard');
+      console.log(user);
+      localStorage.setItem("employeerDetail",JSON.stringify(user));
+      localStorage.setItem('adminEmail',trimmedEmail);
+      navigate('/employeerDashboard/');
     }
      else {
       console.log("Condition not met");

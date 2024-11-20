@@ -12,7 +12,7 @@ function Dashboard() {
 
   useEffect(() => {
     const email = localStorage.getItem('adminEmail');
-    if (!email) {
+    if (email!=="superadmin@gmail.com") {
       navigate('/employeerLogin'); // Use navigate to redirect
     }
   }, [navigate]);

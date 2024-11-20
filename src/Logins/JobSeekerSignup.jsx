@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IoMenu } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 
-const jobSeekerUsers = 'https://retoolapi.dev/iVQngS/jobSeeker';
+const jobSeekerUsers = import.meta.env.VITE_API_JOB_SEEKER;
 
 const SignupContainer = styled.div`
   height: 100vh;
