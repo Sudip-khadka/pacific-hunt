@@ -3,6 +3,7 @@ import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
 import UserSidebar from './userSidebar';
 import UserNavigation from './userNavigation';
 import UserProfile from './userProfile';
+import AppliedJobs from './AppliedJobs';
 // import PostJob from './userAdminPanel/PostJob';
 // import PostedJob from './userAdminPanel/PostedJob';
 // import Applicants from './userAdminPanel/Applicants';
@@ -44,8 +45,8 @@ function userDashboard() {
       <div className="dashboard-content">
         <Routes>
           <Route path="/userprofile" element={<UserProfile />} />
+          <Route path="/appliedJobs" element={<AppliedJobs />} />
           {/* <Route path="/createjobs" element={<PostJob />} />
-          <Route path="/postedjobs" element={<PostedJob />} />
           <Route path="/applicants" element={<Applicants />} /> */}
         </Routes>
       </div>

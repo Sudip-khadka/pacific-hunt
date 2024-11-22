@@ -9,6 +9,7 @@ padding: 14px 24px;
 justify-content: center;
 align-items: center;
 gap: 8px;
+z-index:1000;
 border-radius: 4px;
 border: 1px solid var(--Success-500, #03BE7A);
 background: var(--Success-100, #CEFDE3);

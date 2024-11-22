@@ -208,7 +208,7 @@ function userSidebar() {
               <div className="text">Profile</div>
             </div>
           </StyledNavLink>
-          <StyledNavLink to="/userDashboard/createjobs">
+          <StyledNavLink to="/userDashboard/savedJobs">
             <div className="StyledNavLink">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -233,7 +233,7 @@ function userSidebar() {
             
           
           </StyledNavLink>
-          <StyledNavLink to="/userDashboard/applicants">
+          <StyledNavLink to="/userDashboard/appliedJobs">
           
             <div className="StyledNavLink">
               <svg

@@ -186,7 +186,7 @@ const PostJob = () => {
         experience: '',
         salaryType: '',
         description: '',
-        appliedBy:[]
+        appliedBy:[],
       });
     } catch (error) {
       console.error('Error posting job:', error.response ? error.response.data : error);

@@ -37,7 +37,7 @@ display:flex;
 margin-left:100px;
 flex-direction:column;
 gap:20px;
-padding:20px 0px 0px 30px;
+padding:20px 0px 20px 30px;
 align-items:left;
 justify-content:left;
 border: 1px solid #ccc;
@@ -70,7 +70,8 @@ height:100%;
 overflow:scroll;
 flex-direction:column;
 justify-content:center;
-position:relative;`
+position:relative;
+z-index:1;`
 
 
 const Navigation = styled.div`
@@ -266,6 +267,7 @@ function SingleJobs() {
 // console.log(jobId)
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [showAlert,setShowAlert]=useState(false);
+  const [showAppliedAlert,setShowAppliedAlert]=useState(false);
   const [username, setUsername] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [jobs, setJobs] = useState([]);
@@ -273,9 +275,11 @@ function SingleJobs() {
 const [isLoading, setIsLoading] = useState(false);
 const [hasMore, setHasMore] = useState(true);
   const [appliedCompany, setAppliedCompany] = useState("");
+  const [hasApplied,setHasApplied]=useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const [showButton, setShowButton] = useState(false);
+  const [recomendedJobs,setRecomendedJobs]= useState([])
   const [job, setJob] = useState({
     id: jobId,
     logo: "",
@@ -319,55 +323,58 @@ useEffect(() => {
 
 
   useEffect(() => {
-  const fetchJobs = async (page = 1) => {
-    setIsLoading(true);
-
-    try {
-      // Fetch all jobs
-      const response = await axios.get(apiJobSearchingUrl);
-      const filteredJobs = response.data;
-
-      // Fetch clicked job using the jobId from the query parameter
-      const clickedJobResponse = await axios.get(`${apiJobSearchingUrl}/${jobId}`);
-      const clickedJob = clickedJobResponse.data;
-
-      // Update state with the job details
-      setJob({
-        id: clickedJob.id,
-        logo: clickedJob.logo,
-        email: clickedJob.email,
-        title: clickedJob.title,
-        salary: clickedJob.salary,
-        skills: clickedJob.skills,
-        address: clickedJob.address,
-        company: clickedJob.company,
-        jobTitle: clickedJob.jobTitle,
-        expiresIn: clickedJob.expiresIn,
-        isExpired: clickedJob.isExpired,
-        maxSalary: clickedJob.maxSalary,
-        minSalary: clickedJob.minSalary,
-        experience: clickedJob.experience,
-        salaryType: clickedJob.salaryType,
-        description: clickedJob.description,
-      });
-
-      // Simulate paginated data by slicing the filtered jobs
-      const jobsPerPage = 6;
-      const newJobs = filteredJobs.slice((page - 1) * jobsPerPage, page * jobsPerPage);
-
-      setJobs(prevJobs => (page === 1 ? newJobs : [...prevJobs, ...newJobs]));
-      setHasMore(newJobs.length === jobsPerPage);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching jobs:', error);
-      setIsLoading(false);
-    }
-  };
-
-
+    const fetchJobs = async (page = 1) => {
+      setIsLoading(true);
+  
+      try {
+        // Fetch all jobs
+        const response = await axios.get(apiJobSearchingUrl);
+        const filteredJobs = response.data;
+  
+        // Fetch clicked job using the jobId from the query parameter
+        const clickedJobResponse = await axios.get(`${apiJobSearchingUrl}/${jobId}`);
+        const clickedJob = clickedJobResponse.data;
+  
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userEmail = user.email;
+        const filteredApplicants = clickedJob.appliedBy.some(applicant => applicant.email === userEmail);
+        setHasApplied(filteredApplicants);
+  
+        // Update state with the job details
+        setJob({
+          id: clickedJob.id,
+          logo: clickedJob.logo,
+          email: clickedJob.email,
+          title: clickedJob.title,
+          salary: clickedJob.salary,
+          skills: Array.isArray(clickedJob.skills) ? clickedJob.skills : clickedJob.skills.split(','),
+          address: clickedJob.address,
+          company: clickedJob.company,
+          jobTitle: clickedJob.jobTitle,
+          expiresIn: clickedJob.expiresIn,
+          isExpired: clickedJob.isExpired,
+          maxSalary: clickedJob.maxSalary,
+          minSalary: clickedJob.minSalary,
+          experience: clickedJob.experience,
+          salaryType: clickedJob.salaryType,
+          description: clickedJob.description,
+        });
+  
+        // Simulate paginated data by slicing the filtered jobs
+        const jobsPerPage = 6;
+        const newJobs = filteredJobs.slice((page - 1) * jobsPerPage, page * jobsPerPage);
+  
+        setJobs(prevJobs => (page === 1 ? newJobs : [...prevJobs, ...newJobs]));
+        setHasMore(newJobs.length === jobsPerPage);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching jobs:', error);
+        setIsLoading(false);
+      }
+    };
+  
     fetchJobs(page); // Initial fetch when component mounts
-  }, [page,location]);  // Rerun whenever the page changes
-
+  }, [page, location]);
  
   
   
@@ -402,48 +409,70 @@ useEffect(() => {
     setUsername("");
     navigate('/'); // Navigate to home or login page after logout
   };
-//   useEffect(() => {
-//     const queryParams = new URLSearchParams(location.search);
-//     const title = queryParams.get('title');
-//     const locationParam = queryParams.get('location');
 
-//     const fetchJobs = async () => {
-//       try {
-//         const response = await axios.get(apiJobSearchingUrl);
-
-//         const filteredJobs = response.data.filter(job => {
-//           const titleMatch = title ? job.jobTitle.toLowerCase().includes(title.toLowerCase()) : true;
-//           const locationMatch = locationParam ? job.address.toLowerCase().includes(locationParam.toLowerCase()) : true;
-//           return titleMatch && locationMatch;
-//         });
-//         setJobs(filteredJobs);
-//       } catch (error) {
-//         console.error('Error fetching jobs:', error);
-//       }
-//     };
-
-//     fetchJobs();
-//   }, [location.search]);
-//   useEffect(() => {
-//     fetchJobs(page);
-//   }, [page]);
 
   const getFormattedAddress = (address) => {
     const parts = address.split(',').map(part => part.trim());
     return parts.slice(-2).join(', ');
   };
-
-  const sendApplication = (e,id)=>{
+  const alreadyApplied=()=>{
+    setShowAppliedAlert(true)
+  setTimeout(() => {
+    setShowAppliedAlert(false);
+  }, 3000);
+  }
+  const sendApplication = async (e, company) => {
+    e.preventDefault();
+  
+    if (isLoggedIn) {
+      setAppliedCompany(company);
+      setShowAlert(true);
+      setHasApplied(true);
+  
+      // Hide the alert after 3 seconds
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
+  
+      const userDetail = JSON.parse(localStorage.getItem("user"));
+  
+      // Add a default status of "Pending" to the user detail
+      const userWithStatus = { ...userDetail, status: "Pending" };
+  
+      try {
+        // Fetch the current job details
+        const appliedJob = await axios.get(`${apiJobSearchingUrl}/${jobId}`);
+        const jobDetails = appliedJob.data;
+  
+        // Update the appliedBy field with the new user details
+        const updatedAppliedBy = [...jobDetails.appliedBy, userWithStatus];
+  
+        // Send the updated job object back to the server
+        await axios.patch(`${apiJobSearchingUrl}/${jobId}`, {
+          appliedBy: updatedAppliedBy,
+        });
+  
+        console.log("Application submitted successfully!");
+      } catch (error) {
+        console.error("Error while submitting the application:", error);
+      }
+    } else {
+      navigate("/jobseekerLogin");
+    }
+  };
+  
+  
+  const navigateToJob = (e,id)=>{
     e.preventDefault();
     if(isLoggedIn){
       setAppliedCompany(id);
       navigate(`/jobs?id=${id}`)
-      fetchJobs();
-      // setShowAlert(true);
-      // setTimeout(()=>{
-      //   setShowAlert(false);
+    //   fetchJobs();
+    //   setShowAlert(true);
+    //   setTimeout(()=>{
+    //     setShowAlert(false);
 
-      // },3000)
+    //   },3000)
     }
     else{
       navigate('/jobseekerLogin');
@@ -491,8 +520,13 @@ useEffect(() => {
     </Navigation>
     <JobsSearchContainer>
     {showAlert && (
-        <div className="fixed right-[50px] top-[100px] flex justify-center items-center ">
+        <div className="fixed top-[100px] flex justify-center items-center ">
           <Alert message={`Application Successfully Submitted To ${appliedCompany}.`} />
+        </div>
+      )}
+    {showAppliedAlert && (
+        <div className="fixed top-[100px] flex justify-center items-center ">
+          <Alert message={`You Have Already Applied.`} />
         </div>
       )}
       
@@ -501,13 +535,17 @@ useEffect(() => {
       <Title>Job Details</Title>
       <Table>
         <tbody>
-          <TableRow>
-            <TableCell>Job Title</TableCell>
-            <TableCell>{job.title}</TableCell>
+        <TableRow>
+            <TableCell><img src={job.logo} width="200px" alt="" /></TableCell>
+            <TableCell></TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Company</TableCell>
             <TableCell>{job.company}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Job Title</TableCell>
+            <TableCell>{job.title}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Location</TableCell>
@@ -537,10 +575,11 @@ useEffect(() => {
           </TableRow>
         </tbody>
       </Table>
+      {hasApplied ?<Button width="200px" text="Already Applied !" primary="secondary" onClick={(e)=>alreadyApplied()} /> :<Button width="150px" text="Apply Now" primary="primary" onClick={(e)=>sendApplication(e,job.company)} />}
     </JobDescription>
     <RecomendedJobs>
     <JobsHeader>
-      <Title>Current Jobs Openings</Title>
+      <Title>Recomended Jobs</Title>
     </JobsHeader>
     <JobsBody>
       {jobs.length > 0 ? (
@@ -564,7 +603,7 @@ useEffect(() => {
             </JobBody>
             <hr />
             <JobFooter>
-              <Button text="View Details" width="150px" onClick={(e)=>sendApplication(e, job.id)}/>
+              <Button text="View Details" width="150px" onClick={(e)=>navigateToJob(e, job.id)}/>
             </JobFooter>
           </JobCard>
         ))

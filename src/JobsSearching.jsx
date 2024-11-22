@@ -325,7 +325,7 @@ useEffect(() => {
     try {
       const response = await axios.get(apiJobSearchingUrl);
       const filteredJobs = response.data.filter(job => {
-        const titleMatch = title ? job.jobTitle.toLowerCase().includes(title.toLowerCase()) : true;
+        const titleMatch = title ? job.title.toLowerCase().includes(title.toLowerCase()) : true;
         const locationMatch = locationParam ? job.address.toLowerCase().includes(locationParam.toLowerCase()) : true;
         return titleMatch && locationMatch;
       });
@@ -362,9 +362,7 @@ useEffect(() => {
     const userId = userData.id;
     const userName = userData.username || "User";
     if (userId) {
-      // Assuming you have a way to get the username from userId
-      // Here, I am just using a placeholder for demonstration
-      const user = { userId: userId, userName: userName }; // Replace with actual user fetching logic
+      const user = { userId: userId, userName: userName }; 
       setUsername(user.userName);
       setIsLoggedIn(true);
     }
@@ -384,10 +382,9 @@ useEffect(() => {
     const fetchJobs = async () => {
       try {
         const response = await axios.get(apiJobSearchingUrl);
-        const response1 = await axios.get(EmployeerDetails);
 
         const filteredJobs = response.data.filter(job => {
-          const titleMatch = title ? job.jobTitle.toLowerCase().includes(title.toLowerCase()) : true;
+          const titleMatch = title ? job.title.toLowerCase().includes(title.toLowerCase()) : true;
           const locationMatch = locationParam ? job.address.toLowerCase().includes(locationParam.toLowerCase()) : true;
           return titleMatch && locationMatch;
         });
@@ -413,11 +410,6 @@ useEffect(() => {
     if(isLoggedIn){
       setAppliedCompany(id);
       navigate(`/jobs?id=${id}`)
-      // setShowAlert(true);
-      // setTimeout(()=>{
-      //   setShowAlert(false);
-
-      // },3000)
     }
     else{
       navigate('/jobseekerLogin');
@@ -489,9 +481,9 @@ useEffect(() => {
             </JobHeader>
             <JobBody>
               <div className="upper">
-                <JobTitle>{job.jobTitle}</JobTitle>
+                <JobTitle>{job.title}</JobTitle>
                 <div className="locationandexpiration flex gap-4">
-                  <div className="location flex gap-1 items-center"><IoLocationOutline /><p>{getFormattedAddress(job.address)}</p></div>
+                  <div className="location flex gap-1 items-center"><IoLocationOutline /><p>{job.address}</p></div>
                   <div className="expiration flex gap-1 items-center"><CiClock2 /> Expires In {job.expiresIn} Days</div>
                 </div>
               </div>
