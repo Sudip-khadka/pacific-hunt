@@ -166,8 +166,8 @@ function userSidebar() {
   const logout = ()=>{
       localStorage.removeItem('adminEmail');
       localStorage.removeItem('adminPassword');
-      localStorage.removeItem('userDetail');
-      navigate('/userLogin')
+      localStorage.removeItem('user');
+      navigate('/')
   }
   const cancelDeletion = () => {
     setShowConfirmation(false);
