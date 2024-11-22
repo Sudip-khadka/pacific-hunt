@@ -408,15 +408,16 @@ useEffect(() => {
     return parts.slice(-2).join(', ');
   };
 
-  const sendApplication = (e,company)=>{
+  const sendApplication = (e,id)=>{
     e.preventDefault();
     if(isLoggedIn){
-      setAppliedCompany(company)
-      setShowAlert(true);
-      setTimeout(()=>{
-        setShowAlert(false);
+      setAppliedCompany(id);
+      navigate(`/jobs/${id}`)
+      // setShowAlert(true);
+      // setTimeout(()=>{
+      //   setShowAlert(false);
 
-      },3000)
+      // },3000)
     }
     else{
       navigate('/jobseekerLogin');
@@ -484,7 +485,7 @@ useEffect(() => {
           <JobCard ref={lastJobElementRef} key={job.id}>
             <JobHeader>
               <img width="48px" height="48px" src={job.logo} alt={`${job.company} logo`} />
-              <Button text="Apply Now" onClick={(e)=>sendApplication(e, job.company)}/>
+              <Button text="View Details" width="150px" onClick={(e)=>sendApplication(e, job.id)}/>
             </JobHeader>
             <JobBody>
               <div className="upper">

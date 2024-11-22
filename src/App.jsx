@@ -12,6 +12,7 @@ import JobsSearching from './JobsSearching';
 import UnderConstruction from './UnderConstruction';
 import EmployeerSignup from './Logins/EmployeerSignup';
 import EmployeerDashboard from './EmployeerDashboard';
+import SingleJobs from './SingleJobs';
 
 function App() {
   const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ function App() {
         <Route path="/userDashboard/*" element={<UserDashboard />} />
         <Route path="/employeerDashboard" element={<EmployeerDashboard />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
+        <Route path="/jobs/*" element={<SingleJobs />} />
         <Route path="/employeerDashboard/*" element={<EmployeerDashboard />} />
         <Route path="*" element={<UnderConstruction />} />
       </Routes>
