@@ -358,8 +358,9 @@ useEffect(() => {
   }, [isLoading, hasMore]);
     
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
-    const userName = localStorage.getItem('userName') || "User";
+    const userData= JSON.parse(localStorage.getItem('user'));
+    const userId = userData.id;
+    const userName = userData.username || "User";
     if (userId) {
       // Assuming you have a way to get the username from userId
       // Here, I am just using a placeholder for demonstration
@@ -439,12 +440,13 @@ useEffect(() => {
         </CloseIcon>
       </Logo>
       {isLoggedIn? ( <div className='userdata flex flex-col md:flex-row gap-2 items-center'>
+        <NavLink to='/userDashboard'>
   <span className='flex items-center gap-2'>
     <div className='text-white h-[48px] w-[48px] bg-[#01A3E0] rounded-full flex items-center justify-center'>
       <p className='font-bold text-xl'>{username[0]}</p>
     </div>
     <p className='font-bold'>{username}</p>
-  </span>
+  </span></NavLink>
   <Button width="150px" text="Logout" primary="secondary" onClick={handleLogout} />
 </div>) : (
 

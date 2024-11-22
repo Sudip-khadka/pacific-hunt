@@ -175,7 +175,7 @@ navigate('/dashboard/jobseeker');
   }
 
   else if(employeerEmail && employeerPassword){
-    navigate('/employeerDashboard');
+    navigate('/employeerDashboard/employeerprofile');
   }
 },[])
 
@@ -209,7 +209,7 @@ navigate('/dashboard/jobseeker');
       console.log(user);
       localStorage.setItem("employeerDetail",JSON.stringify(user));
       localStorage.setItem('adminEmail',trimmedEmail);
-      navigate('/employeerDashboard/');
+      navigate('/employeerDashboard/employeerprofile');
     }
      else {
       console.log("Condition not met");

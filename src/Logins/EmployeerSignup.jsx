@@ -274,9 +274,10 @@ function EmployeerSignup() {
 
         if (response.ok) {
           setShowAlert(true);
-          localStorage.setItem('adminEmail',email);
+          // localStorage.setItem('adminEmail',email);
           localStorage.setItem('adminPassword',password);
           localStorage.setItem('adminUsername',companyname);
+          
           setTimeout(() => {
             navigate("/employeerLogin");
             setShowAlert(false);

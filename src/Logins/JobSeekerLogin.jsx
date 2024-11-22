@@ -166,7 +166,7 @@ function JobSeekerLogin() {
     e.preventDefault();
     const user = users.find(user => user.email === email && user.password === password);
     if (user) {
-      localStorage.setItem('userId', user.userId);
+      localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('userName', user.username);
       navigate('/jobssearching');
     } else {
