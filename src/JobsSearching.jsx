@@ -412,7 +412,7 @@ useEffect(() => {
     e.preventDefault();
     if(isLoggedIn){
       setAppliedCompany(id);
-      navigate(`/jobs/${id}`)
+      navigate(`/jobs?id=${id}`)
       // setShowAlert(true);
       // setTimeout(()=>{
       //   setShowAlert(false);
