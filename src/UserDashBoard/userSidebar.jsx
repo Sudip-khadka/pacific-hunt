@@ -259,7 +259,7 @@ function userSidebar() {
               <div className="text">Applied Jobs</div>
             </div>
           </StyledNavLink>
-           <StyledNavLink to="/userDashboard/postedjobs">
+           <StyledNavLink to="/userDashboard/setting">
           
             <div className="StyledNavLink">
               <svg

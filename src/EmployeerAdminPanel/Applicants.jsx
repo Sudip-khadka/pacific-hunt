@@ -249,7 +249,7 @@ function Applicants() {
                       <strong>Status: {applicant.status}</strong>
                       <br />
                       <strong>Skills: </strong>
-                      {applicant.skills.join(", ")}
+                      {applicant.skills.length >0 ? applicant.skills.join(", "): "No Skills" }
                       <br />
                       <strong>Email: </strong>
                       {applicant.email}<br/>

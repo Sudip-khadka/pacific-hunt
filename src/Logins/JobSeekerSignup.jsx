@@ -229,7 +229,7 @@ const [showAlert,setShowAlert] = useState(false);
     setDobValid(isDobValid);
   
     if (isEmailValid && isEmailUniqueValid && isPasswordValid && isConfirmPasswordValid && isAddressValid && isPhoneValid && isUsernameValid && isDobValid) {
-      const newUser = { userId:uuidv4(),username, email, password, address, phone, dob, };
+      const newUser = { userId:uuidv4(),username, email, password, address, phone,dateOfBirth:dob,skills:[],experience:[],education:[], };
   
       try {
         const response = await fetch(jobSeekerUsers, {
@@ -240,6 +240,7 @@ const [showAlert,setShowAlert] = useState(false);
   
         if (response.ok) {
             setShowAlert(true)
+            localStorage.setItem("user",newUser)
             setTimeout(()=>{
                 navigate('/jobseekerLogin');
                 setShowAlert(false)

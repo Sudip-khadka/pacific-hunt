@@ -152,7 +152,7 @@ function AppliedJobs() {
     // Fetch all jobs data
     const fetchJobs = async () => {
       try {
-        const response = await axios.get(jobsApi); // Replace with your actual API endpoint
+        const response = await axios.get(jobsApi);
         setJobs(response.data);
       } catch (error) {
         console.error("Error fetching jobs:", error);
@@ -164,42 +164,40 @@ function AppliedJobs() {
 
   useEffect(() => {
     // Get the logged-in user's email from localStorage
-    const userEmail = JSON.parse(localStorage.getItem("user"));
+    const userEmail = JSON.parse(localStorage.getItem("user"))?.email;
 
-    if (userEmail?.email) {
+    if (userEmail) {
       // Filter jobs where the user has applied
-      const filteredJobs = jobs.filter((job) =>
-        job.appliedBy.some((applicant) => applicant.email === userEmail.email)
-      );
+      const filteredJobs = jobs
+        .map((job) => ({
+          ...job,
+          appliedBy: job.appliedBy.filter((applicant) => applicant.email === userEmail),
+        }))
+        .filter((job) => job.appliedBy.length > 0);
+
       setAppliedJobs(filteredJobs);
     }
   }, [jobs]);
 
-  // Function to handle withdrawal of application
   const withdrawApplication = async () => {
     try {
-      // Find the job by jobId
       const jobToUpdate = jobs.find((job) => job.id === selectedJob);
 
       if (jobToUpdate) {
-        // Remove the applicant from the appliedBy array
         const updatedAppliedBy = jobToUpdate.appliedBy.filter(
           (applicant) => applicant.email !== applicantEmail
         );
 
-        // Update the job data locally
         const updatedJobs = jobs.map((job) =>
           job.id === selectedJob ? { ...job, appliedBy: updatedAppliedBy } : job
         );
         setJobs(updatedJobs);
-        
-        // Also update the appliedJobs state if the job was part of it
+
         const updatedAppliedJobs = appliedJobs.map((job) =>
           job.id === selectedJob ? { ...job, appliedBy: updatedAppliedBy } : job
         );
         setAppliedJobs(updatedAppliedJobs);
 
-        // Send the updated data to the server (assumes PUT method to update the job)
         await axios.put(`${jobsApi}/${selectedJob}`, {
           ...jobToUpdate,
           appliedBy: updatedAppliedBy,
@@ -208,21 +206,18 @@ function AppliedJobs() {
         console.log("Application withdrawn successfully");
       }
 
-      // Close the modal after withdrawal
       setIsModalVisible(false);
     } catch (error) {
       console.error("Error withdrawing application:", error);
     }
   };
 
-  // Function to open the confirmation modal
   const openConfirmationModal = (jobId, email) => {
     setSelectedJob(jobId);
     setApplicantEmail(email);
     setIsModalVisible(true);
   };
 
-  // Function to close the confirmation modal
   const closeConfirmationModal = () => {
     setIsModalVisible(false);
     setSelectedJob(null);
@@ -261,8 +256,7 @@ function AppliedJobs() {
                 <ApplicantItem key={applicant.id}>
                   <strong>{applicant.username}</strong> ({applicant.email}) -{" "}
                   <span>Status: {applicant.status}</span>
-                  <br/>
-                  {/* Delete button for each applicant */}
+                  <br />
                   <DeleteButton
                     onClick={() => openConfirmationModal(job.id, applicant.email)}
                   >
@@ -275,7 +269,6 @@ function AppliedJobs() {
         ))
       )}
 
-      {/* Confirmation Modal */}
       <ConfirmationModal visible={isModalVisible}>
         <ModalContent>
           <h3>Are you sure you want to withdraw your application?</h3>
