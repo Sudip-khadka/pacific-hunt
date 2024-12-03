@@ -5,6 +5,7 @@ import UserNavigation from './userNavigation';
 import UserProfile from './userProfile';
 import AppliedJobs from './AppliedJobs';
 import Setting from './Setting';
+import UnderConstruction from '../UnderConstruction';
 // import PostJob from './userAdminPanel/PostJob';
 // import PostedJob from './userAdminPanel/PostedJob';
 // import Applicants from './userAdminPanel/Applicants';
@@ -48,6 +49,8 @@ function userDashboard() {
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/appliedJobs" element={<AppliedJobs />} />
           <Route path="/setting" element={<Setting />} /> 
+          {/* <Route path="*" element={<UnderConstruction />} /> */}
+          {/* <Route path="/savedJobs" element={<UnderConstruction />} />  */}
           {/* {/* <Route path="/createjobs" element={<PostJob />} /> */}
         </Routes>
       </div>

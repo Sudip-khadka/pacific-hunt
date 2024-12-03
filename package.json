@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/styled": "^11.11.5",
-    "@mui/material": "^5.16.4",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/icons-material": "^6.1.9",
+    "@mui/material": "^6.1.9",
+    "@mui/styled-engine-sc": "^6.1.9",
     "@tanstack/react-query": "^5.51.9",
     "axios": "^1.7.2",
     "date-fns": "^3.6.0",
@@ -24,7 +27,7 @@
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.24.1",
     "react-scroll": "^1.9.0",
-    "styled-components": "^6.1.11",
+    "styled-components": "^6.1.13",
     "uuid": "^10.0.0"
   },
   "devDependencies": {

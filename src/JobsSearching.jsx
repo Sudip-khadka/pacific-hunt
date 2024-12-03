@@ -279,6 +279,14 @@ const [hasMore, setHasMore] = useState(true);
   const navigate = useNavigate();
   const [showButton, setShowButton] = useState(false);
 
+  useEffect(()=>{
+
+    const logedinUser=JSON.parse(localStorage.getItem('user'))
+    if(!logedinUser){
+      navigate('/jobseekerlogin')
+    }
+  },[])
+
 const handleScroll = () => {
   if (window.scrollY > 200) {
     setShowButton(true);
@@ -361,15 +369,19 @@ useEffect(() => {
     const userData= JSON.parse(localStorage.getItem('user'));
     const userId = userData.id;
     const userName = userData.username || "User";
+
     if (userId) {
       const user = { userId: userId, userName: userName }; 
       setUsername(user.userName);
       setIsLoggedIn(true);
     }
+    else{
+      navigate('jobseekerlogin')
+    }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('user');
     setIsLoggedIn(false);
     setUsername("");
     navigate('/'); // Navigate to home or login page after logout

@@ -87,6 +87,7 @@ function UserProfile() {
             { id: 1, title: "Name", detail: details.username },
             { id: 2, title: "Email", detail: details.email },
             { id: 3, title: "Phone", detail: details.phone },
+            { id: 3, title: "Expected Salary (Rs.)", detail: details.expectedSalary },
             { id: 4, title: "Date Of Birth", detail: details.dateOfBirth },
             { id: 5, title: "Skills", detail: details.skills.join(", ") },
             { id: 6, title: "Address", detail: details.address },
